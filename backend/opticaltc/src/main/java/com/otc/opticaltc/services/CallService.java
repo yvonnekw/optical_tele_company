@@ -5,6 +5,7 @@ package com.otc.opticaltc.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.otc.opticaltc.dto.CallDto;
 import com.otc.opticaltc.models.Call;
 import com.otc.opticaltc.repositories.CallRepository;
 
@@ -19,20 +20,17 @@ import com.otc.opticaltc.repositories.CallRepository;
 import java.util.List;
 
 @Service
-public class CallService {
-   @Autowired
-   private CallRepository callRepository;
+public interface CallService {
 
-   public CallService(){
+    CallDto makeCall(CallDto callDto);
 
-   }
+    CallDto getCallById(Long callId);
+       
+    List<CallDto> getAllCalls();
 
-    public List<Call> getAllCalls() {
-       return callRepository.findAll();
-    }
+    CallDto updateCall(Long callId, CallDto updatedCall);
 
-    public Call saveCall(Call city) {
-        return callRepository.save(city);
-    }
+    void deleteCall(Long callId);
+    
 
 }
