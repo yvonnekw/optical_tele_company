@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import opticaltelephonecompany.otc.exception.EmailAlreadyTakenException;
 import opticaltelephonecompany.otc.exception.UserDoesNotExistException;
-import opticaltelephonecompany.otc.models.CallerUser;
+import opticaltelephonecompany.otc.models.CallUser;
 import opticaltelephonecompany.otc.models.LoginResponseDto;
 import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.services.AuthenticationService;
@@ -64,7 +64,7 @@ public class AuthenticationController {
     
 
     @PostMapping("/register")
-    public CallerUser registerUser(@RequestBody RegistrationDto body){
+    public CallUser registerUser(@RequestBody RegistrationDto body){
         return userService.registerUser(body);
     }
 
@@ -100,12 +100,12 @@ public class AuthenticationController {
     }
 
     @PutMapping("/update/telephone")
-    public CallerUser updateTelephoneNumber(@RequestBody LinkedHashMap<String, String> body){
+    public CallUser updateTelephoneNumber(@RequestBody LinkedHashMap<String, String> body){
 
         String userName = body.get("username");
         String phone = body.get("mainTelephone");
     
-        CallerUser applicationUser = userService.getUserByUsername(userName);
+        CallUser applicationUser = userService.getUserByUsername(userName);
 
         applicationUser.setMainTelephone((phone));
 
@@ -122,7 +122,7 @@ public class AuthenticationController {
     }
 
     @PutMapping("/update/password")
-    public CallerUser updatePassword(@RequestBody LinkedHashMap<String, String> body) {
+    public CallUser updatePassword(@RequestBody LinkedHashMap<String, String> body) {
 
         String username = body.get("username");
         String password = body.get("password");

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallDto;
-import opticaltelephonecompany.otc.models.CallerUser;
+import opticaltelephonecompany.otc.models.CallUser;
 import opticaltelephonecompany.otc.services.CallService;
 import opticaltelephonecompany.otc.services.UserService;
 
@@ -78,7 +78,7 @@ public class CallController {
         String endTime = body.get("endTime");
         String duration = body.get("duration");
 
-        CallerUser applicationUser = userService.getUserByUsername(userName);
+        CallUser applicationUser = userService.getUserByUsername(userName);
 
         CallDto callsDTO = new CallDto();
 

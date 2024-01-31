@@ -26,7 +26,7 @@ import jakarta.persistence.Table;
 //@Document(indexName ="user1")
 @Entity
 @Table(name="users")
-public class CallerUser implements UserDetails {
+public class CallUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -64,6 +64,9 @@ public class CallerUser implements UserDetails {
 		this.lastName = lastName;
 	}
 
+	
+
+	/*Security related */
 	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(                                                                                                                     
         name="user_role_junction",
@@ -89,7 +92,7 @@ public class CallerUser implements UserDetails {
 
   private Address address;
 
-    public CallerUser() {
+    public CallUser() {
 		//super();
 		this.authorities = new HashSet<>();
 		//when we first create account user should not be able to use it
@@ -125,7 +128,7 @@ public class CallerUser implements UserDetails {
 		this.emailAddress = emailAddress;
 	}
 
-	public CallerUser(String username, String password, String emailAddress, String mainTelephone) {
+	public CallUser(String username, String password, String emailAddress, String mainTelephone) {
 		super();
 		//this.userId = userId;
 		this.username = username;
@@ -134,7 +137,7 @@ public class CallerUser implements UserDetails {
 		this.emailAddress = emailAddress;
 	}
 
-	public CallerUser(String username, String password, Set<Role> authorities, String emailAddress, String mainTelephone) {
+	public CallUser(String username, String password, Set<Role> authorities, String emailAddress, String mainTelephone) {
 		super();
 		//this.userId = userId;
 		this.username = username;
@@ -143,7 +146,7 @@ public class CallerUser implements UserDetails {
 		this.emailAddress = emailAddress;
 	}
 
-    public CallerUser(String username, String password, Set<Role> authoritie) {
+    public CallUser(String username, String password, Set<Role> authoritie) {
 		this.username = username;
 		this.password = password;
 		this.authorities = authoritie;
@@ -204,19 +207,11 @@ public class CallerUser implements UserDetails {
 
 	@Override
 	public String toString() {
-		return "ApplicationUser [userId=" + userId + ", username=" + username + ", password=" + password
-				+ ", firstName=" + firstName + ", lastName=" + lastName + ", emailAddress=" + emailAddress
-				+ ", mainTelephone=" + mainTelephone + ", authorities=" + authorities + ", enabled=" + enabled
-				+ ", verification=" + verification + ", address=" + address  + "]";
+		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", emailAddress=" + emailAddress + ", mainTelephone="
+				+ mainTelephone + ", authorities=" + authorities + ", enabled=" + enabled + ", verification="
+				+ verification + ", address=" + address + "]";
 	}
-/* 
-	public Set<Call> getCalls() {
-		return calls;
-	}
-
-	public void setCalls(Set<Call> calls) {
-		this.calls = calls;
-	}*/
 
 	public Address getAddress() {
 		return address;

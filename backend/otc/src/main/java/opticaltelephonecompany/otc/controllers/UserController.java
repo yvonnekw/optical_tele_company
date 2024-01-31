@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import opticaltelephonecompany.otc.models.CallerUser;
+import opticaltelephonecompany.otc.models.CallUser;
 import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.services.AuthenticationService;
+import opticaltelephonecompany.otc.services.ImageService;
 import opticaltelephonecompany.otc.services.TokenService;
 import opticaltelephonecompany.otc.services.UserService;
 
@@ -30,8 +31,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
 
     private final UserService userService;
-    private AuthenticationService authenticationService;
     private final TokenService tokenService;
+    //private final ImageService imageService;
 
     public UserController(UserService userService, TokenService tokenService){
         this.userService = userService;
@@ -39,9 +40,9 @@ public class UserController {
     }
 
     @GetMapping("/verify")
-    public CallerUser verifyIdentity(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+    public CallUser verifyIdentity(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String username = "";
-        CallerUser user;
+        CallUser user;
 
         if(token.substring(0,6).equals("Bearer")) {
             String strippedToken = token.substring(7);
@@ -63,20 +64,20 @@ public class UserController {
     }
 
     @GetMapping("{id}")//url method argument is band with the Path variable if to the callId
-    public ResponseEntity<CallerUser> getUserById(@PathVariable("id") long userId){
-        CallerUser userDto = userService.getUserById(userId);
+    public ResponseEntity<CallUser> getUserById(@PathVariable("id") long userId){
+        CallUser userDto = userService.getUserById(userId);
        return ResponseEntity.ok(userDto);
     }
 
     @GetMapping
-    public ResponseEntity<List<CallerUser>> getAllUsers(){
-        List<CallerUser> users = userService.getAllUsers();
+    public ResponseEntity<List<CallUser>> getAllUsers(){
+        List<CallUser> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<CallerUser> updateUser(@PathVariable("id") Long userId, @RequestBody CallerUser updatedUser){
-       CallerUser userDto = userService.updateUser(userId, updatedUser);
+    public ResponseEntity<CallUser> updateUser(@PathVariable("id") Long userId, @RequestBody CallUser updatedUser){
+       CallUser userDto = userService.updateUser(userId, updatedUser);
        return ResponseEntity.ok(userDto);
     }
 

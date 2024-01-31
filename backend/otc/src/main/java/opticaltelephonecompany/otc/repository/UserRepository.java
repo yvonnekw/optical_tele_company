@@ -6,9 +6,9 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import opticaltelephonecompany.otc.models.CallerUser;
+import opticaltelephonecompany.otc.models.CallUser;
 
 @Repository
-public interface UserRepository extends JpaRepository<CallerUser, Long> {
-	Optional<CallerUser> findByUsername(String username);
+public interface UserRepository extends JpaRepository<CallUser, Long> {
+	Optional<CallUser> findByUsername(String username);
 }

@@ -1,29 +1,26 @@
 package opticaltelephonecompany.otc.models;
 
 public class LoginResponseDto {
-    private CallerUser user;
+    private CallUser user;
     private String token;
 
     public LoginResponseDto(){
         super();
     }
 
-    public LoginResponseDto(CallerUser user, String token){
+    public LoginResponseDto(CallUser user, String token){
         this.user = user;
         this.token = token;
     }
 
-    public CallerUser getUser(){
+    public CallUser getUser(){
         return this.user;
     }
 
-    public void setUser(CallerUser user){
+    public void setUser(CallUser user){
         this.user = user;
     }
 
-    public String getJwt(){
-        return this.token;
-    }
 
     public String getToken() {
         return token;
@@ -33,10 +30,9 @@ public class LoginResponseDto {
         this.token = token;
     }
 
-   
     @Override
     public String toString() {
-        return "LoginResponseDTO [user=" + user + ", jwt=" + token + "]";
+        return "LoginResponseDto [user=" + user + ", token=" + token + "]";
     }
 
 

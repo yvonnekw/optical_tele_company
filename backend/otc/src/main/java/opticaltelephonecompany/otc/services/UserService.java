@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 import opticaltelephonecompany.otc.exception.EmailAlreadyTakenException;
 import opticaltelephonecompany.otc.exception.UserDoesNotExistException;
-import opticaltelephonecompany.otc.models.CallerUser;
+import opticaltelephonecompany.otc.models.CallUser;
 import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.models.Role;
 import opticaltelephonecompany.otc.repository.RoleRepository;
@@ -41,22 +41,22 @@ public class UserService implements UserDetailsService {
     }
 
     //@Autowired
-    public CallerUser registerUser(RegistrationDto registrationDTO) {
+    public CallUser registerUser(RegistrationDto registrationDTO) {
          
-        CallerUser applicationUser = new CallerUser();
+        CallUser calluser = new CallUser();
     
-        applicationUser.setFirstName(registrationDTO.getFirstName());
-        applicationUser.setLastName(registrationDTO.getLastName());
-        applicationUser.setEmailAddress(registrationDTO.getEmailAdress());
+        calluser.setFirstName(registrationDTO.getFirstName());
+        calluser.setLastName(registrationDTO.getLastName());
+        calluser.setEmailAddress(registrationDTO.getEmailAdress());
        // applicationUser.setUsername(registrationDTO.getUsername());
-        applicationUser.setPassword(registrationDTO.getPassword());
+       calluser.setPassword(registrationDTO.getPassword());
 
       // ApplicationUser encryptPassword = setPassword(registrationDTO.getLastName(), registrationDTO.getPassword());
 
        // applicationUser.setPassword(encryptPassword.toString());
 
 
-        String name = applicationUser.getFirstName() + applicationUser.getLastName();
+        String name = calluser.getFirstName() + calluser.getLastName();
         boolean nameTaken = true;
         String tempName = " ";
 
@@ -67,7 +67,7 @@ public class UserService implements UserDetailsService {
                 nameTaken = false;
             }
         }
-        applicationUser.setUsername(tempName);
+        calluser.setUsername(tempName);
 
         Set<Role> roles = registrationDTO.getAuthorities();
         roles.add(roleRepository.findByAuthority("USER").get());
@@ -78,7 +78,7 @@ public class UserService implements UserDetailsService {
         //applicationUser.setAuthorities(roles);
 
         try {
-            return userRepository.save(applicationUser);
+            return userRepository.save(calluser);
         } catch (Exception e) {
             throw new EmailAlreadyTakenException();
         }
@@ -90,16 +90,16 @@ public class UserService implements UserDetailsService {
     }
 
     public void generateEmailVerification(String username) {
-        CallerUser applicationUser = userRepository.findByUsername(username).orElseThrow(UserDoesNotExistException::new);
-        applicationUser.setVerification(generatedVerificationNumber());
-        userRepository.save(applicationUser);
+        CallUser callUser = userRepository.findByUsername(username).orElseThrow(UserDoesNotExistException::new);
+        callUser.setVerification(generatedVerificationNumber());
+        userRepository.save(callUser);
     }
 
-   public CallerUser setPassword(String username, String password) {
-        CallerUser applicationUser = userRepository.findByUsername(username).orElseThrow(UserDoesNotExistException::new);
+   public CallUser setPassword(String username, String password) {
+     CallUser callUser = userRepository.findByUsername(username).orElseThrow(UserDoesNotExistException::new);
       String encodedPassword = passwordEncoder.encode(password);
-      applicationUser.setPassword(encodedPassword);
-         return userRepository.save(applicationUser);
+      callUser.setPassword(encodedPassword);
+         return userRepository.save(callUser);
     }
 
    private Long generatedVerificationNumber() {
@@ -107,41 +107,41 @@ public class UserService implements UserDetailsService {
          return  generatedNumber;
     }
 
-    public CallerUser getUserByUsername(String userName) {
+    public CallUser getUserByUsername(String userName) {
         return userRepository.findByUsername(userName).orElseThrow(UserDoesNotExistException::new);
     }
 
-    public CallerUser updateUser(CallerUser applicationUser) {
+    public CallUser updateUser(CallUser callUser) {
         try {
-            return userRepository.save(applicationUser);
+            return userRepository.save(callUser);
         } catch (Exception e) {
             throw new EmailAlreadyTakenException();
         }
     }
 
-    public CallerUser getUserById(long userId) {
+    public CallUser getUserById(long userId) {
         return userRepository.findById(userId).orElseThrow(UserDoesNotExistException::new);
     }
 
-    public List<CallerUser> getAllUsers() {
+    public List<CallUser> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public CallerUser updateUser(Long userId, CallerUser updatedUser){
+    public CallUser updateUser(Long userId, CallUser updatedUser){
 
-        CallerUser user = userRepository.findById(userId).orElseThrow(
+        CallUser callUser = userRepository.findById(userId).orElseThrow(
             () -> new ResourceNotFoundException("Call not found with the given Id : " + userId)
         );
-        user.setFirstName(updatedUser.getFirstName());
-        user.setLastName(updatedUser.getLastName());
+        callUser.setFirstName(updatedUser.getFirstName());
+        callUser.setLastName(updatedUser.getLastName());
 
-        CallerUser updatedUserObj = userRepository.save(user);
+        CallUser updatedUserObj = userRepository.save(callUser);
        return updatedUserObj;
 
     }
 
     public void deleteUser(Long userId) {
-        CallerUser user = userRepository.findById(userId).orElseThrow(
+        CallUser callUser = userRepository.findById(userId).orElseThrow(
             () -> new ResourceNotFoundException("User not found with the given Id : " + userId)
         );
 
@@ -150,15 +150,15 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-       CallerUser user = userRepository.findByUsername(username)
+        CallUser callUser = userRepository.findByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException("User not found "));
 
-        Set<GrantedAuthority> authorities = user.getAuthorities()
+        Set<GrantedAuthority> authorities = callUser.getAuthorities()
             .stream()
             .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
             .collect(Collectors.toSet());
 
-            UserDetails userDetails = new User(user.getUsername(), user.getPassword(), authorities);
+            UserDetails userDetails = new User(callUser.getUsername(), callUser.getPassword(), authorities);
 
         return userDetails;
     }

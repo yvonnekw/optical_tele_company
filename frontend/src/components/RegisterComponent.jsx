@@ -1,14 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import { registerUser }from '../services/UserService';
 import { useNavigate } from 'react-router-dom';
 
 const RegisterComponent = () => {
 
+   // const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,,23}$/;
+    //const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-   const[firstName, setFirstName] = useState('')
-   const[lastName, setLastName] = useState('')
-   const[emailAddress, setEmailAddress] = useState('')
-   const[telephoneNumber, setTelephoneNumber] = useState('')
+   // const userRef = useRef();
+  //  const errRef = useRef();
+
+   const [firstName, setFirstName] = useState('')
+   const [lastName, setLastName] = useState('')
+   const [emailAddress, setEmailAddress] = useState('')
+   const [telephoneNumber, setTelephoneNumber] = useState('')
+  // const [validName, setValidName] = useState(false);
+  // const [userFocus, setUserFocus] = useState(false);
+
+   //const [errMsg, setErrMsg] = useState('');
+   //const [success, setSuccess] = useState(false);
 
    const [errors, setErrors] = useState({
         firstName:'',

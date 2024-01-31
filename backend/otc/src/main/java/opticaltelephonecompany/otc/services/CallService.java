@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import opticaltelephonecompany.otc.exception.UserDoesNotExistException;
 import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallDto;
-import opticaltelephonecompany.otc.models.CallerUser;
+import opticaltelephonecompany.otc.models.CallUser;
 import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.repository.CallRepository;
 import opticaltelephonecompany.otc.repository.UserRepository;
@@ -50,7 +50,7 @@ public class CallService {
     }
 
     public void deleteCall(Long callId) {
-        CallerUser user = userRepository.findById(callId).orElseThrow(
+        CallUser user = userRepository.findById(callId).orElseThrow(
             () -> new ResourceNotFoundException("User not found with the given Id : " + callId)
         );
 
@@ -63,7 +63,7 @@ public class CallService {
     }
 
     public Call makeCall(String username, CallDto callsDTO) throws Exception {
-        CallerUser applicationUser = userRepository.findByUsername(username).orElseThrow(UserDoesNotExistException::new);
+        CallUser applicationUser = userRepository.findByUsername(username).orElseThrow(UserDoesNotExistException::new);
         Call call = new Call();
        // try {
         //call.setStartTime(callsDTO.getStartTime());
