@@ -1,25 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
-
-
 const DashboardComponent = () => {
+  const navigate = useNavigate();
 
+  const makeNewCall = () => {
+    navigate('/make-call');
+  };
 
-    const navigator = useNavigate();
+  return (
+    <div className="container mt-5">
+      <h2>Welcome to Your Dashboard</h2>
+      <p>
+        This is a sample dashboard page. You can perform various actions and view information here.
+      </p>
 
-    function makeNewCall(){
-        navigator('/make-call')
-    }
-
-    return (
-        <div className='container'>
-            I am the user page
-            <button className='btn btn-primary' onClick={makeNewCall}>Make a call</button>
-            
+      <div className="card mt-4">
+        <div className="card-body">
+          <h5 className="card-title">Make a Call</h5>
+          <p className="card-text">
+            Click the button below to make a new call. Record the details and duration of the call.
+          </p>
+          <button className="btn btn-primary" onClick={makeNewCall}>
+            Make a Call
+          </button>
         </div>
-    )
-}
+      </div>
 
-export default DashboardComponent
+      {/* Add more cards or sections for additional functionality */}
+    </div>
+  );
+};
+
+export default DashboardComponent;
