@@ -64,8 +64,6 @@ public class CallUser implements UserDetails {
 		this.lastName = lastName;
 	}
 
-	
-
 	/*Security related */
 	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(                                                                                                                     
@@ -189,19 +187,16 @@ public class CallUser implements UserDetails {
 
 	@Override
 	public boolean isAccountNonLocked() {
-	
 		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		
 		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		
 		return true;
 	}
 

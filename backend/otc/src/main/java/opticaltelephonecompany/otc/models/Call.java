@@ -1,11 +1,6 @@
 package opticaltelephonecompany.otc.models;
 
 
-import java.util.UUID;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -13,9 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -26,10 +19,6 @@ public class Call {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long callId;
-    private String firstName;
-    private String lastName;
-	private String telephone;
-	private String destinationCountry;
     private String startTime;
     private String endTime;
     private String duration;
@@ -38,66 +27,55 @@ public class Call {
     private String discountForCalls;
     private String signUpDiscount;
     private String vat;
-    private float netCost;
-    private float grossCost;
-    private float totalCost;
+    private String netCost;
+    private String grossCost;
+    private String totalCost;
 
-    public String getFirstName() {
-        return firstName;
+    public Call(Long callId, String startTime, String endTime, String duration, String totalTime, String costPerMinute,
+            String discountForCalls, String signUpDiscount, String vat, String netCost, String grossCost,
+            String totalCost, CallUser callUser) {
+        this.callId = callId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.duration = duration;
+        this.totalTime = totalTime;
+        this.costPerMinute = costPerMinute;
+        this.discountForCalls = discountForCalls;
+        this.signUpDiscount = signUpDiscount;
+        this.vat = vat;
+        this.netCost = netCost;
+        this.grossCost = grossCost;
+        this.totalCost = totalCost;
+        this.callUser = callUser;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+ 
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
-    public String getDestinationCountry() {
-        return destinationCountry;
-    }
-
-    public void setDestinationCountry(String destinationCountry) {
-        this.destinationCountry = destinationCountry;
-    }
-/* 
-    public CallerUser getApplicationUser() {
-        return applicationUser;
-    }
-
-    public void setApplicationUser(CallerUser applicationUser) {
-        this.applicationUser = applicationUser;
-    }*/
-
-    //mention
-/* 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private CallerUser callerUser;*/
-
-    @ManyToOne(fetch=FetchType.EAGER)
+    @OneToOne(fetch=FetchType.EAGER)
     @JoinTable(                                                                                                                     
-        name="user_caller_junction",
+        name="user_call_junction",
         joinColumns = {@JoinColumn(name="user_id")},
         inverseJoinColumns = {@JoinColumn(name="call_id")}
     )
+    private CallUser callUser;
 
     public Long getCallId() {
         return callId;
+    }
+
+    public CallUser getCallUser() {
+        return callUser;
+    }
+
+    public void setCallUser(CallUser callUser) {
+        this.callUser = callUser;
+    }
+
+    public Call(String startTime, String endTime, String duration, CallUser callUser) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.duration = duration;
+        this.callUser = callUser;
     }
 
     public void setCallId(Long callId) {
@@ -106,6 +84,9 @@ public class Call {
 
     public String getStartTime() {
         return startTime;
+    }
+
+    public Call() {
     }
 
     public void setStartTime(String startTime) {
@@ -168,46 +149,40 @@ public class Call {
         this.vat = vat;
     }
 
-    public float getNetCost() {
+
+    public String getNetCost() {
         return netCost;
     }
 
-    public void setNetCost(float netCost) {
+    public void setNetCost(String netCost) {
         this.netCost = netCost;
     }
 
-    public float getGrossCost() {
+    public String getGrossCost() {
         return grossCost;
     }
 
-    public void setGrossCost(float grossCost) {
+    public void setGrossCost(String grossCost) {
         this.grossCost = grossCost;
     }
 
-    public float getTotalCost() {
+    public String getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(float totalCost) {
+    public void setTotalCost(String totalCost) {
         this.totalCost = totalCost;
     }
-/* 
-    public CallerUser getCallerUser() {
-        return callerUser;
-    }
 
-    public void setCallerUser(CallerUser callerUser) {
-        this.callerUser = callerUser;
-    }
-*/
     @Override
     public String toString() {
-        return "Call [callId=" + callId + ", firstName=" + firstName + ", lastName=" + lastName + ", telephone="
-                + telephone + ", destinationCountry=" + destinationCountry + ", startTime=" + startTime + ", endTime="
-                + endTime + ", duration=" + duration + ", totalTime=" + totalTime + ", costPerMinute=" + costPerMinute
-                + ", discountForCalls=" + discountForCalls + ", signUpDiscount=" + signUpDiscount + ", vat=" + vat
-                + ", netCost=" + netCost + ", grossCost=" + grossCost + ", totalCost=" + totalCost + "]";
+        return "Call [callId=" + callId + ", startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration
+                + ", totalTime=" + totalTime + ", costPerMinute=" + costPerMinute + ", discountForCalls="
+                + discountForCalls + ", signUpDiscount=" + signUpDiscount + ", vat=" + vat + ", netCost=" + netCost
+                + ", grossCost=" + grossCost + ", totalCost=" + totalCost + ", callUser=" + callUser + "]";
     }
+
+   
 
 
 

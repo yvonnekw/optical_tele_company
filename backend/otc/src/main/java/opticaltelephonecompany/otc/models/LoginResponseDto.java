@@ -21,7 +21,6 @@ public class LoginResponseDto {
         this.user = user;
     }
 
-
     public String getToken() {
         return token;
     }

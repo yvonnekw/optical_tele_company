@@ -13,23 +13,28 @@ import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallDto;
 import opticaltelephonecompany.otc.models.CallUser;
 import opticaltelephonecompany.otc.models.RegistrationDto;
+import opticaltelephonecompany.otc.repository.CallReceiverRepository;
 import opticaltelephonecompany.otc.repository.CallRepository;
 import opticaltelephonecompany.otc.repository.UserRepository;
 
 @Service
-public class CallService {
+public class CallReceiverService {
 
-    CallRepository callRepository;
-    private final UserRepository userRepository;
+    CallReceiverRepository callRepository;
+    private final CallReceiverRepository callReceiverRepository;
+    
+    public CallReceiverService(CallReceiverRepository callRepository, CallReceiverRepository callReceiverRepository) {
+        this.callRepository = callRepository;
+        this.callReceiverRepository = callReceiverRepository;
+    }
 
- /* 
-    public Call makeCall(String username, CallDto callDTO) {
-        CallUser user = userRepository.findByUsername(username).orElseThrow(UserDoesNotExistException::new);
-        System.out.println("user name " + username);
+    /* 
+
+    public Call makeCall(CallDto callDTO) {
         Call call = new Call();
         Call saveCall = callRepository.save(call);
         return (saveCall);
-    }*/
+    }
 
      public Call getCallById(Long callId) {
         return callRepository.findById(callId).orElseThrow(UserDoesNotExistException::new);
@@ -64,7 +69,6 @@ public class CallService {
         this.userRepository = userRepository;
     }
 
-    
     public Call makeCall(String username, CallDto callsDTO) throws Exception {
         CallUser user = userRepository.findByUsername(username).orElseThrow(UserDoesNotExistException::new);
         System.out.println("user name " + username);
@@ -74,14 +78,6 @@ public class CallService {
                 call.setStartTime(callsDTO.getStartTime());
                 call.setEndTime(callsDTO.getEndTime());
                 call.setDuration(callsDTO.getDuration());
-                call.setTotalTime(callsDTO.getTotalTime());
-                call.setCostPerMinute(callsDTO.getCostPerMinute());
-                call.setDiscountForCalls(callsDTO.getDiscountForCalls());
-                call.setSignUpDiscount(callsDTO.getSignUpDiscount());
-                call.setVat(callsDTO.getVat());
-                call.setNetCost(callsDTO.getNetCost());
-                call.setGrossCost(callsDTO.getGrossCost());
-                call.setTotalCost(callsDTO.getTotalCost());
                 call.setCallUser(user);
 
                 System.out.println("call details " + call);
@@ -94,6 +90,6 @@ public class CallService {
     
         return null;
     }
-    
+    */
     
 }

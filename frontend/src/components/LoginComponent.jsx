@@ -87,8 +87,8 @@ const LoginComponent = () => {
     <div className="container">
       <br /> <br />
         <div className='row'></div>
-        <div className='card col-md-6 offset-md-3 offset-md-3'>
-                <h2 className='text-center'>Login here</h2>
+          <div className='card col-md-6 offset-md-3 offset-md-3'>
+              <h2 className='text-center'>Login here</h2>
                 <div className='card-body'>
                   {/* Display error message */}
                   {errMsg && (
@@ -96,36 +96,36 @@ const LoginComponent = () => {
                       {errMsg}
                     </div>
                   )}
-        <form>
-          <div className="mb-3">
-            <label htmlFor="username" className="form-label">
-              Username:
-            </label>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              className={`form-control ${errors.username ? 'is-invalid' : ''}`}
-              onChange={handleUsernameChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password:
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-              onChange={handlePasswordChange}
-              required
-            />
-          </div>
-          <button className='btn btn-success' onClick={handleLogin}>Login</button>
-        
-        </form>
+                  <form>
+                    <div className="mb-3">
+                      <label htmlFor="username" className="form-label">
+                        Username:
+                      </label>
+                      <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                        onChange={handleUsernameChange}
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="password" className="form-label">
+                        Password:
+                      </label>
+                      <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                        onChange={handlePasswordChange}
+                        required
+                      />
+                    </div>
+                    <button className='btn btn-success' onClick={handleLogin}>Login</button>
+                  
+                  </form>
       </div>
    </div>
 </div>

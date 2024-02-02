@@ -9,11 +9,22 @@ const [startTime, setStartTime] = useState('');
 const [endTime, setEndTime] = useState('');
 const [totalTime, setTotalTime] = useState('');
 const [callCost, setCallCost] = useState(0);
-const [discount, setDiscount] = useState('');
+const [discount, setDiscount] = useState(0);
 const [totalCost, setTotalCost] = useState(0);
 const [netCost, setNetCost] = useState(0);
 const [grossCost, setGrossCost] = useState(0);
 const [taxAmount, setTaxAmount] = useState(0);
+  
+   const [errors, setErrors] = useState({
+        startTime:'',
+        endTime:'',
+        callCost:'',
+        discount: '',
+        totalCost:'',
+        netCost:'',
+        grossCost:'',
+        taxAmount:''
+   })
 
 // Rate for the call cost per second
 const ratePerSecond = 0.01;
@@ -22,9 +33,9 @@ const ratePerSecond = 0.01;
 const taxRate = 0.20;
 
 // Function to handle input change for start time
-const handleStartTimeChange = (event) => {
-  setStartTime(event.target.value);
-};
+//const handleStartTimeChange = (event) => {
+  //setStartTime(event.target.value);
+//};
 
 // Function to handle input change for end time
 const handleEndTimeChange = (event) => {
@@ -80,83 +91,141 @@ const calculateTotalTime = () => {
 };
 
 // Function to handle form submission
-const handleSubmit = (event) => {
+const handleSubmit = async (event) => {
   event.preventDefault();
+  if(validateForm()){
   calculateTotalTime();
 
-  event.preventDefault();
+  
+  const call = {
+    startTime: startTime,
+    endTime: endTime,
+    duration: totalTime,
+    costPerMinute: ratePerSecond * 60, // Assuming cost is per minute
+    discountForCalls: parseFloat(discount),
+    signUpDiscount: 0, // Placeholder, modify as needed
+    vat: taxRate,
+    netCost: parseFloat(netCost),
+    grossCost: parseFloat(grossCost),
+    totalCost: parseFloat(totalCost),
+    username: 'yodalpinky1', // Replace with dynamic username from your app
+  };
+      try {
+        console.log("Request data " + call.startTime);
+          //const call = {startTime, endTime}
+          const response = await makeCall(call);
+          console.log(response.data);
+          //console.log(call)
 
-  const call = {startTime, endTime}
-  console.log(call)
+          //makeCall(call).then((response) =>{
+            // console.log(response.data)
+        //
+    // })
 
-  makeCall(call).then((response) =>{
-      console.log(response.data)
-
-  })
+        } catch (error) {
+          console.error('Error making the call:', error);
+          // Handle error, show an error message
+        }
+      };
 };
+  
+   function validateForm(){
+        let valid = true;
+        //speard of data to copy object 
+        const errorsCopy = {... errors}
+
+        if(startTime.trim()){
+            errorsCopy.startTime = '';
+        } else {
+            errorsCopy.startTime = 'Start time required';
+            valid = false;
+        }
+
+        if(endTime.trim()){
+            errorsCopy.endTime = '';
+        } else {
+            errorsCopy.endTime = 'End Time required';
+            valid = false;
+        }
+/*
+        if(discount.trim()){
+            errorsCopy.discount = '';
+        } else {
+            errorsCopy.discount = 'Email address required';
+            valid = false;
+        }*/
+
+        setErrors(errorsCopy);
+
+        return valid;
+    }
 
  
   return (
-    <div>
-        The call page
+    <div className='container'>
+        <br /> <br />
+        <div className='row'>
+            <div className='card col-md-6 offset-md-3 offset-md-3'>
+                <h2 className='text-center'>New call</h2>
+                <div className='card-body'>
+                  <form >
+                      <div className='form-group mb-2'>
+                        <label className='form-label'>Start Time</label>
+                        <input
+                          type='text'
+                          placeholder='Enter start time (HH:mm:ss)'
+                          name='startTime'
+                          value={startTime}
+                          className={`form-control ${errors.startTime ? 'is-invalid': '' }`}
+                         onChange={(e) => setStartTime(e.target.value)}
+                        />
+                      </div>
 
-        <form onClick={handleSubmit}>
-      <div className='form-group mb-2'>
-        <label className='form-label'>Start Time</label>
-        <input
-          type='text'
-          placeholder='Enter start time (HH:mm:ss)'
-          name='startTime'
-          value={startTime}
-          className='form-control'
-          onChange={handleStartTimeChange}
-        />
-      </div>
+                      <div className='form-group mb-2'>
+                        <label className='form-label'>End Time</label>
+                        <input
+                          type='text'
+                          placeholder='Enter end time (HH:mm:ss)'
+                          name='endTime'
+                          value={endTime}
+                          className={`form-control ${errors.endTime ? 'is-invalid': '' }`}
+                          onChange={(e) => setEndTime(e.target.value)}
+                          />
+                        </div>
 
-      <div className='form-group mb-2'>
-        <label className='form-label'>End Time</label>
-        <input
-          type='text'
-          placeholder='Enter end time (HH:mm:ss)'
-          name='endTime'
-          value={endTime}
-          className='form-control'
-          onChange={handleEndTimeChange}
-        />
-      </div>
+                      <div className='form-group mb-2'>
+                        <label className='form-label'>Discount (%)</label>
+                        <input
+                          type='text'
+                          placeholder='Enter discount'
+                          name='discount'
+                          value={discount}
+                          className='form-control'
+                          onChange={(e) => setDiscount(e.target.value)}
+                        />
+                      </div>
 
-      <div className='form-group mb-2'>
-        <label className='form-label'>Discount (%)</label>
-        <input
-          type='text'
-          placeholder='Enter discount'
-          name='discount'
-          value={discount}
-          className='form-control'
-          onChange={handleDiscountChange}
-        />
-      </div>
+                      <button className='btn btn-success' onClick={handleSubmit}>
+                        Submit
+                      </button>
 
-      <button type="submit" className="btn btn-primary">
-        Submit
-      </button>
+                    {totalTime && (
+                      <div className="mt-3">
+                        Total Time: {totalTime}
+                        Call Cost: ${callCost}
+                        <p>Tax: ${taxAmount.toFixed(2)}</p>
+                        <p>Net Cost: ${netCost}</p>
+                        <p>Gross Cost: ${grossCost}</p>
+                        <p>Total Cost: ${totalCost}</p>
+                      </div>
+                    )}
 
-      {totalTime && (
-        <div className="mt-3">
-          Total Time: {totalTime}
-          Call Cost: ${callCost}
-          <p>Tax: ${taxAmount.toFixed(2)}</p>
-          <p>Net Cost: ${netCost}</p>
-          <p>Gross Cost: ${grossCost}</p>
-          <p>Total Cost: ${totalCost}</p>
-        </div>
-      )}
-
-      {/* Other form elements go here */}
-    </form>
-   
-    </div>
-
+                    {/* Other form elements go here */}
+                  </form>
+   </div>
+  </div>
+</div>
+</div>
     )
 }
 

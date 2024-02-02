@@ -24,25 +24,24 @@ import opticaltelephonecompany.otc.services.CallService;
 import opticaltelephonecompany.otc.services.UserService;
 
 @RestController
-@RequestMapping("/calls")
+@RequestMapping("/call_receiver")
 @CrossOrigin("*")
-public class CallController {
+public class CallReceiverController {
     
     private UserService userService;
     private CallService callService;
 
-    public CallController(CallService callService){
+    public CallReceiverController(CallService callService){
         this.callService = callService;
     }
-
-    /* 
+/* 
        //build add calls
     @PostMapping//@RequestBody converts the json into a CallDto java object
-    public ResponseEntity<Call> makeCall(@RequestBody LinkedHashMap<String, String> CallDto callDto){
+    public ResponseEntity<Call> makeCall(@RequestBody CallDto callDto){
         System.out.println("make call data " + callDto.toString());
         Call savedCall = callService.makeCall(callDto);
         return new ResponseEntity<>(savedCall, HttpStatus.CREATED);
-    }*/
+    };*/
     
     @GetMapping("{id}")//url method argument is band with the Path variable if to the callId
     public ResponseEntity<Call> getCallById(@PathVariable("id") long callId){
@@ -78,34 +77,18 @@ public class CallController {
         String userName = body.get("username");
         String startTime = body.get("startTime");
         String endTime = body.get("endTime");
-        String duration = body.get("duration");   
-        String totalTime = body.get("totalTime");
-        String costPerMinute = body.get("costPerMinute");
-        String discountForCalls = body.get("discountForCalls");
-        String signUpDiscount = body.get("signUpDiscount");
-        String vat = body.get("vat");
-        String netCost = body.get("netCost");
-        String grossCost = body.get("grossCost");
-        String totalCost = body.get("totalCost");
-        
+        String duration = body.get("duration");
 
         //CallUser callUser = userService.getUserByUsername(userName);
 
-        CallDto callsDto = new CallDto();
+        CallDto callsDTO = new CallDto();
 
-        callsDto.setStartTime(startTime);
-        callsDto.setEndTime(endTime);
-        callsDto.setDuration(duration);
-        callsDto.setTotalTime(totalTime);
-        callsDto.setCostPerMinute(costPerMinute);
-        callsDto.setDiscountForCalls(discountForCalls);
-        callsDto.setSignUpDiscount(signUpDiscount);
-        callsDto.setVat(vat);
-        callsDto.setNetCost(netCost);
-        callsDto.setGrossCost(grossCost);
-        callsDto.setTotalCost(totalCost);
+        callsDTO.setStartTime(startTime);
+        callsDTO.setEndTime(endTime);
+        callsDTO.setDuration(duration);
+        //callsDTO.setCallUser(callUser);
     
-       Call call =   callService.makeCall(userName, callsDto);
+       Call call =   callService.makeCall(userName, callsDTO);
 
        // applicationUser.setMainTelephone(Long.parseLong(phone));
 
