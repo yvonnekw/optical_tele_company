@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallDto;
+import opticaltelephonecompany.otc.models.CallReceiver;
 import opticaltelephonecompany.otc.models.CallUser;
 import opticaltelephonecompany.otc.services.CallService;
 import opticaltelephonecompany.otc.services.UserService;
@@ -28,11 +29,12 @@ import opticaltelephonecompany.otc.services.UserService;
 @CrossOrigin("*")
 public class CallController {
     
-    private UserService userService;
-    private CallService callService;
+    private final UserService userService;
+    private final CallService callService;
 
-    public CallController(CallService callService){
+    public CallController(CallService callService, UserService userService){
         this.callService = callService;
+        this.userService = userService;
     }
 
     /* 
@@ -74,11 +76,11 @@ public class CallController {
     }
 
     @PostMapping("/make/call")
-    public Call callsController(@RequestBody LinkedHashMap<String, String> body) throws Exception{
+    public Call callsController(@RequestBody LinkedHashMap<String, String> body) throws Exception {
         String userName = body.get("username");
         String startTime = body.get("startTime");
         String endTime = body.get("endTime");
-        String duration = body.get("duration");   
+        String duration = body.get("duration");
         String totalTime = body.get("totalTime");
         String costPerMinute = body.get("costPerMinute");
         String discountForCalls = body.get("discountForCalls");
@@ -87,7 +89,7 @@ public class CallController {
         String netCost = body.get("netCost");
         String grossCost = body.get("grossCost");
         String totalCost = body.get("totalCost");
-        
+        String telephone = body.get("telephone");
 
         //CallUser callUser = userService.getUserByUsername(userName);
 
@@ -104,17 +106,39 @@ public class CallController {
         callsDto.setNetCost(netCost);
         callsDto.setGrossCost(grossCost);
         callsDto.setTotalCost(totalCost);
-    
-       Call call =   callService.makeCall(userName, callsDto);
 
-       // applicationUser.setMainTelephone(Long.parseLong(phone));
+        Call call = callService.makeCall(userName, telephone, callsDto);
 
-       // return callService.makeCall(applicationUser);
+        // applicationUser.setMainTelephone(Long.parseLong(phone));
+
+        // return callService.makeCall(applicationUser);
 
         //return userService.updateUser(applicationUser);
-       // return "the calls";
+        // return "the calls";
 
-       return call;
+        return call;
+    }
+
+    /* 
+    @GetMapping("/callReceivers/${username}")
+    public ResponseEntity<List<Call>> getCallReceiversForUser(@PathVariable String username) {
+        try {
+            List<Call> calls = callService.getCallReceiversForUser(username);
+            return new ResponseEntity<>(calls, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    */
+
+    @GetMapping("/callReceivers/{username}")
+    public ResponseEntity<List<CallReceiver>> getCallReceiversForUser(@PathVariable String username) {
+        try {
+            List<CallReceiver> callReceivers = callService.getCallReceiversForUser(username);
+            return new ResponseEntity<>(callReceivers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

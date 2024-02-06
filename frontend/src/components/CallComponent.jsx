@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { makeCall } from '../services/CallService';
+import { makeCall,  getCallReceiversForUser} from '../services/CallService';
 
 const CallComponent = () => {
 // State for start and end times
@@ -25,6 +25,29 @@ const [taxAmount, setTaxAmount] = useState(0);
         grossCost:'',
         taxAmount:''
    })
+  
+  const [callReceivers, setCallReceivers] = useState([]);
+  const [selectedCallReceiver, setSelectedCallReceiver] = useState('');
+
+  
+   useEffect(() => {
+    // Fetch call receivers for a user
+    const fetchCallReceivers = async () => {
+      try {
+        const response = await getCallReceiversForUser('yodalpinky1'); // Replace with dynamic username
+        setCallReceivers(response.data);
+      } catch (error) {
+        console.error('Error fetching call receivers:', error);
+        // Handle error, show an error message
+      }
+    };
+
+    fetchCallReceivers();
+  }, []); // Empty dependency array to ensure the effect runs only once
+
+  const handleCallReceiverChange = (event) => {
+    setSelectedCallReceiver(event.target.value);
+  };
 
 // Rate for the call cost per second
 const ratePerSecond = 0.01;
@@ -109,6 +132,7 @@ const handleSubmit = async (event) => {
     grossCost: parseFloat(grossCost),
     totalCost: parseFloat(totalCost),
     username: 'yodalpinky1', // Replace with dynamic username from your app
+    telephone: "032456776581"
   };
       try {
         console.log("Request data " + call.startTime);
@@ -168,7 +192,23 @@ const handleSubmit = async (event) => {
             <div className='card col-md-6 offset-md-3 offset-md-3'>
                 <h2 className='text-center'>New call</h2>
                 <div className='card-body'>
-                  <form >
+            <form >
+                   <div className="form-group mb-2">
+                    <label className="form-label">Call Receiver</label>
+                    <select
+                      name="callReceiver"
+                      value={selectedCallReceiver}
+                      className="form-control"
+                      onChange={handleCallReceiverChange}
+                    >
+                      <option value="">Select Call Receiver</option>
+                      {callReceivers.map((receiver) => (
+                        <option key={receiver.callReceiverId} value={receiver.telephone}>
+                          {receiver.firstName} {receiver.lastName} - {receiver.telephone}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                       <div className='form-group mb-2'>
                         <label className='form-label'>Start Time</label>
                         <input

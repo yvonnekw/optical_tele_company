@@ -19,20 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallDto;
+import opticaltelephonecompany.otc.models.CallReceiver;
+import opticaltelephonecompany.otc.models.CallReceiverDto;
 import opticaltelephonecompany.otc.models.CallUser;
+import opticaltelephonecompany.otc.services.CallReceiverService;
 import opticaltelephonecompany.otc.services.CallService;
 import opticaltelephonecompany.otc.services.UserService;
 
 @RestController
-@RequestMapping("/call_receiver")
+@RequestMapping("/callreceiver")
 @CrossOrigin("*")
 public class CallReceiverController {
     
-    private UserService userService;
-    private CallService callService;
+   
+    private CallReceiverService callReceiverService;
 
-    public CallReceiverController(CallService callService){
-        this.callService = callService;
+    public CallReceiverController(CallReceiverService callReceiverService){
+        this.callReceiverService = callReceiverService;
     }
 /* 
        //build add calls
@@ -42,7 +45,7 @@ public class CallReceiverController {
         Call savedCall = callService.makeCall(callDto);
         return new ResponseEntity<>(savedCall, HttpStatus.CREATED);
     };*/
-    
+    /* 
     @GetMapping("{id}")//url method argument is band with the Path variable if to the callId
     public ResponseEntity<Call> getCallById(@PathVariable("id") long callId){
        Call call = callService.getCallById(callId);
@@ -65,39 +68,39 @@ public class CallReceiverController {
     public ResponseEntity<String> deleteCall(@PathVariable("id") Long callId){
        callService.deleteCall(callId);
        return ResponseEntity.ok("Call deleted successfully.");
-    }
+    }*/
 
-    @GetMapping("mycalls")
+    @GetMapping("/callreceiver")
     public String calls(){
-        return "my callls";
+        return "call receiver";
     }
 
-    @PostMapping("/make/call")
-    public Call callsController(@RequestBody LinkedHashMap<String, String> body) throws Exception{
-        String userName = body.get("username");
-        String startTime = body.get("startTime");
-        String endTime = body.get("endTime");
-        String duration = body.get("duration");
+    @PostMapping("/add/reciever")
+    public CallReceiver callReceiver(@RequestBody LinkedHashMap<String, String> body) throws Exception {
+        String firstName = body.get("firstName");
+        String lastName = body.get("lastName");
+        String telephone = body.get("telephone");
+        String destinationCountry = body.get("destinationCountry");
+        String username = body.get("username");
 
         //CallUser callUser = userService.getUserByUsername(userName);
 
-        CallDto callsDTO = new CallDto();
+        CallReceiverDto callReceiverDTO = new CallReceiverDto();
 
-        callsDTO.setStartTime(startTime);
-        callsDTO.setEndTime(endTime);
-        callsDTO.setDuration(duration);
-        //callsDTO.setCallUser(callUser);
-    
-       Call call =   callService.makeCall(userName, callsDTO);
+        callReceiverDTO.setFirstName(firstName);
+        callReceiverDTO.setLastName(lastName);
+        callReceiverDTO.setTelephone(telephone);
+        callReceiverDTO.setDestinationCountry(destinationCountry);
 
-       // applicationUser.setMainTelephone(Long.parseLong(phone));
+        CallReceiver callReceiver = callReceiverService.addCallReceiver(username,callReceiverDTO);
 
-       // return callService.makeCall(applicationUser);
-
-        //return userService.updateUser(applicationUser);
-       // return "the calls";
-
-       return call;
+        return callReceiver;
     }
+
+    
+   
+     
+    
+  
 
 }

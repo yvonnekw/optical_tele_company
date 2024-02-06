@@ -3,6 +3,7 @@ package opticaltelephonecompany.otc.controllers;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import opticaltelephonecompany.otc.models.Call;
+import opticaltelephonecompany.otc.models.CallReceiver;
 import opticaltelephonecompany.otc.models.CallUser;
 import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.services.AuthenticationService;
+import opticaltelephonecompany.otc.services.CallService;
 import opticaltelephonecompany.otc.services.ImageService;
 import opticaltelephonecompany.otc.services.TokenService;
 import opticaltelephonecompany.otc.services.UserService;
@@ -32,11 +36,12 @@ public class UserController {
 
     private final UserService userService;
     private final TokenService tokenService;
-    //private final ImageService imageService;
+    private final CallService callService;
 
-    public UserController(UserService userService, TokenService tokenService){
+    public UserController(UserService userService, TokenService tokenService, CallService callService){
         this.userService = userService;
         this.tokenService = tokenService;
+        this.callService = callService;
     }
 
     @GetMapping("/verify")
@@ -88,8 +93,9 @@ public class UserController {
     }
 
     @GetMapping("users")
-    public String users(){
+    public String users() {
         return "my users";
     }
+
     
 }

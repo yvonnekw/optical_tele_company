@@ -8,13 +8,26 @@ public class CallReceiverDto {
 	private String telephone;
 	private String destinationCountry;
 
-    
+
+    public CallReceiverDto() {
+    }
+
+    public CallReceiverDto(Long callReceiverId, String firstName, String lastName, String telephone,
+            String destinationCountry) {
+        this.callReceiverId = callReceiverId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.telephone = telephone;
+        this.destinationCountry = destinationCountry;
+    }
+
     public CallReceiverDto(String firstName, String lastName, String telephone, String destinationCountry) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephone = telephone;
         this.destinationCountry = destinationCountry;
     }
+
     public Long getCallReceiverId() {
         return callReceiverId;
     }

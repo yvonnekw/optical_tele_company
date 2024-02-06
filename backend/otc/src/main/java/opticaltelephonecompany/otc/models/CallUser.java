@@ -2,14 +2,17 @@ package opticaltelephonecompany.otc.models;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -47,7 +50,6 @@ public class CallUser implements UserDetails {
 		this.mainTelephone = mainTelephone;
 	}
 
-
     public String getFirstName() {
 		return firstName;
 	}
@@ -71,7 +73,23 @@ public class CallUser implements UserDetails {
         joinColumns = {@JoinColumn(name="user_id")},
         inverseJoinColumns = {@JoinColumn(name="role_id")}
     )
-  	private Set<Role> authorities;
+	private Set<Role> authorities;
+	
+	// mention
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_address_junction", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "address_id") })
+
+	private Address address;
+
+	/* 
+	@OneToMany(mappedBy = "callUser", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonBackReference
+	private Set<Call> calls;*/
+	
+	@ManyToMany
+	@JoinTable(name = "call_user_receiver", joinColumns = @JoinColumn(name = "call_user_id"), inverseJoinColumns = @JoinColumn(name = "call_receiver_id"))
+	private Set<CallReceiver> callReceivers;
 
 	private Boolean enabled;
 
@@ -80,23 +98,32 @@ public class CallUser implements UserDetails {
 	@JsonIgnore
 	private Long verification;
 
-	//mention
-	@OneToOne(fetch=FetchType.EAGER)
-    @JoinTable(                                                                                                                     
-        name="user_address_junction",
-        joinColumns = {@JoinColumn(name="user_id")},
-        inverseJoinColumns = {@JoinColumn(name="address_id")}
-    )
-
-  private Address address;
-
-    public CallUser() {
+	public CallUser() {
 		//super();
 		this.authorities = new HashSet<>();
 		//when we first create account user should not be able to use it
 		//till user is verified
 		this.enabled = true;
 	}
+	
+
+	public CallUser(Long userId, String username, String password, String firstName, String lastName,
+			String emailAddress, String mainTelephone, Set<Role> authorities, Address address,
+			Set<CallReceiver> callReceivers, Boolean enabled, Long verification) {
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.emailAddress = emailAddress;
+		this.mainTelephone = mainTelephone;
+		this.authorities = authorities;
+		this.address = address;
+		this.callReceivers = callReceivers;
+		this.enabled = enabled;
+		this.verification = verification;
+	}
+
 	
 	public Boolean getEnabled() {
 		return enabled;
@@ -200,14 +227,6 @@ public class CallUser implements UserDetails {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", emailAddress=" + emailAddress + ", mainTelephone="
-				+ mainTelephone + ", authorities=" + authorities + ", enabled=" + enabled + ", verification="
-				+ verification + ", address=" + address + "]";
-	}
-
 	public Address getAddress() {
 		return address;
 	}
@@ -223,5 +242,25 @@ public class CallUser implements UserDetails {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+
+	public Set<CallReceiver> getCallReceivers() {
+		return callReceivers;
+	}
+
+	public void setCallReceivers(Set<CallReceiver> callReceivers) {
+		this.callReceivers = callReceivers;
+	}
+
+	@Override
+	public String toString() {
+		return "CallUser [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", emailAddress=" + emailAddress + ", mainTelephone="
+				+ mainTelephone + ", authorities=" + authorities + ", address=" + address + ", callReceivers="
+				+ callReceivers + ", enabled=" + enabled + ", verification=" + verification + "]";
+	}
+
+	
+	
     
 }

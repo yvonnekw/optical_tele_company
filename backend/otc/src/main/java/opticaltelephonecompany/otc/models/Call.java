@@ -1,6 +1,10 @@
 package opticaltelephonecompany.otc.models;
 
 
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -31,9 +36,36 @@ public class Call {
     private String grossCost;
     private String totalCost;
 
+/* 
+   @ManyToOne
+   @JoinColumn(name = "call_user_id")
+   private CallUser callUser;
+
+   @ManyToOne
+   @JoinColumn(name = "call_receiver_id")
+   private CallReceiver callReceiver;*/
+
+   @ManyToOne
+    @JoinColumn(name = "call_user_id")
+    @JsonManagedReference
+    private CallUser callUser;
+
+    @ManyToOne
+    @JoinColumn(name = "call_receiver_id")
+    @JsonManagedReference
+    private CallReceiver callReceiver;
+
+    public CallUser getCallUser() {
+        return callUser;
+    }
+
+    public void setCallUser(CallUser callUser) {
+        this.callUser = callUser;
+    }
+
     public Call(Long callId, String startTime, String endTime, String duration, String totalTime, String costPerMinute,
             String discountForCalls, String signUpDiscount, String vat, String netCost, String grossCost,
-            String totalCost, CallUser callUser) {
+            String totalCost, CallUser callUser, CallReceiver callReceiver) {
         this.callId = callId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -47,35 +79,19 @@ public class Call {
         this.grossCost = grossCost;
         this.totalCost = totalCost;
         this.callUser = callUser;
+        this.callReceiver = callReceiver;
     }
 
- 
+    public CallReceiver getCallReceiver() {
+        return callReceiver;
+    }
 
-    @OneToOne(fetch=FetchType.EAGER)
-    @JoinTable(                                                                                                                     
-        name="user_call_junction",
-        joinColumns = {@JoinColumn(name="user_id")},
-        inverseJoinColumns = {@JoinColumn(name="call_id")}
-    )
-    private CallUser callUser;
+    public void setCallReceiver(CallReceiver callReceiver) {
+        this.callReceiver = callReceiver;
+    }
 
     public Long getCallId() {
         return callId;
-    }
-
-    public CallUser getCallUser() {
-        return callUser;
-    }
-
-    public void setCallUser(CallUser callUser) {
-        this.callUser = callUser;
-    }
-
-    public Call(String startTime, String endTime, String duration, CallUser callUser) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.duration = duration;
-        this.callUser = callUser;
     }
 
     public void setCallId(Long callId) {
@@ -149,7 +165,6 @@ public class Call {
         this.vat = vat;
     }
 
-
     public String getNetCost() {
         return netCost;
     }
@@ -179,21 +194,9 @@ public class Call {
         return "Call [callId=" + callId + ", startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration
                 + ", totalTime=" + totalTime + ", costPerMinute=" + costPerMinute + ", discountForCalls="
                 + discountForCalls + ", signUpDiscount=" + signUpDiscount + ", vat=" + vat + ", netCost=" + netCost
-                + ", grossCost=" + grossCost + ", totalCost=" + totalCost + ", callUser=" + callUser + "]";
+                + ", grossCost=" + grossCost + ", totalCost=" + totalCost + ", callUser=" + callUser + ", callReceiver="
+                + callReceiver + "]";
     }
-
-   
-
-
-
-    
-
-   
-
-
-
-
-
-
+ 
 
 }

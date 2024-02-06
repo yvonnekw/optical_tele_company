@@ -1,5 +1,7 @@
 package opticaltelephonecompany.otc.models;
 
+import java.util.Set;
+
 public class CallDto {
 
     private String startTime;
@@ -13,25 +15,17 @@ public class CallDto {
     private String netCost;
     private String grossCost;
     private String totalCost;
-    private CallUser callUser;
+    //private CallUser callUser;
+    private CallReceiver callReceiver;
+    private Set<CallUser> callUsers;
 
-    public CallDto(String startTime, String endTime, String duration, String totalTime, String costPerMinute,
-            String discountForCalls, String signUpDiscount, String vat, String netCost, String grossCost,
-            String totalCost, CallUser callUser) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.duration = duration;
-        this.totalTime = totalTime;
-        this.costPerMinute = costPerMinute;
-        this.discountForCalls = discountForCalls;
-        this.signUpDiscount = signUpDiscount;
-        this.vat = vat;
-        this.netCost = netCost;
-        this.grossCost = grossCost;
-        this.totalCost = totalCost;
-        this.callUser = callUser;
+    public Set<CallUser> getCallUsers() {
+        return callUsers;
     }
- 
+
+    public void setCallUsers(Set<CallUser> callUsers) {
+        this.callUsers = callUsers;
+    }
 
     public String getTotalTime() {
         return totalTime;
@@ -73,36 +67,29 @@ public class CallDto {
         this.vat = vat;
     }
 
-  
     public String getNetCost() {
         return netCost;
     }
-
 
     public void setNetCost(String netCost) {
         this.netCost = netCost;
     }
 
-
     public String getGrossCost() {
         return grossCost;
     }
-
 
     public void setGrossCost(String grossCost) {
         this.grossCost = grossCost;
     }
 
-
     public String getTotalCost() {
         return totalCost;
     }
 
-
     public void setTotalCost(String totalCost) {
         this.totalCost = totalCost;
     }
-
 
     public CallDto() {
     }
@@ -110,12 +97,7 @@ public class CallDto {
     public String getStartTime() {
         return startTime;
     }
-    public CallUser getCallUser() {
-        return callUser;
-    }
-    public void setCallUser(CallUser callUser) {
-        this.callUser = callUser;
-    }
+
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
@@ -128,16 +110,44 @@ public class CallDto {
     public String getDuration() {
         return duration;
     }
+ 
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public CallReceiver getCallReceiver() {
+        return callReceiver;
+    }
+
+    public void setCallReceiver(CallReceiver callReceiver) {
+        this.callReceiver = callReceiver;
+    }
+
     @Override
     public String toString() {
         return "CallDto [startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration + ", totalTime="
                 + totalTime + ", costPerMinute=" + costPerMinute + ", discountForCalls=" + discountForCalls
                 + ", signUpDiscount=" + signUpDiscount + ", vat=" + vat + ", netCost=" + netCost + ", grossCost="
-                + grossCost + ", totalCost=" + totalCost + ", callUser=" + callUser + "]";
-    }
-    public void setDuration(String duration) {
-        this.duration = duration;
+                + grossCost + ", totalCost=" + totalCost + ", callReceiver=" + callReceiver + ", callUsers=" + callUsers
+                + "]";
     }
 
+    public CallDto(String startTime, String endTime, String duration, String totalTime, String costPerMinute,
+            String discountForCalls, String signUpDiscount, String vat, String netCost, String grossCost,
+            String totalCost, CallReceiver callReceiver, Set<CallUser> callUsers) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.duration = duration;
+        this.totalTime = totalTime;
+        this.costPerMinute = costPerMinute;
+        this.discountForCalls = discountForCalls;
+        this.signUpDiscount = signUpDiscount;
+        this.vat = vat;
+        this.netCost = netCost;
+        this.grossCost = grossCost;
+        this.totalCost = totalCost;
+        this.callReceiver = callReceiver;
+        this.callUsers = callUsers;
+    }
    
 }
