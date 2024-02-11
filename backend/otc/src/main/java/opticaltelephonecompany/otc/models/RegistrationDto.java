@@ -13,7 +13,7 @@ public class RegistrationDto {
     private String emailAddress;
     private String username;
     private String password;
-	private String mainTelephone;
+	private String telephone;
     private Set<Role> authorities;
 
     public long getUserId() {
@@ -52,14 +52,6 @@ public class RegistrationDto {
         this.emailAddress = emailAdress;
     }
 
-    public String getMainTelephone() {
-        return mainTelephone;
-    }
-
-    public void setMainTelephone(String mainTelephone) {
-        this.mainTelephone = mainTelephone;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -87,13 +79,15 @@ public class RegistrationDto {
 		this.password = password;
 	}
 
-    public RegistrationDto(String username, String password, String firstName, String lastName, String emailAddress) {
+    public RegistrationDto(String username, String password, String firstName, String lastName, String emailAddress, 
+            String telephone) {
         super();
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
+        this.telephone = telephone;
     }
 /* 
     public RegistrationDTO(String firstName, String lastName) {
@@ -117,10 +111,21 @@ public class RegistrationDto {
         this.password = password;
     }
 
+   
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
     @Override
     public String toString() {
         return "RegistrationDto [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
                 + ", emailAddress=" + emailAddress + ", username=" + username + ", password=" + password
-                + ", mainTelephone=" + mainTelephone + ", authorities=" + authorities + "]";
+                + ", telephone=" + telephone + ", authorities=" + authorities + "]";
     }
+
+    
 }

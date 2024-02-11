@@ -29,7 +29,7 @@ import jakarta.persistence.Table;
 //@Document(indexName ="user1")
 @Entity
 @Table(name="users")
-public class CallUser implements UserDetails {
+public class Users implements UserDetails {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -40,17 +40,17 @@ public class CallUser implements UserDetails {
 	private String firstName;
     private String lastName;
 	private String emailAddress;
-	private String mainTelephone;
+	private String telephone;
 
-	public String getMainTelephone() {
-		return mainTelephone;
+    public String getTelephone() {
+		return telephone;
 	}
 
-	public void setMainTelephone(String mainTelephone) {
-		this.mainTelephone = mainTelephone;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
-    public String getFirstName() {
+	public String getFirstName() {
 		return firstName;
 	}
 
@@ -82,15 +82,6 @@ public class CallUser implements UserDetails {
 
 	private Address address;
 
-	/* 
-	@OneToMany(mappedBy = "callUser", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonBackReference
-	private Set<Call> calls;*/
-	
-	@ManyToMany
-	@JoinTable(name = "call_user_receiver", joinColumns = @JoinColumn(name = "call_user_id"), inverseJoinColumns = @JoinColumn(name = "call_receiver_id"))
-	private Set<CallReceiver> callReceivers;
-
 	private Boolean enabled;
 
 	@Column(nullable = true)
@@ -98,32 +89,13 @@ public class CallUser implements UserDetails {
 	@JsonIgnore
 	private Long verification;
 
-	public CallUser() {
+	public Users() {
 		//super();
 		this.authorities = new HashSet<>();
 		//when we first create account user should not be able to use it
 		//till user is verified
 		this.enabled = true;
 	}
-	
-
-	public CallUser(Long userId, String username, String password, String firstName, String lastName,
-			String emailAddress, String mainTelephone, Set<Role> authorities, Address address,
-			Set<CallReceiver> callReceivers, Boolean enabled, Long verification) {
-		this.userId = userId;
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.emailAddress = emailAddress;
-		this.mainTelephone = mainTelephone;
-		this.authorities = authorities;
-		this.address = address;
-		this.callReceivers = callReceivers;
-		this.enabled = enabled;
-		this.verification = verification;
-	}
-
 	
 	public Boolean getEnabled() {
 		return enabled;
@@ -153,30 +125,29 @@ public class CallUser implements UserDetails {
 		this.emailAddress = emailAddress;
 	}
 
-	public CallUser(String username, String password, String emailAddress, String mainTelephone) {
-		super();
-		//this.userId = userId;
-		this.username = username;
-		this.password = password;
-		//this.authorities = authorities;
-		this.emailAddress = emailAddress;
-	}
 
-	public CallUser(String username, String password, Set<Role> authorities, String emailAddress, String mainTelephone) {
-		super();
-		//this.userId = userId;
-		this.username = username;
-		this.password = password;
-		this.authorities = authorities;
-		this.emailAddress = emailAddress;
-	}
-
-    public CallUser(String username, String password, Set<Role> authoritie) {
+	public Users(String username, String password, Set<Role> authoritie, String emailAddress, String telephone) {
 		this.username = username;
 		this.password = password;
 		this.authorities = authoritie;
+		this.telephone = telephone;
 	}
 
+	public Users(Long userId, String username, String password, String firstName, String lastName, String emailAddress,
+			String telephone, Set<Role> authorities, Address address, Boolean enabled, Long verification) {
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.emailAddress = emailAddress;
+		this.telephone = telephone;
+		this.authorities = authorities;
+		this.address = address;
+		this.enabled = enabled;
+		this.verification = verification;
+	}
+	
 	public Long getUserId() {
 		return this.userId;
 	}
@@ -208,7 +179,6 @@ public class CallUser implements UserDetails {
 	/* If you want account locking capabilities create variables and ways to set them for the methods below */
 	@Override
 	public boolean isAccountNonExpired() {
-		
 		return true;
 	}
 
@@ -244,23 +214,14 @@ public class CallUser implements UserDetails {
 	}
 
 
-	public Set<CallReceiver> getCallReceivers() {
-		return callReceivers;
-	}
-
-	public void setCallReceivers(Set<CallReceiver> callReceivers) {
-		this.callReceivers = callReceivers;
-	}
-
 	@Override
 	public String toString() {
-		return "CallUser [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", emailAddress=" + emailAddress + ", mainTelephone="
-				+ mainTelephone + ", authorities=" + authorities + ", address=" + address + ", callReceivers="
-				+ callReceivers + ", enabled=" + enabled + ", verification=" + verification + "]";
+		return "Users [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", emailAddress=" + emailAddress + ", telephone=" + telephone
+				+ ", authorities=" + authorities + ", address=" + address + ", enabled=" + enabled + ", verification="
+				+ verification + "]";
 	}
 
-	
-	
-    
+
+   
 }

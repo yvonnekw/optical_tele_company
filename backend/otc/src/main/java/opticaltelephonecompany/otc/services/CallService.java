@@ -17,7 +17,7 @@ import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallDto;
 import opticaltelephonecompany.otc.models.CallReceiver;
 import opticaltelephonecompany.otc.models.CallReceiverDto;
-import opticaltelephonecompany.otc.models.CallUser;
+import opticaltelephonecompany.otc.models.Users;
 import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.models.Role;
 import opticaltelephonecompany.otc.repository.CallReceiverRepository;
@@ -61,7 +61,7 @@ public class CallService {
     }
 
     public void deleteCall(Long callId) {
-        CallUser user = userRepository.findById(callId).orElseThrow(
+        Users user = userRepository.findById(callId).orElseThrow(
             () -> new ResourceNotFoundException("User not found with the given Id : " + callId)
         );
 
@@ -76,9 +76,9 @@ public class CallService {
 
     
     public Call makeCall(String username, String telephone, CallDto callsDTO) throws Exception {
-       
+
         try {
-            CallUser user = userRepository.findByUsername(username)
+            Users user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UserDoesNotExistException());
 
             CallReceiver callReceiver = callReceiverRepository.findByTelephone(telephone)
@@ -96,8 +96,8 @@ public class CallService {
             call.setNetCost(callsDTO.getNetCost());
             call.setGrossCost(callsDTO.getGrossCost());
             call.setTotalCost(callsDTO.getTotalCost());
-            call.setCallUser(user);
-            call.setCallReceiver(callReceiver);
+            call.setUser(user);
+            call.setReceiver(callReceiver);
 
             // Uncomment the following line if you want to add CallUsers to the set
             // callUsers.add(UserRepository.findByCallUser(callUsers).get());
@@ -113,7 +113,7 @@ public class CallService {
             throw new CallCreationException();
         }
         /* 
-       
+        
         CallUser user = userRepository.findByUsername(username).orElseThrow(UserDoesNotExistException::new);
         System.out.println("user name " + username);
         CallReceiver callReceiver = callReceiverRepository.findByTelephone(
@@ -135,19 +135,19 @@ public class CallService {
                 call.setTotalCost(callsDTO.getTotalCost());
                 call.setCallUser(user);
                 call.setCallReceiver(callReceiver);
-
-
+        
+        
                  Set<CallUser> callUsers = callsDTO.getCallUsers();
                // callUsers.add(UserRepository.findByCallUser(callUsers).get());
                 callsDTO.setCallUsers(callUsers);
-
+        
                 System.out.println("call details " + call);
                 System.out.println("user details  " + user);
         
                 return callRepository.save(call);
-       // } catch (Exception e) {
+        // } catch (Exception e) {
           //  e.getStackTrace();
-       // }
+        // }
             } catch (UserDoesNotExistException | CallReceiverNotFoundException e) {
              throw e; // Rethrow the exception to be handled at a higher level
          } catch (Exception e) {
@@ -156,22 +156,37 @@ public class CallService {
          }
             
          */
-    
-       // return null;
+
+        // return null;
     }
+
+    /* 
+    public List<Call> getCallsForReceiver(String username) {
+        return callRepository.findByReceiverUsername(username);
+    }*/
+    /* 
+    public List<CallReceiver> getCallReceiversForUser(String username) {
+        return callReceiverRepository.findByUsername(username);
+    }*/
 /* 
     public List<Call> getAllCallsForUser(CallUser callUser) {
         return callRepository.findByCallUser(callUser);
     }*/
 
     /* 
+    public List<Call> getCallReceiversForUser(String username) {
+         return callRepository.findAllCallReceiverByUserName(username);
+        //return null;
+    }*/
+
+    /* 
 public List<Call> getCallReceiversForUser(String username) {
     return callRepository.findByCallUserUsername(username);
 }*/
-    
+  /*  
 public List<CallReceiver> getCallReceiversForUser(String username) {
     return callRepository.findByCallUsersUsername(username);
-}
+}*/
 /* 
     public List<CallReceiver> getCallReceiversForUser(String username) {
         // Assuming you have a method in your repository to fetch call receivers by

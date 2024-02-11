@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallDto;
 import opticaltelephonecompany.otc.models.CallReceiver;
-import opticaltelephonecompany.otc.models.CallUser;
+import opticaltelephonecompany.otc.models.Users;
 import opticaltelephonecompany.otc.services.CallService;
 import opticaltelephonecompany.otc.services.UserService;
 
@@ -119,6 +119,28 @@ public class CallController {
         return call;
     }
 
+/* 
+    @GetMapping("/receivers/{username}")
+    public ResponseEntity<List<Call>> getCallReceiversForUser(@PathVariable String username) {
+        try {
+            List<Call> callReceivers = callService.getCallReceiversForUser(username);
+            return new ResponseEntity<>(callReceivers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }*/
+
+    /* 
+    @GetMapping("/receivers/{username}")
+    public ResponseEntity<List<CallReceiver>> getCallReceiversForUser(@PathVariable String username) {
+        try {
+            List<CallReceiver> callReceivers = callService.getCallReceiversForUser(username);
+            return new ResponseEntity<>(callReceivers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+*/
     /* 
     @GetMapping("/callReceivers/${username}")
     public ResponseEntity<List<Call>> getCallReceiversForUser(@PathVariable String username) {
@@ -128,9 +150,9 @@ public class CallController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-    */
-
+    }*/
+    
+/* 
     @GetMapping("/callReceivers/{username}")
     public ResponseEntity<List<CallReceiver>> getCallReceiversForUser(@PathVariable String username) {
         try {
@@ -140,5 +162,5 @@ public class CallController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+*/
 }

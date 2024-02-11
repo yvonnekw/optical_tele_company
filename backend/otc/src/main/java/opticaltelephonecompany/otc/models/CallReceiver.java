@@ -27,41 +27,26 @@ public class CallReceiver {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long callReceiverId;
-    private String firstName;
-    private String lastName;
-	private String telephone;
-    private String destinationCountry;
-    
-    /* 
-    @OneToMany(mappedBy = "callReceiver", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Call> receivedCalls = new ArrayList<>();*/
-    
-    /* 
-    @OneToMany(mappedBy = "callReceiver", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
-    private List<Call> receivedCalls;
+    private String telephone;
     
     @ManyToOne
-    @JoinColumn(name = "call_user_id")
-    @JsonBackReference
-    private CallUser callUser;*/
-    
-    @ManyToMany(mappedBy = "callReceivers")
-    private Set<CallUser> callUsers;
+    @JoinColumn(name = "user_id")
+    private Users user;
+
+    public CallReceiver(Long callReceiverId, String telephone, Users user) {
+        this.callReceiverId = callReceiverId;
+        this.telephone = telephone;
+        this.user = user;
+    }
+
 
 
     public CallReceiver() {
     }
-    
 
-    public CallReceiver(Long callReceiverId, String firstName, String lastName, String telephone,
-            String destinationCountry, Set<CallUser> callUsers) {
+    public CallReceiver(Long callReceiverId, String telephone) {
         this.callReceiverId = callReceiverId;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.telephone = telephone;
-        this.destinationCountry = destinationCountry;
-        this.callUsers = callUsers;
     }
 
     public Long getCallReceiverId() {
@@ -70,56 +55,27 @@ public class CallReceiver {
     public void setCallReceiverId(Long callReceiverId) {
         this.callReceiverId = callReceiverId;
     }
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    public String getLastName() {
-        return lastName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
     public String getTelephone() {
         return telephone;
     }
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
-    public String getDestinationCountry() {
-        return destinationCountry;
-    }
-    public void setDestinationCountry(String destinationCountry) {
-        this.destinationCountry = destinationCountry;
-    }
-  
-    public CallReceiver(Long callReceiverId, String firstName, String lastName, String telephone,
-            String destinationCountry) {
-        this.callReceiverId = callReceiverId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.telephone = telephone;
-        this.destinationCountry = destinationCountry;
+
+    public Users getUser() {
+        return user;
     }
 
-    public Set<CallUser> getCallUsers() {
-        return callUsers;
-    }
-
-
-    public void setCallUsers(Set<CallUser> callUsers) {
-        this.callUsers = callUsers;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
-        return "CallReceiver [callReceiverId=" + callReceiverId + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", telephone=" + telephone + ", destinationCountry=" + destinationCountry + ", callUsers=" + callUsers
-                + "]";
+        return "CallReceiver [callReceiverId=" + callReceiverId + ", telephone=" + telephone + ", user=" + user + "]";
     }
-
+  
+   
 
     
 

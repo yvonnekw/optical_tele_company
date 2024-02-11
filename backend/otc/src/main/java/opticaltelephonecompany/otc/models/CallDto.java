@@ -17,13 +17,13 @@ public class CallDto {
     private String totalCost;
     //private CallUser callUser;
     private CallReceiver callReceiver;
-    private Set<CallUser> callUsers;
+    private Set<Users> callUsers;
 
-    public Set<CallUser> getCallUsers() {
+    public Set<Users> getCallUsers() {
         return callUsers;
     }
 
-    public void setCallUsers(Set<CallUser> callUsers) {
+    public void setCallUsers(Set<Users> callUsers) {
         this.callUsers = callUsers;
     }
 
@@ -134,7 +134,7 @@ public class CallDto {
 
     public CallDto(String startTime, String endTime, String duration, String totalTime, String costPerMinute,
             String discountForCalls, String signUpDiscount, String vat, String netCost, String grossCost,
-            String totalCost, CallReceiver callReceiver, Set<CallUser> callUsers) {
+            String totalCost, CallReceiver callReceiver, Set<Users> callUsers) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.duration = duration;

@@ -36,6 +36,14 @@ public class Call {
     private String grossCost;
     private String totalCost;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_id")
+    private CallReceiver receiver;
+
 /* 
    @ManyToOne
    @JoinColumn(name = "call_user_id")
@@ -45,27 +53,32 @@ public class Call {
    @JoinColumn(name = "call_receiver_id")
    private CallReceiver callReceiver;*/
 
+   /* 
    @ManyToOne
     @JoinColumn(name = "call_user_id")
     @JsonManagedReference
-    private CallUser callUser;
+    private CallUser callUser;*/
 
+    /* 
     @ManyToOne
     @JoinColumn(name = "call_receiver_id")
     @JsonManagedReference
-    private CallReceiver callReceiver;
+    private CallReceiver callReceiver;*/
 
-    public CallUser getCallUser() {
-        return callUser;
+
+/* 
+    public CallReceiver getCallReceiver() {
+        return callReceiver;
     }
 
-    public void setCallUser(CallUser callUser) {
-        this.callUser = callUser;
+    public void setCallReceiver(CallReceiver callReceiver) {
+        this.callReceiver = callReceiver;
     }
+    */
 
     public Call(Long callId, String startTime, String endTime, String duration, String totalTime, String costPerMinute,
             String discountForCalls, String signUpDiscount, String vat, String netCost, String grossCost,
-            String totalCost, CallUser callUser, CallReceiver callReceiver) {
+            String totalCost, Users user, CallReceiver receiver) {
         this.callId = callId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -78,17 +91,10 @@ public class Call {
         this.netCost = netCost;
         this.grossCost = grossCost;
         this.totalCost = totalCost;
-        this.callUser = callUser;
-        this.callReceiver = callReceiver;
+        this.user = user;
+        this.receiver = receiver;
     }
 
-    public CallReceiver getCallReceiver() {
-        return callReceiver;
-    }
-
-    public void setCallReceiver(CallReceiver callReceiver) {
-        this.callReceiver = callReceiver;
-    }
 
     public Long getCallId() {
         return callId;
@@ -189,14 +195,31 @@ public class Call {
         this.totalCost = totalCost;
     }
 
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+
     @Override
     public String toString() {
         return "Call [callId=" + callId + ", startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration
                 + ", totalTime=" + totalTime + ", costPerMinute=" + costPerMinute + ", discountForCalls="
                 + discountForCalls + ", signUpDiscount=" + signUpDiscount + ", vat=" + vat + ", netCost=" + netCost
-                + ", grossCost=" + grossCost + ", totalCost=" + totalCost + ", callUser=" + callUser + ", callReceiver="
-                + callReceiver + "]";
+                + ", grossCost=" + grossCost + ", totalCost=" + totalCost + ", user=" + user + "]";
     }
- 
+
+
+    public CallReceiver getReceiver() {
+        return receiver;
+    }
+
+
+    public void setReceiver(CallReceiver receiver) {
+        this.receiver = receiver;
+    }
 
 }

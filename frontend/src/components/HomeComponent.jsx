@@ -6,14 +6,14 @@ const HomeComponent = () => {
 
 
   const navigator = useNavigate();
-
+/*
   function login(){
       navigator('/login')
   }
 
   function register(){
     navigator('/register')
-}
+}*/
   
   return (
     <div>

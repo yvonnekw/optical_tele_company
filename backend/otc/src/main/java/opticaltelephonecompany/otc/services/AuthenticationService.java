@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import opticaltelephonecompany.otc.models.Address;
-import opticaltelephonecompany.otc.models.CallUser;
+import opticaltelephonecompany.otc.models.Users;
 import opticaltelephonecompany.otc.models.LoginResponseDto;
 import opticaltelephonecompany.otc.models.Role;
 import opticaltelephonecompany.otc.repository.RoleRepository;
@@ -38,7 +38,7 @@ public class AuthenticationService {
     @Autowired
     private TokenService tokenService;
 
-    public CallUser registerUser(String username, String password, String emailAddress, String telephone){
+    public Users registerUser(String username, String password, String emailAddress, String telephone){
 
         String encodedPassword = passwordEncoder.encode(password);
         Role userRole = roleRepository.findByAuthority("USER").get();
@@ -50,7 +50,7 @@ public class AuthenticationService {
         authorities.add(userRole);
          //return userRepository.save(new ApplicationUser(username, encodedPassword, authorities, firstName));
 
-        return userRepository.save(new CallUser(username, encodedPassword, authorities, emailAddress, telephone));
+        return userRepository.save(new Users(username, encodedPassword, authorities, emailAddress, telephone));
     }
 
     public LoginResponseDto loginUser(String username, String password){

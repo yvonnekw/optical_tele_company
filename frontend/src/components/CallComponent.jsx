@@ -1,7 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { makeCall,  getCallReceiversForUser} from '../services/CallService';
+//import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import { makeCall,  getCallReceiversForUser, checkPhoneNumberExists} from '../services/CallService';
+import { loginUser, isLoggedIn, getUsername } from '../services/UserService'; // Import loginUser and isLoggedIn from UserService
+import CallReceiverSelector from './common/CallReceiverSelector';
 
 const CallComponent = () => {
 // State for start and end times
@@ -14,7 +17,28 @@ const [totalCost, setTotalCost] = useState(0);
 const [netCost, setNetCost] = useState(0);
 const [grossCost, setGrossCost] = useState(0);
 const [taxAmount, setTaxAmount] = useState(0);
+const [phoneNumber, setPhoneNumber] = useState('');
+const [callReceivers, setCallReceivers] = useState([]);
+const [phoneNumbers, setPhoneNumbers] = useState([]);
+const [selectedCallReceiver, setSelectedCallReceiver] = useState('');
+const [selectedPhoneNumber, setSelectedPhoneNumber] = useState('');
+const [username, setUsername] = useState('');
+const [password, setPassword] = useState('');
+const [errorMessage, setErrorMessage]= useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   
+
+  const [newCall, setNewCall] = useState({
+        startTime:'',
+        endTime:'',
+        callCost:'',
+        discount: '',
+        totalCost:'',
+        netCost:'',
+        grossCost:'',
+        taxAmount:''
+  })
+
    const [errors, setErrors] = useState({
         startTime:'',
         endTime:'',
@@ -26,31 +50,74 @@ const [taxAmount, setTaxAmount] = useState(0);
         taxAmount:''
    })
   
-  const [callReceivers, setCallReceivers] = useState([]);
-  const [selectedCallReceiver, setSelectedCallReceiver] = useState('');
-
-  
-   useEffect(() => {
-    // Fetch call receivers for a user
-    const fetchCallReceivers = async () => {
-      try {
-        const response = await getCallReceiversForUser('yodalpinky1'); // Replace with dynamic username
-        setCallReceivers(response.data);
-      } catch (error) {
-        console.error('Error fetching call receivers:', error);
-        // Handle error, show an error message
+  const handleCallInputChange = (e) => {
+    const name = e.target.name
+    let value = e.target.value
+    if (name === "startTime") {
+      if (!isNaN(value)) {
+        value.parseTime(value)
+      } else {
+        value = ""
       }
-    };
+    }
+    setNewCall({ ...newCall, [name]: value })
+  }
+  
+/*
+  // Fetch call receivers for a user
+  useEffect(() => {
 
-    fetchCallReceivers();
-  }, []); // Empty dependency array to ensure the effect runs only once
+     if (isLoggedIn()) {
+      const fetchCallReceivers = async () => {
+        try {
+          const response = await getCallReceiversForUser(username);
+          setSelectedCallReceiver(response.data); // Update to select appropriate receiver data
+        } catch (error) {
+          console.error('Error fetching call receivers:', error);
+        }
+      };
+    
+  
+        fetchCallReceivers();
+      }
+    },
+    []);
+  
+  */
+  
+/*
+ // Fetch phone numbers based on selected call receiver
+  useEffect(() => {
+      if (isLoggedIn() && selectedCallReceiver) {
+        const fetchPhoneNumbers = async () => {
+          try {
+            if (selectedCallReceiver) {
+              const response = await getDistinctPhoneNumbersForUser(selectedCallReceiver.username);
+              setPhoneNumbers(response.data);
+            }
+          } catch (error) {
+            console.error('Error fetching phone numbers:', error);
+          }
+        };
+  
+      fetchPhoneNumbers();
+    }
+  }, [selectedCallReceiver]);
 
-  const handleCallReceiverChange = (event) => {
-    setSelectedCallReceiver(event.target.value);
+* /
+  
+const handleCallReceiverChange = (selectedOption) => {
+    setSelectedCallReceiver(selectedOption);
   };
 
+  const handlePhoneNumberChange = (selectedOption) => {
+    setSelectedPhoneNumber(selectedOption);
+  };
+
+  */
+
 // Rate for the call cost per second
-const ratePerSecond = 0.01;
+const ratePerSecond = 0.001;
 
 // Tax rate
 const taxRate = 0.20;
@@ -69,6 +136,7 @@ const handleEndTimeChange = (event) => {
 const handleDiscountChange = (event) => {
   setDiscount(event.target.value);
 };
+  
 
 // Function to calculate total time, call cost, and total cost
 const calculateTotalTime = () => {
@@ -116,42 +184,110 @@ const calculateTotalTime = () => {
 // Function to handle form submission
 const handleSubmit = async (event) => {
   event.preventDefault();
-  if(validateForm()){
-  calculateTotalTime();
+/*
+   if (isLoggedIn()) {
+    // If user is logged in, set the username
+    const loggedInUsername = await getUsername();
+    setUsername(loggedInUsername);
+    console.log("login username a " + loggedInUsername);
+  } else {
+    // Log in the user
+    const user = { username, password };
+    try {
+      const response = await loginUser(user);
+      // Upon successful login, store session information
+      // For example, you can use localStorage:
+      localStorage.setItem('user', JSON.stringify(response.data));
+      // Set the username after successful login
+      const loggedInUsername = await getUsername();
+      setUsername(loggedInUsername);
+      console.log("login username b " + loggedInUsername);
+      // Now, the user is logged in, you can make the call
+    } catch (error) {
+      console.error('Error logging in:', error);
+      // Handle login error
+    }
+   }
+  */
+/*
+  if (isLoggedIn()) {
+    // If user is logged in, set the username
+    setUsername(getUsername());
+    console.log("login username a "+ username)
+  } else {
+    // Log in the user
+    const user = { username, password };
+    try {
+      const response = await loginUser(user);
+      // Upon successful login, store session information
+      // For example, you can use localStorage:
+      localStorage.setItem('user', JSON.stringify(response.data));
+      // Set the username after successful login
+      setUsername(getUsername());
+        console.log("login username b "+ username)
+      // Now, the user is logged in, you can make the call
+    } catch (error) {
+      console.error('Error logging in:', error);
+      // Handle login error
+    }
+  }*/
 
   
-  const call = {
-    startTime: startTime,
-    endTime: endTime,
-    duration: totalTime,
-    costPerMinute: ratePerSecond * 60, // Assuming cost is per minute
-    discountForCalls: parseFloat(discount),
-    signUpDiscount: 0, // Placeholder, modify as needed
-    vat: taxRate,
-    netCost: parseFloat(netCost),
-    grossCost: parseFloat(grossCost),
-    totalCost: parseFloat(totalCost),
-    username: 'yodalpinky1', // Replace with dynamic username from your app
-    telephone: "032456776581"
-  };
+
+  if (isLoggedIn()) {
+  } else {
+      
+        // Log in the user
+      // const user = { username: 'example', password: 'password' }; // Replace with actual login credentials
+        const user = { username, password };
       try {
-        console.log("Request data " + call.startTime);
-          //const call = {startTime, endTime}
-          const response = await makeCall(call);
-          console.log(response.data);
-          //console.log(call)
-
-          //makeCall(call).then((response) =>{
-            // console.log(response.data)
-        //
-    // })
-
+          const response = await loginUser(user);
+          // Upon successful login, store session information
+          // For example, you can use localStorage:
+          localStorage.setItem('user', JSON.stringify(response.data));
+          // Now, the user is logged in, you can make the call
         } catch (error) {
-          console.error('Error making the call:', error);
-          // Handle error, show an error message
+          console.error('Error logging in:', error);
+          // Handle login error
         }
+    }
+      
+    if(validateForm()){
+      calculateTotalTime();
+
+      const call = {
+        startTime: startTime,
+        endTime: endTime,
+        duration: totalTime,
+        costPerMinute: ratePerSecond * 60, // Assuming cost is per minute
+        discountForCalls: parseFloat(discount),
+        signUpDiscount: 0, // Placeholder, modify as needed
+        vat: taxRate,
+        netCost: parseFloat(netCost),
+        grossCost: parseFloat(grossCost),
+        totalCost: parseFloat(totalCost),
+        username: 'yodalpinky1', // Replace with dynamic username from your app
+        telephone: "032456776580"
       };
-};
+          try {
+            console.log("Request data " + call.startTime);
+              //const call = {startTime, endTime}
+            const isValid = await checkPhoneNumberExists("yodalpinky1",phoneNumber);
+              const response = await makeCall(call);
+              console.log(response.data);
+              //console.log(call)
+
+              //makeCall(call).then((response) =>{
+                // console.log(response.data)
+            //
+        // })
+
+            } catch (error) {
+              console.error('Error making the call:', error);
+              // Handle error, show an error message
+            }
+          };
+    };
   
    function validateForm(){
         let valid = true;
@@ -192,23 +328,43 @@ const handleSubmit = async (event) => {
             <div className='card col-md-6 offset-md-3 offset-md-3'>
                 <h2 className='text-center'>New call</h2>
                 <div className='card-body'>
-            <form >
+                  <form >
                    <div className="form-group mb-2">
-                    <label className="form-label">Call Receiver</label>
-                    <select
-                      name="callReceiver"
-                      value={selectedCallReceiver}
-                      className="form-control"
-                      onChange={handleCallReceiverChange}
-                    >
-                      <option value="">Select Call Receiver</option>
-                      {callReceivers.map((receiver) => (
-                        <option key={receiver.callReceiverId} value={receiver.telephone}>
-                          {receiver.firstName} {receiver.lastName} - {receiver.telephone}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                <label className="form-label">Call Receiver phone number</label>
+                <div>
+
+                  <CallReceiverSelector handlePhoneNumberInputChange={handleCallInputChange} newCall={newCall} />
+
+                 { /*
+                  <CallReceiverSelector
+                    
+
+                   handleCallInputChange={handleCallInputChange}
+                    newCall={newCall}
+                  
+                  />*/}
+                </div>
+                {/*
+                      <Select
+                        id="callReceiver"
+                        value={selectedCallReceiver}
+                        onChange={handleCallReceiverChange}
+                        options={callReceivers.map(receiver => ({
+                          value: receiver,
+                          label: `${receiver.firstName} ${receiver.lastName}`
+                        }))}
+                      />
+                    </div>
+                    <div className="form-group mb-2">
+                      <label className="form-label">Phone Number</label>
+                      <Select
+                        id="phoneNumber"
+                        value={selectedPhoneNumber}
+                        onChange={handlePhoneNumberChange}
+                        options={phoneNumbers.map(number => ({ value: number, label: number }))}
+                />
+                      */}
+                    </div>
                       <div className='form-group mb-2'>
                         <label className='form-label'>Start Time</label>
                         <input
@@ -262,10 +418,10 @@ const handleSubmit = async (event) => {
 
                     {/* Other form elements go here */}
                   </form>
-   </div>
-  </div>
-</div>
-</div>
+              </div>
+              </div>
+            </div>
+            </div>
     )
 }
 

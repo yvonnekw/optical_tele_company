@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import opticaltelephonecompany.otc.exception.EmailAlreadyTakenException;
 import opticaltelephonecompany.otc.exception.UserDoesNotExistException;
-import opticaltelephonecompany.otc.models.CallUser;
+import opticaltelephonecompany.otc.models.Users;
 import opticaltelephonecompany.otc.models.LoginResponseDto;
 import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.services.AuthenticationService;
@@ -64,7 +65,7 @@ public class AuthenticationController {
     
 
     @PostMapping("/register")
-    public CallUser registerUser(@RequestBody RegistrationDto body){
+    public Users registerUser(@RequestBody RegistrationDto body){
         return userService.registerUser(body);
     }
 
@@ -100,14 +101,14 @@ public class AuthenticationController {
     }
 
     @PutMapping("/update/telephone")
-    public CallUser updateTelephoneNumber(@RequestBody LinkedHashMap<String, String> body){
+    public Users updateTelephoneNumber(@RequestBody LinkedHashMap<String, String> body){
 
         String userName = body.get("username");
         String phone = body.get("mainTelephone");
     
-        CallUser applicationUser = userService.getUserByUsername(userName);
+        Users applicationUser = userService.getUserByUsername(userName);
 
-        applicationUser.setMainTelephone((phone));
+        applicationUser.setTelephone((phone));
 
         return userService.updateUser(applicationUser);
     }
@@ -122,13 +123,24 @@ public class AuthenticationController {
     }
 
     @PutMapping("/update/password")
-    public CallUser updatePassword(@RequestBody LinkedHashMap<String, String> body) {
+    public Users updatePassword(@RequestBody LinkedHashMap<String, String> body) {
 
         String username = body.get("username");
         String password = body.get("password");
 
-    return userService.setPassword(username, password);
+        return userService.setPassword(username, password);
 
     }
+    
+    @GetMapping("/username")
+    public ResponseEntity<String> getUsername(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        }
 
+        String username = authentication.getName();
+        return ResponseEntity.ok(username);
+    }
 }
+
+
