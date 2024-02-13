@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { listCalls } from '../services/CallService'
 
 
-const ListCallsComponent = () => {
+const ListAllCalls = () => {
 //defines the variables in a functional component
     const [calls, setCalls] = useState([])
 
@@ -71,5 +71,5 @@ const ListCallsComponent = () => {
   )
 }
 
-export default ListCallsComponent
+export default ListAllCalls
 

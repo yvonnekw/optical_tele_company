@@ -5,8 +5,9 @@ import Select from 'react-select';
 import { makeCall,  getCallReceiversForUser, checkPhoneNumberExists} from '../services/CallService';
 import { loginUser, isLoggedIn, getUsername } from '../services/UserService'; // Import loginUser and isLoggedIn from UserService
 import CallReceiverSelector from './common/CallReceiverSelector';
+import { useAuth } from '../hooks/useAuth'
 
-const CallComponent = () => {
+const MakeCall = () => {
 // State for start and end times
 const [startTime, setStartTime] = useState('');
 const [endTime, setEndTime] = useState('');
@@ -17,11 +18,11 @@ const [totalCost, setTotalCost] = useState(0);
 const [netCost, setNetCost] = useState(0);
 const [grossCost, setGrossCost] = useState(0);
 const [taxAmount, setTaxAmount] = useState(0);
-const [phoneNumber, setPhoneNumber] = useState('');
+const [telephone, setTelephone] = useState('');
 const [callReceivers, setCallReceivers] = useState([]);
-const [phoneNumbers, setPhoneNumbers] = useState([]);
+const [telephones, setTelephones] = useState([]);
 const [selectedCallReceiver, setSelectedCallReceiver] = useState('');
-const [selectedPhoneNumber, setSelectedPhoneNumber] = useState('');
+const [selectedTelephoneNumber, setSelectedTelephoneNumber] = useState('');
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
 const [errorMessage, setErrorMessage]= useState('');
@@ -36,7 +37,8 @@ const [errorMessage, setErrorMessage]= useState('');
         totalCost:'',
         netCost:'',
         grossCost:'',
-        taxAmount:''
+        taxAmount: '',
+        telephone: ''
   })
 
    const [errors, setErrors] = useState({
@@ -53,7 +55,24 @@ const [errorMessage, setErrorMessage]= useState('');
   const handleCallInputChange = (e) => {
     const name = e.target.name
     let value = e.target.value
+       if (name === "telephone") {
+            setSelectedTelephoneNumber(value);
+        }
     if (name === "startTime") {
+      if (!isNaN(value)) {
+        value.parseTime(value)
+      } else {
+        value = ""
+      }
+    }
+      if (name === "endTime") {
+      if (!isNaN(value)) {
+        value.parseTime(value)
+      } else {
+        value = ""
+      }
+      }
+      if (name === "discount") {
       if (!isNaN(value)) {
         value.parseTime(value)
       } else {
@@ -110,11 +129,14 @@ const handleCallReceiverChange = (selectedOption) => {
     setSelectedCallReceiver(selectedOption);
   };
 
-  const handlePhoneNumberChange = (selectedOption) => {
-    setSelectedPhoneNumber(selectedOption);
-  };
 
   */
+
+    
+  const handleTelphoneNumberChange = (selectedOption) => {
+    setSelectedTelephoneNumber(selectedOption);
+     setNewCall({ ...newCall, telephone: selectedOption.value });
+  };
 
 // Rate for the call cost per second
 const ratePerSecond = 0.001;
@@ -181,6 +203,9 @@ const calculateTotalTime = () => {
   }
 };
 
+  const { getUsernameFromToken } = useAuth();
+  //const { decodeToken } = useAuth();
+  
 // Function to handle form submission
 const handleSubmit = async (event) => {
   event.preventDefault();
@@ -235,20 +260,38 @@ const handleSubmit = async (event) => {
   
 
   if (isLoggedIn()) {
+   // const tok = await  decodeToken(); // Fetch the username after successful login
+      const usern = await getUsernameFromToken(); // Fetch the username after successful login
+    console.log('Username after login:', usern);
+    //console.log('token after login:',tok);
   } else {
       
         // Log in the user
       // const user = { username: 'example', password: 'password' }; // Replace with actual login credentials
-        const user = { username, password };
+    const user = { username, password };
+    console.log("user " + user)
       try {
           const response = await loginUser(user);
           // Upon successful login, store session information
           // For example, you can use localStorage:
+        
+        if (response.data.user !== null) {
           localStorage.setItem('user', JSON.stringify(response.data));
+
+       // const username = await getUsername(); // Fetch the username after successful login
+        console.log('Username after login:', username);
+          //let usern = (response.data.username)
+         // console.log('username returned after login', usern);
           // Now, the user is logged in, you can make the call
+         // setUsername(response.data.username);
+        } else {
+          console.log("login did not happen ")
+          return;
+        }
         } catch (error) {
           console.error('Error logging in:', error);
           // Handle login error
+          return;
         }
     }
       
@@ -266,28 +309,37 @@ const handleSubmit = async (event) => {
         netCost: parseFloat(netCost),
         grossCost: parseFloat(grossCost),
         totalCost: parseFloat(totalCost),
-        username: 'yodalpinky1', // Replace with dynamic username from your app
-        telephone: "032456776580"
+        username: 'yodalpinky1',//username, //'yodalpinky1',//username,//'yodalpinky1',// await getUsername() ,//'yodalpinky1', // Replace with dynamic username from your app
+        telephone: selectedTelephoneNumber // "032456776580"//selectedTelephoneNumber //"032456776580"
       };
           try {
             console.log("Request data " + call.startTime);
+            console.log("telephone number for the call " + call.telephone);
+            console.log("username number for the call " + call.username);
+             console.log("telephone number for the call " + selectedTelephoneNumber.toString());
               //const call = {startTime, endTime}
-            const isValid = await checkPhoneNumberExists("yodalpinky1",phoneNumber);
-              const response = await makeCall(call);
-              console.log(response.data);
-              //console.log(call)
+            const isValid = await checkPhoneNumberExists('yodalpinky1', selectedTelephoneNumber);
+            console.log(isValid)
+              const success = await makeCall(call);
+            console.log(success.data);
 
-              //makeCall(call).then((response) =>{
-                // console.log(response.data)
-            //
-        // })
+              if (success !== undefined) {
+                setSuccessMessage("A new call has been recored in the database.")
+                setNewCall({ startTime: null, callReceivers: "", endTime: "" })
+                setErrorMessage("")
+              } else {
+                setErrorMessage("Error adding call to the database")
+              }
 
             } catch (error) {
-              console.error('Error making the call:', error);
-              // Handle error, show an error message
-            }
-          };
+               setErrorMessage(error.message)
+          }
+      setTimeout(() => {
+        setSuccessMessage("")
+        setErrorMessage("")
+      }, 3000)
     };
+  };
   
    function validateForm(){
         let valid = true;
@@ -333,7 +385,7 @@ const handleSubmit = async (event) => {
                 <label className="form-label">Call Receiver phone number</label>
                 <div>
 
-                  <CallReceiverSelector handlePhoneNumberInputChange={handleCallInputChange} newCall={newCall} />
+                  <CallReceiverSelector handleTelephoneNumberInputChange={handleCallInputChange} newCall={newCall} />
 
                  { /*
                   <CallReceiverSelector
@@ -425,4 +477,4 @@ const handleSubmit = async (event) => {
     )
 }
 
-export default CallComponent
+export default MakeCall

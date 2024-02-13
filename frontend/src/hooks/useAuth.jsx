@@ -56,11 +56,21 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getUsernameFromToken = () => {
-    if (user && user.token) {
+  if (user.token) {
+    const decodedToken = decodeToken(user.token);
+    if (decodedToken && decodedToken.username) {
+
+      console.log("decoder username " + decodedToken.username)
+      return decodedToken.username;
+    }
+  }
+  return null;
+
+   /* if (user && user.token) {
       const decodedToken = decodeToken(user.token);
       return decodedToken.username;
     }
-    return null;
+    return null;*/
   };
 
   const value = {

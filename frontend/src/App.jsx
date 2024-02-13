@@ -2,24 +2,24 @@ import './App.css'
 
 import { Routes, Route, Router } from 'react-router-dom';
 import { AuthProvider, useAuth } from './hooks/useAuth'; // Update the import path
-import HomeComponent from './components/HomeComponent';
-import RegisterComponent from './components/RegisterComponent';
-import LoginComponent from './components/LoginComponent';
-import DashboardComponent from './components/DasboardComponent';
-import CallComponent from './components/CallComponent';
-import ListCallsComponent from './components/ListCallsComponent';
+import Home from './components/Home';
+import Register from './components/Register';
+import Login from './components/Login';
+import Dashboard from './components/Dasboard';
+import MakeCall from './components/MakeCall';
+import ListAllCalls from './components/ListAllCalls';
 import Secret from '../Secret';
 import ProtectedRoute from '../ProtectedRoute';
 
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomeComponent />} />
-      <Route path="/login" element={<LoginComponent />} />
-      <Route path="/register" element={<RegisterComponent />} />
-      <Route path="/dashboard" element={<DashboardComponent />} />
-      <Route path="/make-call" element={<CallComponent />} />
-      <Route path="/calls" element={<ListCallsComponent />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/make-call" element={<MakeCall />} />
+      <Route path="/calls" element={<ListAllCalls />} />
     </Routes>
   );
 };

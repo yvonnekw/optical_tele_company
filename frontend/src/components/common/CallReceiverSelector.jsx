@@ -1,19 +1,21 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { getPhoneNumbers,  addReceiver} from '../../../utils/ApiFunctions'
+import { getTelephoneNumbers,  addReceiver} from '../../../utils/ApiFunctions'
+import { getUsername } from '../../services/UserService'; // Import loginUser and isLoggedIn from UserService
 
-const CallReceiverSelector = ({ handlePhoneNumberInputChange, newCall}) => {
-    const [phoneNumbers, setPhoneNumbers] = useState([""])
-    const [showPhoneNumberInput, setShowPhoneNumberInput] = useState(false)
-    const [newPhoneNumber, setNewPhoneNumber] = useState("")
+const CallReceiverSelector = ({ handleTelephoneNumberInputChange, newCall}) => {
+    const [telephoneNumbers, setTelephoneNumbers] = useState([""])
+    const [showTelephoneNumberInput, setShowTelephoneNumberInput] = useState(false)
+    const [newTelephoneNumber, setNewTelephoneNumber] = useState("")
+    const [selectedTelephoneNumber, setSelectedTelephoneNumber] = useState('');
     const [username, setUsername] = useState("")
 
     useEffect(() => {
          async function fetchData() {
         try {
-            const response = await getPhoneNumbers('yodalpinky1');
-            setPhoneNumbers(response);
-            console.log("phone numbers ", response.data);
+            const response = await getTelephoneNumbers('yodalpinky1');
+            setTelephoneNumbers(response);
+            console.log("telephone numbers ", response.data);
         } catch (error) {
             console.error("Error fetching phone numbers:", error);
         }
@@ -29,21 +31,30 @@ const CallReceiverSelector = ({ handlePhoneNumberInputChange, newCall}) => {
         fetchData();*/
     }, [])
 
-    const handleNewPhoneNumberInputChange = (e) => {
-        setNewPhoneNumber(e.target.value);
+    const handleNewTelephoneNumberInputChange = (e) => {
+        setNewTelephoneNumber(e.target.value);
     }
-    
-    const handleNewAddPhoneNumber = async () => {
 
+    /*
+   const handleTelphoneNumberChange = (selectedValue) => {
+        setSelectedTelephoneNumber(selectedValue);
+        //handleTelephoneNumberInputChange({ target: { name: 'telephone', value: selectedValue } });
+    };*/
+    
+    const handleAddNewTelephoneNumber = async () => {
+
+        //const username = await getUsername(); // Fetch the username after successful login
+       // console.log('Username after login:', username);
         setUsername("yodalpinky1")
-         if (newPhoneNumber !== "") {
+         if (newTelephoneNumber !== "") {
             try {
-                const success = await addReceiver(newPhoneNumber, username);
-                console.log( "successfully added a Call Receiver " + success)
+                const success = await addReceiver(newTelephoneNumber, username);
+              
                 if (success) {
-                    setPhoneNumbers([...phoneNumbers, newPhoneNumber]);
-                    setNewPhoneNumber("");
-                    setShowPhoneNumberInput(false);
+                    console.log( "successfully added a Call Receiver " + success)
+                    setTelephoneNumbers([...telephoneNumbers, newTelephoneNumber]);
+                    setNewTelephoneNumber("");
+                    setShowTelephoneNumberInput(false);
                 } else {
                     // Handle unsuccessful response
                     console.error('Error adding new phone number');
@@ -64,36 +75,38 @@ const CallReceiverSelector = ({ handlePhoneNumberInputChange, newCall}) => {
 
     return (
         <>
-            {phoneNumbers.length > 0 && (
+            {telephoneNumbers.length > 0 && (
                 <div>
                     <select
-                        id="phoneNumber"
-                        name="phoneNumber"
-                        value={newCall.phoneNumber}
+                        id="telephone"
+                        name="telephone"
+                        value={newCall.telephone}
                         onChange={(e) => {
                             if (e.target.value === "Add New") {
-                                setShowPhoneNumberInput(true)
+                                setShowTelephoneNumberInput(true)
                             } else {
-                                handlePhoneNumberInputChange(e)
+                               // handleTelphoneNumberChange(e.target.value); // Call the handleTelphoneNumberChange function here
+                                ///handleNewTelephoneNumberInputChange(e)
+                                handleTelephoneNumberInputChange(e)
                             }
                         }}>
                         <option value={""}>Select a call receiver phone number</option>
                         <option value={"Add New"}>Add New</option>
-                        {phoneNumbers.map((telephone, index) => (
+                        {telephoneNumbers.map((telephone, index) => (
                             <option key={index} value={telephone}>
                                 {telephone}
                             </option>
                         ))}
                     </select>
-                    {showPhoneNumberInput && (
+                    {showTelephoneNumberInput && (
                         <div className='input-group'>
                             <input
                                 className='form-control'
                                 type='text'
                                 placeholder='Enter new call receiver phone number'
-                                onChange={handleNewPhoneNumberInputChange}
+                                onChange={handleNewTelephoneNumberInputChange}
                             />
-                            <button className='btn btn-success' type='button' onClick={handleNewAddPhoneNumber}>
+                            <button className='btn btn-success' type='button' onClick={handleAddNewTelephoneNumber}>
                                 Add
                             </button>
                         </div>

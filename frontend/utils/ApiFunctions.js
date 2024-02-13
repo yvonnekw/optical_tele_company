@@ -9,29 +9,54 @@ export const api = axios.create({
 })
 
 export async function registerUser(firstName, lastName, emailAddress, telephone) {
+
+    const formData = new FormData();
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("emailAddress", emailAddress);
+    formData.append("telephone", telephone);
+   // formData.append("authorities", []);
+
+    try {
+      const response = await api.post(`/auth/register`, formData, { headers: headers });
+      if (response.status === 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
+      throw new Error("Error registering user");
+    }
+  
+  /*
   const formData = new FormData();
     formData.append("firstName", firstName);
     formData.append("lastName", lastName);
     formData.append("emailAddress", emailAddress);
     formData.append("telephone", telephone);
-    formData.append("authorities", ["USER"]);
+    formData.append("authorities", []);
 
-    const response = await api.post("/auth/register", formData);
+  const response = await api.post(`/auth/register`,
+    { formData },
+   {headers: headers})
       if (response.status === 200) {
           return true
               
       } else {
           return false;
-          }
+      }
+  
+  */
 
     }
 
-    export async function addReceiver(phoneNumber, username) {
+    export async function addReceiver(telephone, username) {
       try {
         const response = await api.post(
           `/callreceiver/add/reciever`,
           {
-            telephone: phoneNumber,
+            telephone: telephone,
             username: username,
           },
           { headers: headers }
@@ -39,6 +64,11 @@ export async function registerUser(firstName, lastName, emailAddress, telephone)
         if (response.status === 200) {
           return true;
         } else {
+          // If the response status is not 200, log an error and return false
+          console.error(
+            "Error adding new receiver - Unexpected response status:",
+            response.status
+          );
           return false;
         }
       } catch (error) {
@@ -49,7 +79,7 @@ export async function registerUser(firstName, lastName, emailAddress, telephone)
 
 
 
-export async function getPhoneNumbers(username) {
+export async function getTelephoneNumbers(username) {
 
     try {
       // const response = await api.get("/phone-numbers");
@@ -61,7 +91,7 @@ export async function getPhoneNumbers(username) {
       );
       return response.data;
     } catch (error) {
-      console.error("Error getting phone numbers:", error);
+      console.error("Error getting telephone numbers:", error);
       return []; // Return an empty array in case of error
     }
 }

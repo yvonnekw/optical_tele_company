@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 //import { useAuth } from '../hooks/useAuth';
 import { useAuth } from '../hooks/useAuth';
 
-const LoginComponent = () => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
@@ -27,12 +27,35 @@ const LoginComponent = () => {
    const { login } = useAuth();
 
   const handleLogin = async (e) => {
+      e.preventDefault();
+    if (validateForm()) {
+        const user = { username, password };
+        try {
+            const userData = await login(user);
+            console.log("from the login page", userData);
+            // Check if userData and userData.data are not null/undefined
+            if (userData && userData.data && userData.data.user) {
+                // Access the username from the response data with null checks
+                console.log("from the login page username ", userData.data.user.username);
+            } else {
+                console.error("Response data is invalid:", userData);
+                setErrMsg("An error occurred while logging in");
+            }
+        } catch (error) {
+            console.error("Error logging in:", error);
+            setErrMsg("An error occurred while logging in");
+        }
+    } else {
+        setErrMsg("Username or password incorrect");
+    }
+    /*
     e.preventDefault();
     if (validateForm()) {
         const user = { username, password };
     try {
       const userData = await login(user);
       console.log("from the login page", userData);
+      console.log("from the login page username ", userData?.data?.user?.username);
     } catch (error) {
       console.error("Error logging in:", error);
       setErrMsg("An error occurred while logging in");
@@ -40,7 +63,7 @@ const LoginComponent = () => {
   } else {
     setErrMsg("Username or password incorrect");
   }
-
+*/
 /*
     try {
       const response = await loginUser({ username, password });
@@ -129,4 +152,4 @@ const LoginComponent = () => {
   );
 };
 
-export default LoginComponent;
+export default Login;
