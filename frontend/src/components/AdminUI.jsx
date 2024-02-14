@@ -2,7 +2,7 @@ import React from 'react'
 
 import ListCallsComponent from './ListCallsComponent'
 
-const AdminComponent = () => {
+const AdminUI = () => {
   return (
     <div>
         I am the admin page
@@ -11,4 +11,4 @@ const AdminComponent = () => {
   )
 }
 
-export default AdminComponent
+export default AdminUI

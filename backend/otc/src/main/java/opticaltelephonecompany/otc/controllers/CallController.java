@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallDto;
-import opticaltelephonecompany.otc.models.CallUser;
+import opticaltelephonecompany.otc.models.CallReceiver;
+import opticaltelephonecompany.otc.models.Users;
 import opticaltelephonecompany.otc.services.CallService;
 import opticaltelephonecompany.otc.services.UserService;
 
@@ -28,19 +29,22 @@ import opticaltelephonecompany.otc.services.UserService;
 @CrossOrigin("*")
 public class CallController {
     
-    private UserService userService;
-    private CallService callService;
+    private final UserService userService;
+    private final CallService callService;
 
-    public CallController(CallService callService){
+    public CallController(CallService callService, UserService userService){
         this.callService = callService;
+        this.userService = userService;
     }
 
+    /* 
        //build add calls
     @PostMapping//@RequestBody converts the json into a CallDto java object
-    public ResponseEntity<Call> makeCall(@RequestBody CallDto callDto){
+    public ResponseEntity<Call> makeCall(@RequestBody LinkedHashMap<String, String> CallDto callDto){
+        System.out.println("make call data " + callDto.toString());
         Call savedCall = callService.makeCall(callDto);
         return new ResponseEntity<>(savedCall, HttpStatus.CREATED);
-    }
+    }*/
     
     @GetMapping("{id}")//url method argument is band with the Path variable if to the callId
     public ResponseEntity<Call> getCallById(@PathVariable("id") long callId){
@@ -72,30 +76,91 @@ public class CallController {
     }
 
     @PostMapping("/make/call")
-    public Call callsController(@RequestBody LinkedHashMap<String, String> body) throws Exception{
+    public Call callsController(@RequestBody LinkedHashMap<String, String> body) throws Exception {
         String userName = body.get("username");
         String startTime = body.get("startTime");
         String endTime = body.get("endTime");
         String duration = body.get("duration");
+        String totalTime = body.get("totalTime");
+        String costPerMinute = body.get("costPerMinute");
+        String discountForCalls = body.get("discountForCalls");
+        String signUpDiscount = body.get("signUpDiscount");
+        String vat = body.get("vat");
+        String netCost = body.get("netCost");
+        String grossCost = body.get("grossCost");
+        String totalCost = body.get("totalCost");
+        String telephone = body.get("telephone");
 
-        CallUser applicationUser = userService.getUserByUsername(userName);
+        //CallUser callUser = userService.getUserByUsername(userName);
 
-        CallDto callsDTO = new CallDto();
+        CallDto callsDto = new CallDto();
 
-        callsDTO.setStartTime(Long.parseLong(startTime));
-        callsDTO.setEndTime(Long.parseLong(endTime));
-        callsDTO.setDuration(Long.parseLong(duration));
-    
-       Call call =   callService.makeCall(duration, callsDTO);
+        callsDto.setStartTime(startTime);
+        callsDto.setEndTime(endTime);
+        callsDto.setDuration(duration);
+        callsDto.setTotalTime(totalTime);
+        callsDto.setCostPerMinute(costPerMinute);
+        callsDto.setDiscountForCalls(discountForCalls);
+        callsDto.setSignUpDiscount(signUpDiscount);
+        callsDto.setVat(vat);
+        callsDto.setNetCost(netCost);
+        callsDto.setGrossCost(grossCost);
+        callsDto.setTotalCost(totalCost);
 
-       // applicationUser.setMainTelephone(Long.parseLong(phone));
+        Call call = callService.makeCall(userName, telephone, callsDto);
 
-       // return callService.makeCall(applicationUser);
+        // applicationUser.setMainTelephone(Long.parseLong(phone));
+
+        // return callService.makeCall(applicationUser);
 
         //return userService.updateUser(applicationUser);
-       // return "the calls";
+        // return "the calls";
 
-       return call;
+        return call;
     }
 
+/* 
+    @GetMapping("/receivers/{username}")
+    public ResponseEntity<List<Call>> getCallReceiversForUser(@PathVariable String username) {
+        try {
+            List<Call> callReceivers = callService.getCallReceiversForUser(username);
+            return new ResponseEntity<>(callReceivers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }*/
+
+    /* 
+    @GetMapping("/receivers/{username}")
+    public ResponseEntity<List<CallReceiver>> getCallReceiversForUser(@PathVariable String username) {
+        try {
+            List<CallReceiver> callReceivers = callService.getCallReceiversForUser(username);
+            return new ResponseEntity<>(callReceivers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+*/
+    /* 
+    @GetMapping("/callReceivers/${username}")
+    public ResponseEntity<List<Call>> getCallReceiversForUser(@PathVariable String username) {
+        try {
+            List<Call> calls = callService.getCallReceiversForUser(username);
+            return new ResponseEntity<>(calls, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }*/
+    
+/* 
+    @GetMapping("/callReceivers/{username}")
+    public ResponseEntity<List<CallReceiver>> getCallReceiversForUser(@PathVariable String username) {
+        try {
+            List<CallReceiver> callReceivers = callService.getCallReceiversForUser(username);
+            return new ResponseEntity<>(callReceivers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+*/
 }

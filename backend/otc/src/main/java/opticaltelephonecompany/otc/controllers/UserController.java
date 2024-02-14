@@ -2,7 +2,9 @@ package opticaltelephonecompany.otc.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,9 +17,15 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import opticaltelephonecompany.otc.models.CallUser;
+import opticaltelephonecompany.otc.models.Call;
+import opticaltelephonecompany.otc.models.CallReceiver;
+import opticaltelephonecompany.otc.models.Users;
+import opticaltelephonecompany.otc.publisher.RabbitMQJsonProducer;
+import opticaltelephonecompany.otc.publisher.RabbitMQProducer;
 import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.services.AuthenticationService;
+import opticaltelephonecompany.otc.services.CallReceiverService;
+import opticaltelephonecompany.otc.services.CallService;
 import opticaltelephonecompany.otc.services.ImageService;
 import opticaltelephonecompany.otc.services.TokenService;
 import opticaltelephonecompany.otc.services.UserService;
@@ -30,19 +38,37 @@ import org.springframework.web.bind.annotation.RequestParam;
 @CrossOrigin("*")
 public class UserController {
 
+
+    private final RabbitMQProducer rabbitMQProducer;
     private final UserService userService;
     private final TokenService tokenService;
-    //private final ImageService imageService;
+    private final CallService callService;
+    private final CallReceiverService callReceiverService;
 
-    public UserController(UserService userService, TokenService tokenService){
+    private RabbitMQJsonProducer rabbitMQJsonProducer;
+
+    @Autowired
+    public UserController(UserService userService, TokenService tokenService, CallService callService, 
+            CallReceiverService callReceiverService, RabbitMQProducer rabbitMQProducer, 
+            RabbitMQJsonProducer rabbitMQJsonProducer) {
         this.userService = userService;
         this.tokenService = tokenService;
+        this.callService = callService;
+        this.callReceiverService = callReceiverService;
+        this.rabbitMQProducer = rabbitMQProducer;
+        this.rabbitMQJsonProducer = rabbitMQJsonProducer;
+    }
+    
+    @PostMapping("/mess-publisher")
+    public ResponseEntity<String> sendJsonMessage(@RequestBody Users user) {
+        rabbitMQJsonProducer.sendJsonMessage(user);
+        return ResponseEntity.ok("Json message sent RabbitMQ...");
     }
 
     @GetMapping("/verify")
-    public CallUser verifyIdentity(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+    public Users verifyIdentity(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         String username = "";
-        CallUser user;
+        Users user;
 
         if(token.substring(0,6).equals("Bearer")) {
             String strippedToken = token.substring(7);
@@ -58,26 +84,35 @@ public class UserController {
     }
     
 
+    @GetMapping("/hello")
+    public ResponseEntity<String> helloUserController(@RequestParam("message") String message) {
+        rabbitMQProducer.sendMessage(message);
+        // return "User access level";
+        return ResponseEntity.ok("Message sent to RabbitMQ");
+    }
+
     @GetMapping("/")
-    public String helloUserController(){
-        return "User access level";
+    public ResponseEntity<String> helloUserController2() {
+        rabbitMQProducer.sendMessage("User access level new message");
+        // return "User access level";
+        return ResponseEntity.ok("Message sent to RabbitMQ");
     }
 
     @GetMapping("{id}")//url method argument is band with the Path variable if to the callId
-    public ResponseEntity<CallUser> getUserById(@PathVariable("id") long userId){
-        CallUser userDto = userService.getUserById(userId);
+    public ResponseEntity<Users> getUserById(@PathVariable("id") long userId){
+        Users userDto = userService.getUserById(userId);
        return ResponseEntity.ok(userDto);
     }
 
     @GetMapping
-    public ResponseEntity<List<CallUser>> getAllUsers(){
-        List<CallUser> users = userService.getAllUsers();
+    public ResponseEntity<List<Users>> getAllUsers(){
+        List<Users> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<CallUser> updateUser(@PathVariable("id") Long userId, @RequestBody CallUser updatedUser){
-       CallUser userDto = userService.updateUser(userId, updatedUser);
+    public ResponseEntity<Users> updateUser(@PathVariable("id") Long userId, @RequestBody Users updatedUser){
+       Users userDto = userService.updateUser(userId, updatedUser);
        return ResponseEntity.ok(userDto);
     }
 
@@ -88,8 +123,15 @@ public class UserController {
     }
 
     @GetMapping("users")
-    public String users(){
+    public String users() {
         return "my users";
     }
+/* 
+    @GetMapping("/{username}/phonenumbers")
+    public ResponseEntity<List<String>> getPhoneNumbersForUser(@PathVariable String username) {
+        List<String> phoneNumbers = callReceiverService.getPhoneNumbersForUser(username);
+        return ResponseEntity.ok(phoneNumbers);
+    }*/
+
     
 }

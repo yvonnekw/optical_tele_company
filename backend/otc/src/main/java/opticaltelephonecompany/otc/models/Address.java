@@ -38,13 +38,13 @@ public class Address {
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id")
-    private CallUser callerUser;
+    private Users callerUser;
 
-    public CallUser getCallerUser() {
+    public Users getCallerUser() {
         return callerUser;
     }
 
-    public void setCallerUser(CallUser callerUser) {
+    public void setCallerUser(Users callerUser) {
         this.callerUser = callerUser;
     }
 /* 

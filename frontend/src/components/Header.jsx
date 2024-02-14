@@ -1,7 +1,7 @@
 
 import React from 'react'
 
-const HeaderComponet = () => {
+const Header = () => {
   return (
     <div className='navbar navbar-dark bg-dark'>
        <a className="navbar-brand" href="www.mywebsite.com">Optical Telephone Company</a>
@@ -9,4 +9,4 @@ const HeaderComponet = () => {
   )
 }
 
-export default HeaderComponet
+export default Header

@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from 'react';
 import { registerUser }from '../services/UserService';
 import { useNavigate } from 'react-router-dom';
 
-const RegisterComponent = () => {
+const Register = () => {
 
    // const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,,23}$/;
     //const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -13,10 +13,10 @@ const RegisterComponent = () => {
    const [firstName, setFirstName] = useState('')
    const [lastName, setLastName] = useState('')
    const [emailAddress, setEmailAddress] = useState('')
-   const [telephoneNumber, setTelephoneNumber] = useState('')
-  // const [validName, setValidName] = useState(false);
-  // const [userFocus, setUserFocus] = useState(false);
-
+   const [telephone, setTelephone] = useState('')
+   const [authorities, setAuthorities] = useState([]);
+    const [errorMessage, setErrorMessage]= useState('');
+    const [successMessage, setSuccessMessage] = useState('');
    //const [errMsg, setErrMsg] = useState('');
    //const [success, setSuccess] = useState(false);
 
@@ -27,13 +27,44 @@ const RegisterComponent = () => {
         telephoneNumber:''
    })
 
-   const navigate = useNavigate();
+    const navigate = useNavigate();
+    
+        function saveUser2 (e){
+            e.preventDefault();
+            successMessage["A new user is registered"]
+            //errorMessage[""]
+        
+            if (validateForm()) {
+                try {
+                    setAuthorities["USER"];
+                     const user = {firstName, lastName, emailAddress, telephone, authorities}
+                    const success = registerUser(user)
+                    console.log(success)
+
+                    if (success !== undefined) {
+                        setSuccessMessage(successMessage)
+        
+                        //registerUser(user).then((response) => {
+                        //console.log(response.data)
+        
+                        navigate('/login')
+
+                    } else {
+                        setErrorMessage("Error registering user")
+                    }
+                    //})
+                } catch (error) {
+                    setErrorMessage(error.message)     
+                }
+        } 
+    }
 
     function saveUser (e){
         e.preventDefault();
         
-        if(validateForm()){
-            const user = {firstName, lastName, emailAddress, telephoneNumber}
+        if (validateForm()) {
+            setAuthorities["USER"];
+            const user = {firstName, lastName, emailAddress, telephone, authorities}
             console.log(user)
     
             registerUser(user).then((response) =>{
@@ -128,14 +159,14 @@ const RegisterComponent = () => {
                                 type='number'
                                 placeholder='Enter your telephone number'
                                 name='phone'
-                                value={telephoneNumber}
-                                className={`form-control ${errors.telephoneNumber ? 'is-invalid': '' }`}
-                                onChange={(e) => setTelephoneNumber(e.target.value)}
+                                value={telephone}
+                                className={`form-control ${errors.telephone ? 'is-invalid': '' }`}
+                                onChange={(e) => setTelephone(e.target.value)}
                                 >
                             </input>
                             {errors.telephoneNumber && <div className='invalid-feedback'>{ errors.telephoneNumber }</div> }
                         </div>
-                        <button className='btn btn-success' onClick={saveUser}>Submit</button>
+                        <button className='btn btn-success' onClick={saveUser2}>Submit</button>
                     </form>
                 </div>
 
@@ -146,4 +177,4 @@ const RegisterComponent = () => {
         
     )
 }
-export default RegisterComponent
+export default Register

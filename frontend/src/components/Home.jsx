@@ -2,18 +2,18 @@ import React from 'react';
 import { useNavigate, Link} from 'react-router-dom';
 
 
-const HomeComponent = () => {
+const Home = () => {
 
 
   const navigator = useNavigate();
-
+/*
   function login(){
       navigator('/login')
   }
 
   function register(){
     navigator('/register')
-}
+}*/
   
   return (
     <div>
@@ -42,4 +42,4 @@ const HomeComponent = () => {
   )
 }
 
-export default HomeComponent
+export default Home

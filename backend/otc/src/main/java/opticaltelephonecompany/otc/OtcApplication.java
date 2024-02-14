@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import opticaltelephonecompany.otc.repository.UserRepository;
-import opticaltelephonecompany.otc.models.CallUser;
+import opticaltelephonecompany.otc.models.Users;
 import opticaltelephonecompany.otc.models.Role;
 import opticaltelephonecompany.otc.repository.RoleRepository;
 
@@ -30,7 +30,7 @@ public class OtcApplication {
 
 			roles.add(role);
 
-			CallUser callerUser = new CallUser();
+			Users callerUser = new Users();
 			callerUser.setAuthorities(roles);
 			callerUser.setFirstName("Yodal");
 			callerUser.setLastName("Pinky");

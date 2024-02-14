@@ -61,6 +61,7 @@ public class SecurityConfiguration {
                 auth.requestMatchers("/auth/**").permitAll();
                 auth.requestMatchers("/user/**").permitAll();
                 auth.requestMatchers("/calls/**").permitAll();
+                auth.requestMatchers("/callreceiver/**").permitAll();
                 auth.requestMatchers("/users/**").permitAll();
                 auth.requestMatchers("/admin/**").hasRole("ADMIN");
                 auth.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER");

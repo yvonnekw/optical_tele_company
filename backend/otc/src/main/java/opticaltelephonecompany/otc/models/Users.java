@@ -2,14 +2,17 @@ package opticaltelephonecompany.otc.models;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,7 +29,7 @@ import jakarta.persistence.Table;
 //@Document(indexName ="user1")
 @Entity
 @Table(name="users")
-public class CallUser implements UserDetails {
+public class Users implements UserDetails {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -37,18 +40,17 @@ public class CallUser implements UserDetails {
 	private String firstName;
     private String lastName;
 	private String emailAddress;
-	private String mainTelephone;
+	private String telephone;
 
-	public String getMainTelephone() {
-		return mainTelephone;
+    public String getTelephone() {
+		return telephone;
 	}
 
-	public void setMainTelephone(String mainTelephone) {
-		this.mainTelephone = mainTelephone;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
-
-    public String getFirstName() {
+	public String getFirstName() {
 		return firstName;
 	}
 
@@ -64,8 +66,6 @@ public class CallUser implements UserDetails {
 		this.lastName = lastName;
 	}
 
-	
-
 	/*Security related */
 	@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(                                                                                                                     
@@ -73,7 +73,14 @@ public class CallUser implements UserDetails {
         joinColumns = {@JoinColumn(name="user_id")},
         inverseJoinColumns = {@JoinColumn(name="role_id")}
     )
-  	private Set<Role> authorities;
+	private Set<Role> authorities;
+	
+	// mention
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_address_junction", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "address_id") })
+
+	private Address address;
 
 	private Boolean enabled;
 
@@ -82,17 +89,7 @@ public class CallUser implements UserDetails {
 	@JsonIgnore
 	private Long verification;
 
-	//mention
-	@OneToOne(fetch=FetchType.EAGER)
-    @JoinTable(                                                                                                                     
-        name="user_address_junction",
-        joinColumns = {@JoinColumn(name="user_id")},
-        inverseJoinColumns = {@JoinColumn(name="address_id")}
-    )
-
-  private Address address;
-
-    public CallUser() {
+	public Users() {
 		//super();
 		this.authorities = new HashSet<>();
 		//when we first create account user should not be able to use it
@@ -128,30 +125,29 @@ public class CallUser implements UserDetails {
 		this.emailAddress = emailAddress;
 	}
 
-	public CallUser(String username, String password, String emailAddress, String mainTelephone) {
-		super();
-		//this.userId = userId;
-		this.username = username;
-		this.password = password;
-		//this.authorities = authorities;
-		this.emailAddress = emailAddress;
-	}
 
-	public CallUser(String username, String password, Set<Role> authorities, String emailAddress, String mainTelephone) {
-		super();
-		//this.userId = userId;
-		this.username = username;
-		this.password = password;
-		this.authorities = authorities;
-		this.emailAddress = emailAddress;
-	}
-
-    public CallUser(String username, String password, Set<Role> authoritie) {
+	public Users(String username, String password, Set<Role> authoritie, String emailAddress, String telephone) {
 		this.username = username;
 		this.password = password;
 		this.authorities = authoritie;
+		this.telephone = telephone;
 	}
 
+	public Users(Long userId, String username, String password, String firstName, String lastName, String emailAddress,
+			String telephone, Set<Role> authorities, Address address, Boolean enabled, Long verification) {
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.emailAddress = emailAddress;
+		this.telephone = telephone;
+		this.authorities = authorities;
+		this.address = address;
+		this.enabled = enabled;
+		this.verification = verification;
+	}
+	
 	public Long getUserId() {
 		return this.userId;
 	}
@@ -183,34 +179,22 @@ public class CallUser implements UserDetails {
 	/* If you want account locking capabilities create variables and ways to set them for the methods below */
 	@Override
 	public boolean isAccountNonExpired() {
-		
 		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-	
 		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		
 		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", emailAddress=" + emailAddress + ", mainTelephone="
-				+ mainTelephone + ", authorities=" + authorities + ", enabled=" + enabled + ", verification="
-				+ verification + ", address=" + address + "]";
 	}
 
 	public Address getAddress() {
@@ -228,5 +212,16 @@ public class CallUser implements UserDetails {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-    
+
+
+	@Override
+	public String toString() {
+		return "Users [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", emailAddress=" + emailAddress + ", telephone=" + telephone
+				+ ", authorities=" + authorities + ", address=" + address + ", enabled=" + enabled + ", verification="
+				+ verification + "]";
+	}
+
+
+   
 }
