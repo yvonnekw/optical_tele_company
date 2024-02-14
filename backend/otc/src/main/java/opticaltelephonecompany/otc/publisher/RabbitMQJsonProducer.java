@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import opticaltelephonecompany.otc.consumer.RabbitMQConsumer;
+import opticaltelephonecompany.otc.models.Call;
+import opticaltelephonecompany.otc.models.CallReceiver;
 import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.models.Users;
 
@@ -35,6 +37,17 @@ public class RabbitMQJsonProducer {
     public void sendJsonMessage(RegistrationDto body) {
         LOGGER.info(String.format("Json message sent -> %s", body.toString()));
         rabbitTemplate.convertAndSend(exchange, routingJsonKey, body);
+    }
+
+    public void sendJsonMessage(CallReceiver body) {
+        LOGGER.info(String.format("Json message sent -> %s", body.toString()));
+        rabbitTemplate.convertAndSend(exchange, routingJsonKey, body);
+    }
+
+    public void sendJsonMessage(Call body) {
+        LOGGER.info(String.format("Json message sent -> %s", body.toString()));
+        rabbitTemplate.convertAndSend(exchange, routingJsonKey, body);
+        // rabbitTemplate.convertAndSend(exchange, routingJsonKey, body);
     }
 
 }
