@@ -23,6 +23,7 @@ import opticaltelephonecompany.otc.models.CallDto;
 import opticaltelephonecompany.otc.models.CallReceiver;
 import opticaltelephonecompany.otc.models.CallReceiverDto;
 import opticaltelephonecompany.otc.models.Users;
+import opticaltelephonecompany.otc.publisher.RabbitMQJsonProducer;
 import opticaltelephonecompany.otc.services.CallReceiverService;
 import opticaltelephonecompany.otc.services.CallService;
 import opticaltelephonecompany.otc.services.UserService;
@@ -32,44 +33,17 @@ import opticaltelephonecompany.otc.services.UserService;
 @CrossOrigin("*")
 public class CallReceiverController {
     
-   
+    private RabbitMQJsonProducer rabbitMQProducer;
     private CallReceiverService callReceiverService;
 
-    public CallReceiverController(CallReceiverService callReceiverService){
+    public CallReceiverController(CallReceiverService callReceiverService, RabbitMQJsonProducer rabbitMQProducer){
         this.callReceiverService = callReceiverService;
-    }
-/* 
-       //build add calls
-    @PostMapping//@RequestBody converts the json into a CallDto java object
-    public ResponseEntity<Call> makeCall(@RequestBody CallDto callDto){
-        System.out.println("make call data " + callDto.toString());
-        Call savedCall = callService.makeCall(callDto);
-        return new ResponseEntity<>(savedCall, HttpStatus.CREATED);
-    };*/
-    /* 
-    @GetMapping("{id}")//url method argument is band with the Path variable if to the callId
-    public ResponseEntity<Call> getCallById(@PathVariable("id") long callId){
-       Call call = callService.getCallById(callId);
-       return ResponseEntity.ok(call);
+        this.rabbitMQProducer = rabbitMQProducer;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Call>> getAllCalls(){
-        List<Call> calls = callService.getAllCalls();
-        return ResponseEntity.ok(calls);
-    }
-
-    @PutMapping("{id}")
-    public ResponseEntity<Call> updateCall(@PathVariable("id") Long callId, @RequestBody Call updatedCall){
-       Call call = callService.updateCall(callId, updatedCall);
-       return ResponseEntity.ok(call);
-    }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteCall(@PathVariable("id") Long callId){
-       callService.deleteCall(callId);
-       return ResponseEntity.ok("Call deleted successfully.");
-    }*/
+   /// public ResponseEntity<String> sendJsonMessage() {
+        
+   // }
 
     @GetMapping("/callreceiver")
     public String calls(){

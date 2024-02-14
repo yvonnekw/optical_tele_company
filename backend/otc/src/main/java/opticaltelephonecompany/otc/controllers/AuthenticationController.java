@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import opticaltelephonecompany.otc.exception.EmailAlreadyTakenException;
 import opticaltelephonecompany.otc.exception.UserDoesNotExistException;
 import opticaltelephonecompany.otc.models.Users;
+import opticaltelephonecompany.otc.publisher.RabbitMQJsonProducer;
 import opticaltelephonecompany.otc.models.LoginResponseDto;
 import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.services.AuthenticationService;
@@ -40,15 +41,17 @@ public class AuthenticationController {
     private final UserService userService;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
+    private RabbitMQJsonProducer rabbitMQJsonProducer;
 
     @Autowired
     private AuthenticationService authenticationService;
 
     @Autowired
-    public AuthenticationController(UserService userService, TokenService tokenService, AuthenticationManager authenticationManager){
+    public AuthenticationController(UserService userService, TokenService tokenService, AuthenticationManager authenticationManager, RabbitMQJsonProducer rabbitMQJsonProducer){
         this.userService = userService;
         this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
+        this.rabbitMQJsonProducer = rabbitMQJsonProducer;
     }
 
     @ExceptionHandler({EmailAlreadyTakenException.class})
@@ -65,7 +68,8 @@ public class AuthenticationController {
     
 
     @PostMapping("/register")
-    public Users registerUser(@RequestBody RegistrationDto body){
+    public Users registerUser(@RequestBody RegistrationDto body) {
+        rabbitMQJsonProducer.sendJsonMessage(body);
         return userService.registerUser(body);
     }
 

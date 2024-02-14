@@ -2,6 +2,7 @@ package opticaltelephonecompany.otc.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallReceiver;
 import opticaltelephonecompany.otc.models.Users;
+import opticaltelephonecompany.otc.publisher.RabbitMQJsonProducer;
+import opticaltelephonecompany.otc.publisher.RabbitMQProducer;
 import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.services.AuthenticationService;
 import opticaltelephonecompany.otc.services.CallReceiverService;
@@ -35,17 +38,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 @CrossOrigin("*")
 public class UserController {
 
+
+    private final RabbitMQProducer rabbitMQProducer;
     private final UserService userService;
     private final TokenService tokenService;
     private final CallService callService;
     private final CallReceiverService callReceiverService;
 
+    private RabbitMQJsonProducer rabbitMQJsonProducer;
+
+    @Autowired
     public UserController(UserService userService, TokenService tokenService, CallService callService, 
-            CallReceiverService callReceiverService){
+            CallReceiverService callReceiverService, RabbitMQProducer rabbitMQProducer, 
+            RabbitMQJsonProducer rabbitMQJsonProducer) {
         this.userService = userService;
         this.tokenService = tokenService;
         this.callService = callService;
         this.callReceiverService = callReceiverService;
+        this.rabbitMQProducer = rabbitMQProducer;
+        this.rabbitMQJsonProducer = rabbitMQJsonProducer;
+    }
+    
+    @PostMapping("/mess-publisher")
+    public ResponseEntity<String> sendJsonMessage(@RequestBody Users user) {
+        rabbitMQJsonProducer.sendJsonMessage(user);
+        return ResponseEntity.ok("Json message sent RabbitMQ...");
     }
 
     @GetMapping("/verify")
@@ -67,9 +84,18 @@ public class UserController {
     }
     
 
+    @GetMapping("/hello")
+    public ResponseEntity<String> helloUserController(@RequestParam("message") String message) {
+        rabbitMQProducer.sendMessage(message);
+        // return "User access level";
+        return ResponseEntity.ok("Message sent to RabbitMQ");
+    }
+
     @GetMapping("/")
-    public String helloUserController(){
-        return "User access level";
+    public ResponseEntity<String> helloUserController2() {
+        rabbitMQProducer.sendMessage("User access level new message");
+        // return "User access level";
+        return ResponseEntity.ok("Message sent to RabbitMQ");
     }
 
     @GetMapping("{id}")//url method argument is band with the Path variable if to the callId
