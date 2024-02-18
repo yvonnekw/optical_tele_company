@@ -1,11 +1,11 @@
-
 import React, { useState, useEffect } from 'react';
 //import { Link } from 'react-router-dom';
 import Select from 'react-select';
-import { makeCall,  getCallReceiversForUser, checkPhoneNumberExists} from '../services/CallService';
-import { loginUser, isLoggedIn, getUsername } from '../services/UserService'; // Import loginUser and isLoggedIn from UserService
-import CallReceiverSelector from './common/CallReceiverSelector';
-import { useAuth } from '../hooks/useAuth'
+import { makeCall,  getCallReceiversForUser, checkPhoneNumberExists} from '../../services/CallService';
+import { loginUser, isLoggedIn, getUsername } from '../../services/UserService'; // Import loginUser and isLoggedIn from UserService
+import CallReceiverSelector from '../common/CallReceiverSelector';
+import { useAuth } from '../../hooks/useAuth'
+import CallsTable from './CallsTable';
 
 const MakeCall = () => {
 // State for start and end times
@@ -203,7 +203,7 @@ const calculateTotalTime = () => {
   }
 };
 
-  const { getUsernameFromToken } = useAuth();
+  //const { getUsernameFromToken } = useAuth();
   //const { decodeToken } = useAuth();
   
 // Function to handle form submission
@@ -261,8 +261,8 @@ const handleSubmit = async (event) => {
 
   if (isLoggedIn()) {
    // const tok = await  decodeToken(); // Fetch the username after successful login
-      const usern = await getUsernameFromToken(); // Fetch the username after successful login
-    console.log('Username after login:', usern);
+      //const usern = await getUsernameFromToken(); // Fetch the username after successful login
+    //console.log('Username after login:', usern);
     //console.log('token after login:',tok);
   } else {
       
@@ -298,6 +298,7 @@ const handleSubmit = async (event) => {
     if(validateForm()){
       calculateTotalTime();
 
+      setUsername('yodalpinky1')
       const call = {
         startTime: startTime,
         endTime: endTime,
@@ -456,17 +457,9 @@ const handleSubmit = async (event) => {
                       <button className='btn btn-success' onClick={handleSubmit}>
                         Submit
                       </button>
+                    
 
-                    {totalTime && (
-                      <div className="mt-3">
-                        Total Time: {totalTime}
-                        Call Cost: ${callCost}
-                        <p>Tax: ${taxAmount.toFixed(2)}</p>
-                        <p>Net Cost: ${netCost}</p>
-                        <p>Gross Cost: ${grossCost}</p>
-                        <p>Total Cost: ${totalCost}</p>
-                      </div>
-                    )}
+              <CallsTable username={username} />
 
                     {/* Other form elements go here */}
                   </form>

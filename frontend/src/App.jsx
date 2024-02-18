@@ -1,30 +1,114 @@
 import './App.css'
 
-import { Routes, Route, Router } from 'react-router-dom';
-import { AuthProvider, useAuth } from './hooks/useAuth'; // Update the import path
-import Home from './components/Home';
-import Register from './components/Register';
-import Login from './components/Login';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+//import { Routes, Route, Router } from 'react-router-dom';
+//import { AuthProvider, useAuth } from './hooks/useAuth'; // Update the import path
+
+import Home from './components/home/Home';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
+import Logout from './components/auth/Logout';
 import Dashboard from './components/Dasboard';
-import MakeCall from './components/MakeCall';
-import ListAllCalls from './components/ListAllCalls';
-import Secret from '../Secret';
-import ProtectedRoute from '../ProtectedRoute';
+import MakeCall from './components/calls/MakeCall';
+import ListAllCalls from './components/calls/ListAllCalls';
+import CallsTable from './components/calls/CallsTable';
+import Profile from './components/auth/Profile';
+import CallHistory from './components/calls/CallHistory';
+import AdminUI from './components/admin/AdminUI.jsx';
+import Footer from './components/layout/Footer';
+import NavBar from './components/layout/NavBar';
+import AuthProvider from './components/auth/AuthProvider';
+//import Secret from '../Secret';
+//import ProtectedRoute from '../ProtectedRoute';
+
+
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/make-call" element={<MakeCall />} />
-      <Route path="/calls" element={<ListAllCalls />} />
-    </Routes>
+    <AuthProvider>
+      <main>
+        <Router>
+          <NavBar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/make-call" element={<MakeCall />} />
+              <Route path="/calls" element={<ListAllCalls />} />
+              <Route path="/user-calls" element={<CallsTable />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/call-history" element={<CallHistory />} />
+              <Route path="/admin" element={<AdminUI />} />
+              <Route path="/logout" element={<Logout />} />
+            </Routes>
+          </Router>
+        <Footer />
+      </main>
+    </AuthProvider>
+      
+
+   
   );
 };
 
 export default App;
+/*
+const App = () => {
+  return (
+    <>
+ 
+      <Router>
+        <NavBar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/make-call" element={<MakeCall />} />
+            <Route path="/calls" element={<ListAllCalls />} />
+            <Route path="/user-calls" element={<CallsTable />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/call-history" element={<CallHistory />} />
+            <Route path="/admin" element={<AdminUI />} />
+          </Routes>
+      </Router>
+      <Footer />
+   
+      
+    </>
+   
+  );
+};
+
+export default App;
+*/
+
+/*
+const App = () => {
+  return (
+    <>
+      <main>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/make-call" element={<MakeCall />} />
+          <Route path="/calls" element={<ListAllCalls />} />
+        </Routes>
+        </Router>
+      </main>
+      
+    </>
+  );
+};
+
+
+export default App;
+
+*/
 /*
 const App = () => {
   return (

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { listCalls } from '../services/CallService'
+import { listCalls } from '../../services/CallService'
 
 
 const ListAllCalls = () => {

@@ -124,6 +124,16 @@ public class CallController {
         return call;
     }
 
+    @GetMapping("/user/{username}")
+    public ResponseEntity<List<Call>> getCallsByUsername(@PathVariable String username) {
+        try {
+            List<Call> calls = callService.getCallsByUsername(username);
+            return new ResponseEntity<>(calls, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 /* 
     @GetMapping("/receivers/{username}")
     public ResponseEntity<List<Call>> getCallReceiversForUser(@PathVariable String username) {

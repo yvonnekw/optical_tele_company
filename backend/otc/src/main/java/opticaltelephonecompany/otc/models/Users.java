@@ -89,6 +89,28 @@ public class Users implements UserDetails {
 	@JsonIgnore
 	private Long verification;
 
+	/* 
+	// new
+	public void assignAuthoritesToUser(Users user) {
+		// user.getAuthorities().add(null);//this may causse errror - we can remove user
+		// but not authorities
+		this.getUsers().add(user);
+	}
+
+	public void removeAuthoritesToUser(Users user) {
+		// user.getAuthorities().remove(user);// this may causse errror
+		this.getUsers().remove(user);
+	}
+
+	public void removeAllUsersFromRole() {
+		if (this.getUsers() != null) {
+			List<Users> rolesUsers = this.getUsers().stream().toList();
+			rolesUsers.forEach(this::removeAuthoritesToUser);
+		}
+	}
+
+	*/
+
 	public Users() {
 		//super();
 		this.authorities = new HashSet<>();

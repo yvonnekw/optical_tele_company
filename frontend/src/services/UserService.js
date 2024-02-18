@@ -1,7 +1,8 @@
 import axios from "axios";
 //import jwt_decode from "jwt-decode";
-import { jwtDecode }  from "jwt-decode";
+//import { jwtDecode }  from "jwt-decode";
 //import jwt_decode from "jwt-decode";
+import jwt_decode from "jwt-decode";//
 
 
 const headers = {
@@ -10,10 +11,84 @@ const headers = {
 
 const REST_API_BASE_URL = "http://localhost:8000";
 
+export const getHeader = () => {
+  const token = localStorage.etItem("token")
+  return {
+    Authorization: `Bearer ${token}`,
+     "Content-Type": "application/json",
+  }
+}
+
+//update this with a return message
 export const registerUser = (user) =>
   axios.post(REST_API_BASE_URL + "/auth/register", user, {
     headers: headers,
   });
+
+export async function registerUser2(user) {
+  try {
+      const response = axios.post(REST_API_BASE_URL + "/auth/register", user, {
+      headers: headers,
+      })
+    return (await response).data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+        throw new Error(error.response.data)
+    } else {
+      throw new Error(`User registration error : ${error.message}`)
+      }
+
+    return e;
+  }
+};
+
+export async function loginUser2(user) {
+  try {
+      const response = await axios.post(REST_API_BASE_URL + "/auth/login", user, {
+        headers: headers,
+      });
+      if (response.status >= 200 && response.status < 300) {
+        return response.data
+      } else {
+        return null
+      }
+    } catch (e) {
+      console.error(e)
+      return null;
+    }
+}
+
+export async function getUserProfile(username, tokcen) {
+  try {
+    const response = await axios.post(REST_API_BASE_URL`/users/profile/${username}`, {
+      headers: getHeader()
+    });
+    
+    return response.data
+  } catch (error) {
+    throw error
+  
+  }
+}
+
+export async function getUser(userId, token) {
+  try {
+     const response = await axios.post(
+       REST_API_BASE_URL`/users/${userId}`,
+       {
+         headers: getHeader(),
+       }
+     );
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function getUsername2() {
+  const token = localStorage.getItem("token"); // Retrieve the token from local storage
+  console.log("The user token " + token)
+}
 
 export const loginUser = async (user) => {
   try {

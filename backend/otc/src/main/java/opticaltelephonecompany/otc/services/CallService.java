@@ -160,6 +160,10 @@ public class CallService {
         // return null;
     }
 
+    public List<Call> getCallsByUsername(String username) {
+        return callRepository.findByUserUsername(username);
+    }
+
     /* 
     public List<Call> getCallsForReceiver(String username) {
         return callRepository.findByReceiverUsername(username);

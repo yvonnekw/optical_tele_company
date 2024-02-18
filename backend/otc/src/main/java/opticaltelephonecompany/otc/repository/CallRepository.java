@@ -13,6 +13,8 @@ import opticaltelephonecompany.otc.models.Users;
 @Repository
 public interface CallRepository extends JpaRepository<Call, Long> {
   Optional<Call> findByCallId(Long callsId);
+
+List<Call> findByUserUsername(String username);
   
   //List<Call> findAllByReceiverUsername(String username);
 

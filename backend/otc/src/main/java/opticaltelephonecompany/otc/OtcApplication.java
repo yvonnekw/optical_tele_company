@@ -36,7 +36,8 @@ public class OtcApplication {
 			callerUser.setLastName("Pinky");
 			callerUser.setEmailAddress("yodal@email.com");
 			callerUser.setUsername("yodalpinky1");
-			callerUser.setPassword("password");
+			//callerUser.setPassword("password");
+			callerUser.setPassword(passwordEncoder.encode("password"));
 			callerUser.setEnabled(true);
 
 			userRepository.save(callerUser);
