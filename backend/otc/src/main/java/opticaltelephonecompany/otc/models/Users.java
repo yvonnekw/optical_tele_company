@@ -148,10 +148,11 @@ public class Users implements UserDetails {
 	}
 
 
-	public Users(String username, String password, Set<Role> authoritie, String emailAddress, String telephone) {
+	public Users(String username, String password, Set<Role> authorities, String emailAddress, String telephone) {
 		this.username = username;
 		this.password = password;
-		this.authorities = authoritie;
+		this.authorities = authorities;
+		this.emailAddress = emailAddress;
 		this.telephone = telephone;
 	}
 

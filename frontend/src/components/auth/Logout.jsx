@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { AuthContext } from './AuthProvider'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Logout = () => {
 
@@ -10,7 +10,7 @@ const Logout = () => {
 
     const handleLogout =() => {
         auth.handleLogout()
-        window.location.reload
+       // window.location.reload
         navigate("/", { state: { message: " You have been logged out." }})
     }
 
@@ -19,14 +19,16 @@ const Logout = () => {
     return isLoggedIn ? (
 
         <>
-            <li>
-                <Link className="dropdown-item" to={"/profile"}>
-                    Profile
-                </Link>
-            </li>
-            <li>
-                <hr className='dropdown-divider' />
-            </li>
+            <ul>
+                <li>
+                    <Link className="dropdown-item" to={"/profile"}>
+                        Profile
+                    </Link>
+                </li>
+                <li>
+                    <hr className='dropdown-divider' />
+                </li>
+            </ul>
             <button className='dropdown-item' onClick={handleLogout}>
                 Logout
             </button>

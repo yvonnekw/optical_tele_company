@@ -28,13 +28,18 @@ const Login = () => {
     setLogin({ ...login, [e.target.name] : e.target.value})
   }
 
-  const handleLSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const user = { username, password };
     //console.log("login Data " + login.username)
     const success = await loginUser2(user)
-    console.log("success " + success.data)
-   // console.log("success username " + success.data.user.username)
+    //console.log("success " + success)
+   // console.log("success username authorities " + success?.data?.authorities)
+    // console.log("Response data:", success.data); // Log the response data
+    //const token = success?.data?.token;
+   // const username = success?.data?.username;
+   // console.log("The token:", token);
+    //console.log("The username :", username);
     //userData.data.user.username
     if (success) {
       const token = success.token
@@ -50,8 +55,8 @@ const Login = () => {
       //console.log("new username returned " + userId)
       //let usern = localStorage.getItem("userId")
      // console.log("new username returned " + usern)
-      navigate("/")
-      window.location.reload()
+     navigate("/profile")
+     // window.location.reload()
     } else {
       setErrMsg("Invalid username or password. Please try again.")
     }
@@ -91,7 +96,7 @@ const Login = () => {
             if (userData && userData.data && userData.data.user) {
                 // Access the username from the response data with null checks
               console.log("from the login page username ", userData.data.user.username);
-              getUsername2();
+              //getUsername2();
               
             } else {
                 console.error("Response data is invalid:", userData);
@@ -172,7 +177,7 @@ const Login = () => {
           <div className='card col-md-6 offset-md-3 offset-md-3'>
             <h2 className='text-center'>Login here</h2>
             <div className='card-body'>
-            <form onSubmit={handleLogin2}> {/* Attach onSubmit to the form element */}
+            <form onSubmit={handleSubmit}>
               <div className='form-group mb-2'>
               <label htmlFor="username" className="text-center">
                 Username:
@@ -202,15 +207,15 @@ const Login = () => {
               />
               </div>
               <div className="mb-3">
-                <button t
-                  ype="submit"
+                <button 
+                  type="submit"
                   className='btn btn-success'
                   style={{marginRight : "10px"}}
                 >
                   Login
                 </button>
                 <span style={{ marginLeft: "10px" }}>
-                  Not registered yet?<Link to={"/register"}>Register here</Link>
+                  Not registered yet?<Link to={"/register"}> Register here</Link>
                 </span>
              </div>
             </form>

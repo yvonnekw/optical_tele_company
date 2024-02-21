@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
 import { registerUser, registerUser2 }from '../../services/UserService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
 
@@ -205,6 +205,9 @@ const Register = () => {
                             </div>
                             <div>
                                 <button className='btn btn-success' >Submit</button>
+                                   <span style={{ marginLeft: "10px" }}>
+                                        Not registered yet?<Link to={"/Login"}> login here </Link>
+                                   </span>
                             </div>
                     </form>
                 </div>

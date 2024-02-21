@@ -5,14 +5,18 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";//
 
 
-const headers = {
+const basicHeader = {
   "Content-Type": "application/json",
 };
 
+export const api = axios.create({
+  baseURL: "http://localhost:8000",
+});
+
 const REST_API_BASE_URL = "http://localhost:8000";
 
-export const getHeader = () => {
-  const token = localStorage.etItem("token")
+export const getLoginHeader = () => {
+  const token = localStorage.getItem("token")
   return {
     Authorization: `Bearer ${token}`,
      "Content-Type": "application/json",
@@ -22,7 +26,7 @@ export const getHeader = () => {
 //update this with a return message
 export const registerUser = (user) =>
   axios.post(REST_API_BASE_URL + "/auth/register", user, {
-    headers: headers,
+    headers: basicHeader,
   });
 
 export async function registerUser2(user) {
@@ -45,10 +49,22 @@ export async function registerUser2(user) {
 export async function loginUser2(user) {
   try {
       const response = await axios.post(REST_API_BASE_URL + "/auth/login", user, {
-        headers: headers,
+        headers: basicHeader,
       });
-      if (response.status >= 200 && response.status < 300) {
+    if (response.status >= 200 && response.status < 300) {
+      console.log("Response from user service" + response);
+       //console.log("Response data:", response.data); // Log the response data
+       const token = response?.data?.token;
+       const username = response?.data?.username;
+       console.log("The token:", token);
+      console.log("The username data :", response?.data);
+          console.log(
+            "success username authorities " +
+              response?.data?.user
+          );
+        // console.log("authority of authorities " + response?.data?.user.authorities[0].authority);
         return response.data
+   
       } else {
         return null
       }
@@ -60,8 +76,8 @@ export async function loginUser2(user) {
 
 export async function getUserProfile(username, tokcen) {
   try {
-    const response = await axios.post(REST_API_BASE_URL`/users/profile/${username}`, {
-      headers: getHeader()
+    const response = await axios.post(REST_API_BASE_URL +`/users/profile/${username}`, {
+      headers: getLoginHeader()
     });
     
     return response.data
@@ -73,14 +89,11 @@ export async function getUserProfile(username, tokcen) {
 
 export async function getUser(userId, token) {
   try {
-     const response = await axios.post(
-       REST_API_BASE_URL`/users/${userId}`,
-       {
-         headers: getHeader(),
-       }
-     );
+     const response = await api.get(REST_API_BASE_URL + `/user/${userId}`, {
+       headers: getLoginHeader(),
+     });
     return response.data
-  } catch (error) {
+ } catch (error) {
     throw error
   }
 }
@@ -135,24 +148,7 @@ export const getUsername = async () => {
   }
 };
 
-export const isLoggedIn = () => {
- // const token = localStorage.getItem("token");
- // return !!token; // Returns true if token exists, false otherwise
-  
-   const token = localStorage.getItem("token");
-    if (!token) {
-      return false; // No token found
-    }
 
-  // Decode the token to get its payload
-  const decodedToken = jwtDecode(token);
-  
-  // Check if the token expiration time is in the past
-  const isExpired = Date.now() >= decodedToken.exp * 1000;
-  
-  return !isExpired; // Returns true if token exists and is not expired, false otherwise
-
-};
 /*
 const headers = {
     'Content-Type': 'application/json'

@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 //import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { makeCall,  getCallReceiversForUser, checkPhoneNumberExists} from '../../services/CallService';
-import { loginUser, isLoggedIn, getUsername } from '../../services/UserService'; // Import loginUser and isLoggedIn from UserService
+import { loginUser, getUsername } from '../../services/UserService'; // Import loginUser and isLoggedIn from UserService
 import CallReceiverSelector from '../common/CallReceiverSelector';
 import { useAuth } from '../../hooks/useAuth'
 import CallsTable from './CallsTable';
+import AuthProvider, { AuthContext } from '../auth/AuthProvider';
 
 const MakeCall = () => {
+
+  const currentUser = localStorage.getItem("userId")
 // State for start and end times
 const [startTime, setStartTime] = useState('');
 const [endTime, setEndTime] = useState('');
@@ -27,6 +30,7 @@ const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
 const [errorMessage, setErrorMessage]= useState('');
   const [successMessage, setSuccessMessage] = useState('');
+    const [calls, setCalls] = useState([]);
   
 
   const [newCall, setNewCall] = useState({
@@ -51,6 +55,8 @@ const [errorMessage, setErrorMessage]= useState('');
         grossCost:'',
         taxAmount:''
    })
+  
+    const {isLoggedIn} = useContext(AuthContext)
   
   const handleCallInputChange = (e) => {
     const name = e.target.name
@@ -310,7 +316,7 @@ const handleSubmit = async (event) => {
         netCost: parseFloat(netCost),
         grossCost: parseFloat(grossCost),
         totalCost: parseFloat(totalCost),
-        username: 'yodalpinky1',//username, //'yodalpinky1',//username,//'yodalpinky1',// await getUsername() ,//'yodalpinky1', // Replace with dynamic username from your app
+        username: currentUser,//'yodalpinky1',//username, //'yodalpinky1',//username,//'yodalpinky1',// await getUsername() ,//'yodalpinky1', // Replace with dynamic username from your app
         telephone: selectedTelephoneNumber // "032456776580"//selectedTelephoneNumber //"032456776580"
       };
           try {
@@ -319,7 +325,7 @@ const handleSubmit = async (event) => {
             console.log("username number for the call " + call.username);
              console.log("telephone number for the call " + selectedTelephoneNumber.toString());
               //const call = {startTime, endTime}
-            const isValid = await checkPhoneNumberExists('yodalpinky1', selectedTelephoneNumber);
+            const isValid = await checkPhoneNumberExists(currentUser, selectedTelephoneNumber);//('yodalpinky1', selectedTelephoneNumber);
             console.log(isValid)
               const success = await makeCall(call);
             console.log(success.data);
@@ -373,101 +379,98 @@ const handleSubmit = async (event) => {
         return valid;
     }
 
- 
-  return (
+      return (
     <div className='container'>
+      <br /> <br />
+      <div className='row'>
+        <div className='card col-md-6 offset-md-3 offset-md-3'>
+          <h2 className='text-center'>New call</h2>
+          <div className='card-body'>
+            <form>
+              <div className='form-group mb-2'>
+                <label className='form-label'>Call Receiver phone number</label>
+                <div>
+                  <CallReceiverSelector handleTelephoneNumberInputChange={handleCallInputChange} newCall={newCall} />
+                </div>
+              </div>
+              <div className='form-group mb-2'>
+                <label className='form-label'>Start Time</label>
+                <input
+                  type='text'
+                  placeholder='Enter start time (HH:mm:ss)'
+                  name='startTime'
+                  value={startTime}
+                  className={`form-control ${errors.startTime ? 'is-invalid' : ''}`}
+                  onChange={handleCallInputChange}
+                />
+              </div>
+              <div className='form-group mb-2'>
+                <label className='form-label'>End Time</label>
+                <input
+                  type='text'
+                  placeholder='Enter end time (HH:mm:ss)'
+                  name='endTime'
+                  value={endTime}
+                  className={`form-control ${errors.endTime ? 'is-invalid' : ''}`}
+                  onChange={handleCallInputChange}
+                />
+              </div>
+              <div className='form-group mb-2'>
+                <label className='form-label'>Discount (%)</label>
+                <input
+                  type='text'
+                  placeholder='Enter discount'
+                  name='discount'
+                  value={discount}
+                  className='form-control'
+                  onChange={handleCallInputChange}
+                />
+              </div>
+              <button className='btn btn-success' onClick={handleSubmit}>
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div className='container'>
         <br /> <br />
         <div className='row'>
-            <div className='card col-md-6 offset-md-3 offset-md-3'>
-                <h2 className='text-center'>New call</h2>
-                <div className='card-body'>
-                  <form >
-                   <div className="form-group mb-2">
-                <label className="form-label">Call Receiver phone number</label>
-                <div>
-
-                  <CallReceiverSelector handleTelephoneNumberInputChange={handleCallInputChange} newCall={newCall} />
-
-                 { /*
-                  <CallReceiverSelector
-                    
-
-                   handleCallInputChange={handleCallInputChange}
-                    newCall={newCall}
-                  
-                  />*/}
-                </div>
-                {/*
-                      <Select
-                        id="callReceiver"
-                        value={selectedCallReceiver}
-                        onChange={handleCallReceiverChange}
-                        options={callReceivers.map(receiver => ({
-                          value: receiver,
-                          label: `${receiver.firstName} ${receiver.lastName}`
-                        }))}
-                      />
-                    </div>
-                    <div className="form-group mb-2">
-                      <label className="form-label">Phone Number</label>
-                      <Select
-                        id="phoneNumber"
-                        value={selectedPhoneNumber}
-                        onChange={handlePhoneNumberChange}
-                        options={phoneNumbers.map(number => ({ value: number, label: number }))}
-                />
-                      */}
-                    </div>
-                      <div className='form-group mb-2'>
-                        <label className='form-label'>Start Time</label>
-                        <input
-                          type='text'
-                          placeholder='Enter start time (HH:mm:ss)'
-                          name='startTime'
-                          value={startTime}
-                          className={`form-control ${errors.startTime ? 'is-invalid': '' }`}
-                         onChange={(e) => setStartTime(e.target.value)}
-                        />
-                      </div>
-
-                      <div className='form-group mb-2'>
-                        <label className='form-label'>End Time</label>
-                        <input
-                          type='text'
-                          placeholder='Enter end time (HH:mm:ss)'
-                          name='endTime'
-                          value={endTime}
-                          className={`form-control ${errors.endTime ? 'is-invalid': '' }`}
-                          onChange={(e) => setEndTime(e.target.value)}
-                          />
-                        </div>
-
-                      <div className='form-group mb-2'>
-                        <label className='form-label'>Discount (%)</label>
-                        <input
-                          type='text'
-                          placeholder='Enter discount'
-                          name='discount'
-                          value={discount}
-                          className='form-control'
-                          onChange={(e) => setDiscount(e.target.value)}
-                        />
-                      </div>
-
-                      <button className='btn btn-success' onClick={handleSubmit}>
-                        Submit
-                      </button>
-                    
-
-              <CallsTable username={username} />
-
-                    {/* Other form elements go here */}
-                  </form>
-              </div>
-              </div>
+          <div className='card col-md-6 offset-md-3 offset-md-3'>
+            <h2 className='text-center'>Current Calls</h2>
+            <div className='card-body'>
+              <table className='table table-striped table-bordered'>
+                <thead>
+                  <tr>
+                    <th>Call ID</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Duration</th>
+                    {/* Add more table headers if needed */}
+                  </tr>
+                </thead>
+                <tbody>
+                  {calls.map(call => (
+                    <tr key={call.id}>
+                      <td>{call.callId}</td>
+                      <td>{moment(call.startTime).format('YYYY-MM-DD HH:mm:ss')}</td>
+                      <td>{moment(call.endTime).format('YYYY-MM-DD HH:mm:ss')}</td>
+                      <td>{call.duration}</td>
+                      {/* Add more table cells based on call properties */}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            </div>
-    )
-}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+ 
+  
+
+   
 
 export default MakeCall

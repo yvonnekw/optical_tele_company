@@ -35,7 +35,7 @@ function NavBar() {
         <div className='collapse navbar-collapse' id='navbarScroll'>
           <ul className='navbar-nav me-auto my-2 my-lg-0 navbar-scroll'>
             <li className='nav-item'>
-              <NavLink className='nav-link' aria-current='page' to={'/calls'}>
+              <NavLink className='nav-link' aria-current='page' to={'/login'}>
                 View all calls
               </NavLink>
             </li>
@@ -49,10 +49,12 @@ function NavBar() {
           </ul>
           <ul className='d-flex navbar-nav'>
             <li className='nav-item'>
-              <NavLink className='nav-link' to={'/calls'}>
+              <NavLink className='nav-link' to={'/login'}>
               find a call
               </NavLink>
             </li>
+          </ul>
+          <ul>
               <li className='nav-item dropdown'>
               <a
                 className={`nav-link dropdown-toggle ${showAccount ? "show" : ""}`}
@@ -65,7 +67,7 @@ function NavBar() {
                 Account
               </a>
             </li>
-            </ul>
+          { /* </ul>*/}
             <ul
                 className={`dropdown-menu ${showAccount ? "show" : ""}`}
                 aria-labelledby="navbarDropdown">
@@ -81,7 +83,8 @@ function NavBar() {
                 </li>
              
               )}
-              </ul>
+            </ul>
+            </ul>
         </div>
       </div>
     </nav>

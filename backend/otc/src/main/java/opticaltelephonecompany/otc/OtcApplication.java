@@ -25,10 +25,13 @@ public class OtcApplication {
 	CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
 			Role role = roleRepository.save(new Role(1, "USER"));
+			Role role2 = roleRepository.save(new Role(2, "ADMIN"));
 
 			Set<Role> roles = new HashSet<>();
+			Set<Role> roles2 = new HashSet<>();
 
 			roles.add(role);
+			roles2.add(role2);
 
 			Users callerUser = new Users();
 			callerUser.setAuthorities(roles);
@@ -41,6 +44,18 @@ public class OtcApplication {
 			callerUser.setEnabled(true);
 
 			userRepository.save(callerUser);
+
+			Users callerUser2 = new Users();
+			callerUser2.setAuthorities(roles2);
+			callerUser2.setFirstName("Admin");
+			callerUser2.setLastName("Smith");
+			callerUser2.setEmailAddress("yodal@email.com");
+			callerUser2.setUsername("adminSmith");
+			// callerUser.setPassword("password");
+			callerUser2.setPassword(passwordEncoder.encode("password1"));
+			callerUser2.setEnabled(true);
+
+			userRepository.save(callerUser2);
 		};
 	}
 

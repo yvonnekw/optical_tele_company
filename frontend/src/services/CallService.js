@@ -10,10 +10,15 @@ export const listCalls = () => axios.get(REST_API_BASE_URL + '/calls', {
     headers: headers
 });
 
-export const getUserCalls = (username) =>
-  axios.get(REST_API_BASE_URL + `/calls?username=${username}`, {
-    headers: headers,
-  });
+export async function getCallsByUsername  (username) {
+   const response = await axios.get(
+     REST_API_BASE_URL + `/calls?username=${username}`,
+     {
+       headers: headers,
+     }
+   );
+      return response.data;
+}
 
 
 export const makeCall = (call) => axios.post(REST_API_BASE_URL + "/calls/make/call", call, {

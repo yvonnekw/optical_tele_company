@@ -36,9 +36,12 @@ import opticaltelephonecompany.otc.services.UserService;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+
 @RestController
 @RequestMapping("/user")
 @CrossOrigin("*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "http://localhost:2000", allowCredentials = "true")
 public class UserController {
 
 
@@ -100,12 +103,12 @@ public class UserController {
         // return "User access level";
         return ResponseEntity.ok("Message sent to RabbitMQ");
     }
-
+/* 
     @GetMapping("{id}")//url method argument is band with the Path variable if to the callId
     public ResponseEntity<Users> getUserById(@PathVariable("id") long userId){
         Users userDto = userService.getUserById(userId);
        return ResponseEntity.ok(userDto);
-    }
+    }*/
 
     @GetMapping
     public ResponseEntity<List<Users>> getAllUsers(){
@@ -144,6 +147,7 @@ public class UserController {
 
     @GetMapping("/{username}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+   // @CrossOrigin(origins = "http://localhost:2000")
     public ResponseEntity<?> getUserByUserName(@PathVariable("username") String username) {
         try {
             Users theUser = userService.getUserByUsername(username);

@@ -17,9 +17,13 @@ import CallHistory from './components/calls/CallHistory';
 import AdminUI from './components/admin/AdminUI.jsx';
 import Footer from './components/layout/Footer';
 import NavBar from './components/layout/NavBar';
+import RequireAuth from './components/auth/RequireAuth';
 import AuthProvider from './components/auth/AuthProvider';
+
+
 //import Secret from '../Secret';
 //import ProtectedRoute from '../ProtectedRoute';
+
 
 
 
@@ -34,7 +38,19 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/make-call" element={<MakeCall />} />
+            <Route path="/make-call" element={<MakeCall />} />
+            <Route
+							path="/make-call/"
+							element={
+								<RequireAuth>
+                  <MakeCall />
+                  <ListAllCalls />
+                  <AdminUI />
+                  <CallHistory />
+                  <Profile />
+								</RequireAuth>
+							}
+						/>
               <Route path="/calls" element={<ListAllCalls />} />
               <Route path="/user-calls" element={<CallsTable />} />
               <Route path="/profile" element={<Profile />} />
@@ -43,7 +59,6 @@ const App = () => {
               <Route path="/logout" element={<Logout />} />
             </Routes>
           </Router>
-        <Footer />
       </main>
     </AuthProvider>
       
@@ -53,6 +68,47 @@ const App = () => {
 };
 
 export default App;
+
+{/*
+const App = () => {
+  return (
+    <AuthProvider>
+      <main>
+        <Router>
+          <NavBar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/make-call" element={<MakeCall />} />
+            <Route
+							path="/make-call/"
+							element={
+								<RequireAuth>
+									<MakeCall />
+								</RequireAuth>
+							}
+						/>
+              <Route path="/calls" element={<ListAllCalls />} />
+              <Route path="/user-calls" element={<CallsTable />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/call-history" element={<CallHistory />} />
+              <Route path="/admin" element={<AdminUI />} />
+              <Route path="/logout" element={<Logout />} />
+            </Routes>
+          </Router>
+      </main>
+    </AuthProvider>
+      
+
+   
+  );
+};
+
+export default App;
+*/}
+
 /*
 const App = () => {
   return (
