@@ -1,5 +1,9 @@
 package opticaltelephonecompany.otc.models;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 
 import jakarta.persistence.Column;
@@ -7,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,21 +22,42 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="role_id")
     private Integer roleId;
-
     private String authority;
+
+    //new
+   // @ManyToMany(mappedBy = "roles")
+    //private Collection<Users> users = new HashSet<>();
 
     public Role(){
         super();
     }
 
-    public Role(String authority){
-        this.authority = authority;
+    /* 
+    public Collection<Users> getUsers() {
+        return users;
     }
 
-    public Role(Integer roleId, String authority){
+    public void setUsers(Collection<Users> users) {
+        this.users = users;
+    }
+
+    */
+
+    public Role(String authority) {
+        this.authority = authority;
+    }
+    
+    public Role(Integer roleId, String authority) {
         this.roleId = roleId;
         this.authority = authority;
     }
+
+    /* 
+    public String getName() {
+        return name != null ? name : "";
+    }
+    */
+    
 
     @Override
     public String getAuthority() {

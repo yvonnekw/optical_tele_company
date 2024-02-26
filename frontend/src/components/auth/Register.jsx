@@ -1,30 +1,24 @@
 import React, {useEffect, useState, useRef} from 'react';
-import { registerUser }from '../services/UserService';
-import { useNavigate } from 'react-router-dom';
+import { registerUser, registerUser2 }from '../../services/UserService';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
-
-   // const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,,23}$/;
-    //const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-
-   // const userRef = useRef();
-  //  const errRef = useRef();
 
    const [firstName, setFirstName] = useState('')
    const [lastName, setLastName] = useState('')
    const [emailAddress, setEmailAddress] = useState('')
-   const [telephone, setTelephone] = useState('')
+    const [telephone, setTelephone] = useState('')
+    const [password, setPassword] = useState('');
    const [authorities, setAuthorities] = useState([]);
     const [errorMessage, setErrorMessage]= useState('');
     const [successMessage, setSuccessMessage] = useState('');
-   //const [errMsg, setErrMsg] = useState('');
-   //const [success, setSuccess] = useState(false);
 
    const [errors, setErrors] = useState({
         firstName:'',
         lastName:'',
         emailAddress:'',
-        telephoneNumber:''
+       telephoneNumber: '',
+        password: ''
    })
 
     const navigate = useNavigate();
@@ -37,15 +31,13 @@ const Register = () => {
             if (validateForm()) {
                 try {
                     setAuthorities["USER"];
-                     const user = {firstName, lastName, emailAddress, telephone, authorities}
-                    const success = registerUser(user)
-                    console.log(success)
+                     const user = {firstName, lastName, emailAddress, telephone, password, authorities}
+                    const response = registerUser2(user)
+                    console.log(response)
 
-                    if (success !== undefined) {
-                        setSuccessMessage(successMessage)
-        
-                        //registerUser(user).then((response) => {
-                        //console.log(response.data)
+                    if (response !== undefined) {
+                        setSuccessMessage(successMessage + response)
+                        setErrorMessage("")
         
                         navigate('/login')
 
@@ -54,8 +46,13 @@ const Register = () => {
                     }
                     //})
                 } catch (error) {
-                    setErrorMessage(error.message)     
+                    setSuccessMessage("")
+                    setErrorMessage(`Registration error : ${error.message}`)     
                 }
+                setTimeout(() => {
+                    setErrorMessage("")
+                    setSuccessMessage("")
+                }, 500)
         } 
     }
 
@@ -101,19 +98,34 @@ const Register = () => {
             valid = false;
         }
 
+        if(telephone.trim()){
+            errorsCopy.telephone = '';
+        } else {
+            errorsCopy.telephone = 'Telephone number is required';
+            valid = false;
+        }
+
+        if(password.trim()){
+            errorsCopy.password = '';
+        } else {
+            errorsCopy.password = 'Password is required';
+            valid = false;
+        }
         setErrors(errorsCopy);
 
         return valid;
     }
 
     return (
-        <div className='container'>
-        <br /> <br />
+        <section className='container col-6 mt-5 mb-5'>
+            {errorMessage && <p className='alert alert-danger'>{errorMessage}</p>}
+             {successMessage && <p className='alert alert-success'>{successMessage}</p>}
+
         <div className='row'>
             <div className='card col-md-6 offset-md-3 offset-md-3'>
                 <h2 className='text-center'>Register here</h2>
                 <div className='card-body'>
-                    <form>
+                    <form onClick={saveUser2}>
                         <div className='form-group mb-2'>
                             <label className='form-label'>First Name</label>
                             <input
@@ -164,16 +176,34 @@ const Register = () => {
                                 onChange={(e) => setTelephone(e.target.value)}
                                 >
                             </input>
-                            {errors.telephoneNumber && <div className='invalid-feedback'>{ errors.telephoneNumber }</div> }
-                        </div>
-                        <button className='btn btn-success' onClick={saveUser2}>Submit</button>
+                            {errors.password && <div className='invalid-feedback'>{ errors.password }</div> }
+                            </div>
+                             <div className='form-group mb-2'>
+                            <label className='form-label'>Password</label>
+                            <input
+                                type='text'
+                                placeholder='Enter your password'
+                                name='password'
+                                value={password}
+                                className={`form-control ${errors.password ? 'is-invalid': '' }`}
+                                onChange={(e) => setPassword(e.target.value)}
+                                >
+                            </input>
+                            {errors.password && <div className='invalid-feedback'>{ errors.password }</div> }
+                            </div>
+                            <div>
+                                <button className='btn btn-success' >Submit</button>
+                                   <span style={{ marginLeft: "10px" }}>
+                                        Not registered yet?<Link to={"/Login"}> login here </Link>
+                                   </span>
+                            </div>
                     </form>
                 </div>
 
             </div>
         </div>
 
-    </div>
+    </section>
         
     )
 }

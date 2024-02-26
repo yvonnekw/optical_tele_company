@@ -88,7 +88,7 @@ public class CallService {
             call.setStartTime(callsDTO.getStartTime());
             call.setEndTime(callsDTO.getEndTime());
             call.setDuration(callsDTO.getDuration());
-            call.setTotalTime(callsDTO.getTotalTime());
+            //call.setTotalTime(callsDTO.getTotalTime());
             call.setCostPerMinute(callsDTO.getCostPerMinute());
             call.setDiscountForCalls(callsDTO.getDiscountForCalls());
             call.setSignUpDiscount(callsDTO.getSignUpDiscount());
@@ -158,6 +158,10 @@ public class CallService {
          */
 
         // return null;
+    }
+
+    public List<Call> getCallsByUsername(String username) {
+        return callRepository.findByUserUsername(username);
     }
 
     /* 

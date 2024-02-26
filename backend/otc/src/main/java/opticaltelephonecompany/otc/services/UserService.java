@@ -51,7 +51,8 @@ public class UserService implements UserDetailsService {
         user.setLastName(registrationDTO.getLastName());
         user.setEmailAddress(registrationDTO.getEmailAdress());
         user.setTelephone(registrationDTO.getTelephone());
-       user.setPassword(registrationDTO.getPassword());
+        //user.setPassword(registrationDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
 
       // ApplicationUser encryptPassword = setPassword(registrationDTO.getLastName(), registrationDTO.getPassword());
 
@@ -72,7 +73,7 @@ public class UserService implements UserDetailsService {
         user.setUsername(tempName);
 
         Set<Role> roles = registrationDTO.getAuthorities();
-        roles.add(roleRepository.findByAuthority("USER").get());
+        roles.add(roleRepository.findByAuthority("ADMIN").get());
         registrationDTO.setAuthorities(roles);
 
         //Set<Role> roles =  (Set<Role>) applicationUser.getAuthorities();

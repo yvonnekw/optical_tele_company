@@ -33,12 +33,12 @@ import opticaltelephonecompany.otc.services.UserService;
 @CrossOrigin("*")
 public class CallReceiverController {
     
-    private RabbitMQJsonProducer rabbitMQProducer;
+    private RabbitMQJsonProducer rabbitMQJsonProducer;
     private CallReceiverService callReceiverService;
 
-    public CallReceiverController(CallReceiverService callReceiverService, RabbitMQJsonProducer rabbitMQProducer){
+    public CallReceiverController(CallReceiverService callReceiverService, RabbitMQJsonProducer rabbitMQJsonProducer){
         this.callReceiverService = callReceiverService;
-        this.rabbitMQProducer = rabbitMQProducer;
+        this.rabbitMQJsonProducer = rabbitMQJsonProducer;
     }
 
    /// public ResponseEntity<String> sendJsonMessage() {
@@ -68,6 +68,7 @@ public class CallReceiverController {
         // callReceiverDTO.setDestinationCountry(destinationCountry);
 
         CallReceiver callReceiver = callReceiverService.addCallReceiver(username, callReceiverDTO);
+        rabbitMQJsonProducer.sendJsonMessage(callReceiver);
 
         return callReceiver;
     }

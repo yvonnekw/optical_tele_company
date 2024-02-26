@@ -21,6 +21,7 @@ import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallDto;
 import opticaltelephonecompany.otc.models.CallReceiver;
 import opticaltelephonecompany.otc.models.Users;
+import opticaltelephonecompany.otc.publisher.RabbitMQJsonProducer;
 import opticaltelephonecompany.otc.services.CallService;
 import opticaltelephonecompany.otc.services.UserService;
 
@@ -31,10 +32,12 @@ public class CallController {
     
     private final UserService userService;
     private final CallService callService;
+    private RabbitMQJsonProducer rabbitMQJsonProducer;
 
-    public CallController(CallService callService, UserService userService){
+    public CallController(CallService callService, UserService userService, RabbitMQJsonProducer rabbitMQJsonProducer){
         this.callService = callService;
         this.userService = userService;
+        this.rabbitMQJsonProducer = rabbitMQJsonProducer;
     }
 
     /* 
@@ -81,7 +84,7 @@ public class CallController {
         String startTime = body.get("startTime");
         String endTime = body.get("endTime");
         String duration = body.get("duration");
-        String totalTime = body.get("totalTime");
+       // String totalTime = body.get("totalTime");
         String costPerMinute = body.get("costPerMinute");
         String discountForCalls = body.get("discountForCalls");
         String signUpDiscount = body.get("signUpDiscount");
@@ -98,7 +101,7 @@ public class CallController {
         callsDto.setStartTime(startTime);
         callsDto.setEndTime(endTime);
         callsDto.setDuration(duration);
-        callsDto.setTotalTime(totalTime);
+      //  callsDto.setTotalTime(totalTime);
         callsDto.setCostPerMinute(costPerMinute);
         callsDto.setDiscountForCalls(discountForCalls);
         callsDto.setSignUpDiscount(signUpDiscount);
@@ -116,7 +119,19 @@ public class CallController {
         //return userService.updateUser(applicationUser);
         // return "the calls";
 
+        rabbitMQJsonProducer.sendJsonMessage(call);
+
         return call;
+    }
+
+    @GetMapping("/user/{username}")
+    public ResponseEntity<List<Call>> getCallsByUsername(@PathVariable String username) {
+        try {
+            List<Call> calls = callService.getCallsByUsername(username);
+            return new ResponseEntity<>(calls, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 /* 

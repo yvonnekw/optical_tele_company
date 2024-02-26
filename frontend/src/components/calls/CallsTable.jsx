@@ -1,28 +1,45 @@
-import React, {useEffect, useState} from 'react'
-import { listCalls } from '../services/CallService'
+import React, { useEffect, useState } from 'react';
+import { getCallsByUsername } from '../../services/CallService';
 
 
-const ListAllCalls = () => {
-//defines the variables in a functional component
+const CallsTable = ({ userId }) => {
+    //defines the variables in a functional component
     const [calls, setCalls] = useState([])
+    //const [username, setUsername] = useState('')
 
+    //setUsername('yodalpinky1')
+
+    /*
     useEffect(() => {
-        listCalls().then((response) => {
+        getCallsByUsername(username).then((response) => {
+            console.log("response data " + response.data)
             setCalls(response.data);
 
         }).catch(error => {
             console.error(error);
         })
 
-    }, [])
+    }, [username])
 
+    */
+    
+      useEffect(() => {
+        // Fetch calls data when the component mounts or when the username changes
+        getCallsByUsername(userId)
+            .then((response) => {
+                setCalls(response.data); // Set calls data from the response
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, [userId]);
 
   return (
     <div className='container'>
         <br /> <br />
         <div className='row'></div>
           <div className='card col-md-6 offset-md-3 offset-md-3'>
-              <h2 className='text-center'>Call list</h2>
+              <h2 className='text-center'>Call Summary</h2>
                 <div className='card-body'></div>
                     <table className='table table-striped table-bordered'>
                             <thead>
@@ -42,7 +59,7 @@ const ListAllCalls = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {
+                      {/* {
                                         calls.map(call =>
                                             <tr key={call.id}>
                                                 <td>{call.callId}</td>
@@ -63,7 +80,20 @@ const ListAllCalls = () => {
                                     }
                                     <tr>
 
-                                    </tr>
+                      </tr>
+                                */}
+                    
+                      {calls.length > 0 ? ( // Check if calls array is not empty before mapping
+                            calls.map(call =>
+                                <tr key={call.id}>
+                                    {/* Table body cells */}
+                                </tr>
+                            )
+                        ) : (
+                            <tr>
+                                <td colSpan="12">No calls found</td>
+                                  </tr>
+                                     )}
                                 </tbody>
                             </table>
             </div>
@@ -71,5 +101,4 @@ const ListAllCalls = () => {
   )
 }
 
-export default ListAllCalls
-
+export default CallsTable

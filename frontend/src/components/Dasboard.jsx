@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -31,9 +31,7 @@ const Dashboard = () => {
                 <p className="card-text">
                   View and edit your profile information.
                 </p>
-                <button className='btn btn-primary' onClick={goToProfile}>
-                  View Profile
-                </button>
+                <Link to="/profile" className="mb-2 md-mb-0">View Profile</Link>
               </div>
             </div>
 
@@ -43,9 +41,7 @@ const Dashboard = () => {
                 <p className="card-text">
                   View your call history and details of past calls.
                 </p>
-                <button className='btn btn-primary' onClick={goToCallHistory}>
-                  View Call History
-                </button>
+                <Link to="/call-history" className="mb-2 md-mb-0">View Call History</Link>
               </div>
             </div>
 
@@ -55,9 +51,7 @@ const Dashboard = () => {
                 <p className="card-text">
                   Click the button below to make a new call.
                 </p>
-                <button className='btn btn-success' onClick={makeNewCall}>
-                  Make a Call
-                </button>
+                <Link to="/make-call" className="mb-2 md-mb-0">Make a call</Link>
               </div>
             </div>
           </div>

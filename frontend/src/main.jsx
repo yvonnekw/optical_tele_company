@@ -1,11 +1,41 @@
+import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import React from 'react';
-import { createRoot } from 'react-dom/client'; // Import createRoot from 'react-dom/client'
+import App from './App.jsx';
+import ReactDOM from 'react-dom/client'
+
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+   <React.StrictMode>
+      <App />
+  </React.StrictMode>
+)
+
+
+
+
+
+/*
+import React from 'react';
+//import { createRoot, ReactDOM } from 'react-dom/client'; // Import createRoot from 'react-dom/client'
 import App from './App';
 import './index.css';
+//import ReactDOM from 'react-dom'; // Correct import
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Router, Routes, Route} from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth'; // Import your AuthProvider component
 import { BrowserRouter } from 'react-router-dom';
+import { ReactDOM }  from 'react-dom/client'// from 'react-dom';
+
+
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  document.getElementById('root')
+);
+*/
 
 /*
 createRoot(document.getElementById('root')).render(
@@ -20,7 +50,18 @@ createRoot(document.getElementById('root')).render(
   </React.StrictMode>
 );
 */
-
+/*
+//createRoot(document.getElementById('root')).render(
+ ReactDOM.createRoot(document.getElementById('root')).render(
+   <React.StrictMode>
+   
+      <App />
+    
+   </React.StrictMode>
+ //)
+);
+*/
+/*
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
@@ -31,7 +72,7 @@ createRoot(document.getElementById('root')).render(
   </React.StrictMode>
 );
 
-
+*/
 
 /*
 import React from 'react';

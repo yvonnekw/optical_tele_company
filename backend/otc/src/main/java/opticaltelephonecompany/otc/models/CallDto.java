@@ -1,5 +1,6 @@
 package opticaltelephonecompany.otc.models;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public class CallDto {
@@ -7,7 +8,6 @@ public class CallDto {
     private String startTime;
     private String endTime;
     private String duration;
-    private String totalTime;
     private String costPerMinute;
     private String discountForCalls;
     private String signUpDiscount;
@@ -15,9 +15,36 @@ public class CallDto {
     private String netCost;
     private String grossCost;
     private String totalCost;
-    //private CallUser callUser;
+    private LocalDateTime callDate;
     private CallReceiver callReceiver;
     private Set<Users> callUsers;
+
+
+    public CallDto(String startTime, String endTime, String duration, String costPerMinute, String discountForCalls,
+            String signUpDiscount, String vat, String netCost, String grossCost, String totalCost,
+            LocalDateTime callDate, CallReceiver callReceiver, Set<Users> callUsers) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.duration = duration;
+        this.costPerMinute = costPerMinute;
+        this.discountForCalls = discountForCalls;
+        this.signUpDiscount = signUpDiscount;
+        this.vat = vat;
+        this.netCost = netCost;
+        this.grossCost = grossCost;
+        this.totalCost = totalCost;
+        this.callDate = callDate;
+        this.callReceiver = callReceiver;
+        this.callUsers = callUsers;
+    }
+
+    public LocalDateTime getCallDate() {
+        return callDate;
+    }
+
+    public void setCallDate(LocalDateTime callDate) {
+        this.callDate = callDate;
+    }
 
     public Set<Users> getCallUsers() {
         return callUsers;
@@ -25,14 +52,6 @@ public class CallDto {
 
     public void setCallUsers(Set<Users> callUsers) {
         this.callUsers = callUsers;
-    }
-
-    public String getTotalTime() {
-        return totalTime;
-    }
-
-    public void setTotalTime(String totalTime) {
-        this.totalTime = totalTime;
     }
 
     public String getCostPerMinute() {
@@ -125,29 +144,13 @@ public class CallDto {
 
     @Override
     public String toString() {
-        return "CallDto [startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration + ", totalTime="
-                + totalTime + ", costPerMinute=" + costPerMinute + ", discountForCalls=" + discountForCalls
-                + ", signUpDiscount=" + signUpDiscount + ", vat=" + vat + ", netCost=" + netCost + ", grossCost="
-                + grossCost + ", totalCost=" + totalCost + ", callReceiver=" + callReceiver + ", callUsers=" + callUsers
+        return "CallDto [startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration
+                + ", costPerMinute=" + costPerMinute + ", discountForCalls=" + discountForCalls + ", signUpDiscount="
+                + signUpDiscount + ", vat=" + vat + ", netCost=" + netCost + ", grossCost=" + grossCost + ", totalCost="
+                + totalCost + ", callDate=" + callDate + ", callReceiver=" + callReceiver + ", callUsers=" + callUsers
                 + "]";
     }
 
-    public CallDto(String startTime, String endTime, String duration, String totalTime, String costPerMinute,
-            String discountForCalls, String signUpDiscount, String vat, String netCost, String grossCost,
-            String totalCost, CallReceiver callReceiver, Set<Users> callUsers) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.duration = duration;
-        this.totalTime = totalTime;
-        this.costPerMinute = costPerMinute;
-        this.discountForCalls = discountForCalls;
-        this.signUpDiscount = signUpDiscount;
-        this.vat = vat;
-        this.netCost = netCost;
-        this.grossCost = grossCost;
-        this.totalCost = totalCost;
-        this.callReceiver = callReceiver;
-        this.callUsers = callUsers;
-    }
+ 
    
 }
