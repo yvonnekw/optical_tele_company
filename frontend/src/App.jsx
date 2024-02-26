@@ -37,25 +37,37 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/make-call" element={<MakeCall />} />
+            <Route path="/dashboard" element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>} />
             <Route
 							path="/make-call/"
 							element={
 								<RequireAuth>
                   <MakeCall />
-                  <ListAllCalls />
-                  <AdminUI />
-                  <CallHistory />
-                  <Profile />
 								</RequireAuth>
-							}
-						/>
-              <Route path="/calls" element={<ListAllCalls />} />
-              <Route path="/user-calls" element={<CallsTable />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/call-history" element={<CallHistory />} />
-              <Route path="/admin" element={<AdminUI />} />
+							}/>
+            <Route path="/calls" element={
+              <RequireAuth>
+                <ListAllCalls />
+              </RequireAuth>} />
+            <Route path="/user-calls" element={
+              <RequireAuth>
+               <CallsTable />
+              </RequireAuth>} />
+            <Route path="/profile" element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>} />
+            <Route path="/call-history" element={
+              <RequireAuth>
+                <CallHistory />
+              </RequireAuth>} />
+            <Route path="/admin" element={
+              <RequireAuth>
+                <AdminUI />
+              </RequireAuth>} />
               <Route path="/logout" element={<Logout />} />
             </Routes>
           </Router>

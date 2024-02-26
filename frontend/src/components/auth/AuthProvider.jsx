@@ -9,6 +9,7 @@ export const AuthContext = createContext({
     user: null,
     handleLogin: (token) => {},
     handleLogout: () => {},
+    isLoggedIn: () => {}
 }) 
 
 const AuthProvider = ({children}) => {
@@ -17,7 +18,6 @@ const AuthProvider = ({children}) => {
     const handleLogin = (token) => {
         try {
             const decodedToken = jwt_decode(token)
-             //console.log("decoded Token ", decodedToken); 
             localStorage.setItem("userId", decodedToken.sub)
             localStorage.setItem("userRole", decodedToken.scope);
             localStorage.setItem("token", token)
@@ -36,16 +36,15 @@ const AuthProvider = ({children}) => {
     }
 
    const isLoggedIn = () => {
- // const token = localStorage.getItem("token");
  // return !!token; // Returns true if token exists, false otherwise
   
    const token = localStorage.getItem("token");
-    if (!token) {
+       if (!token) {
+        
       return false; // No token found
     }
-
   // Decode the token to get its payload
-  const decodedToken = jwtDecode(token);
+  const decodedToken = jwt_decode(token);
   
   // Check if the token expiration time is in the past
   const isExpired = Date.now() >= decodedToken.exp * 1000;
@@ -55,7 +54,7 @@ const AuthProvider = ({children}) => {
 };
 
     return (
-        <AuthContext.Provider value={{user, handleLogin, handleLogout}}>
+        <AuthContext.Provider value={{user, handleLogin, handleLogout, isLoggedIn}}>
             {children}
         </AuthContext.Provider>
     )

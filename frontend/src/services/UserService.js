@@ -52,7 +52,7 @@ export async function loginUser2(user) {
         headers: basicHeader,
       });
     if (response.status >= 200 && response.status < 300) {
-      console.log("Response from user service" + response);
+      console.log("Response from user service " + response);
        //console.log("Response data:", response.data); // Log the response data
        const token = response?.data?.token;
        const username = response?.data?.username;

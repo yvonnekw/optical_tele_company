@@ -1,18 +1,26 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import { listCalls } from '../../services/CallService'
+import AuthProvider, { AuthContext } from '../auth/AuthProvider';
 
 
 const ListAllCalls = () => {
 //defines the variables in a functional component
     const [calls, setCalls] = useState([])
 
-    useEffect(() => {
-        listCalls().then((response) => {
-            setCalls(response.data);
 
-        }).catch(error => {
-            console.error(error);
-        })
+  const { isLoggedIn } = useContext(AuthContext)
+
+    useEffect(() => {
+        if (isLoggedIn()) {
+            listCalls().then((response) => {
+                setCalls(response.data);
+
+            }).catch(error => {
+                console.error(error);
+            })
+        } else {
+            
+        }
 
     }, [])
 

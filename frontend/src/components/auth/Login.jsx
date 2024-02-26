@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 //import { useAuth } from '../hooks/useAuth';
 //import { useAuth } from '../hooks/useAuth';
@@ -12,51 +12,37 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
 
-  /*
-  const [login, setLogin] = useState({
-    username: "",
-    password: ""
-  })
-*/
-  //const 
+
   const navigate = useNavigate();
 
-  const {handleLogin} = useContext(AuthContext)
+  const { handleLogin } = useContext(AuthContext)
+  
+
+  const { isLoggedIn } = useContext(AuthContext)
+
+   useEffect(() => {
+     const fetchUser = async () => {
+       if (isLoggedIn()) {
+           navigate("/dashboard")
+       }
+     }
+
+    fetchUser();
+  }, []);
+
 
   const handleInputChange = (e) => {
-    
     setLogin({ ...login, [e.target.name] : e.target.value})
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     const user = { username, password };
-    //console.log("login Data " + login.username)
-    const success = await loginUser2(user)
-    //console.log("success " + success)
-   // console.log("success username authorities " + success?.data?.authorities)
-    // console.log("Response data:", success.data); // Log the response data
-    //const token = success?.data?.token;
-   // const username = success?.data?.username;
-   // console.log("The token:", token);
-    //console.log("The username :", username);
-    //userData.data.user.username
-    if (success) {
-      const token = success.token
+    const response = await loginUser2(user)
+    if (response) {
+      const token = response.token
       handleLogin(token);
-      // const token = success.data.token
-      //const token = success
-      //const decodedToken = jwtDecode(token)
-      //localStorage.setItem("token", token)
-      //localStorage.setItem("userId", decodedToken.sub)
-      //localStorage.setItem("userRole", decodedToken.roles.join(","))
-      //localStorage.setItem("username", decodedToken)
-     // let userId = localStorage.getItem("userId")
-      //console.log("new username returned " + userId)
-      //let usern = localStorage.getItem("userId")
-     // console.log("new username returned " + usern)
-     navigate("/profile")
-     // window.location.reload()
+     navigate("/dashboard")
     } else {
       setErrMsg("Invalid username or password. Please try again.")
     }
@@ -64,7 +50,6 @@ const Login = () => {
       setErrMsg("")
     }, 4000)
   }
-
 
   const [errors, setErrors] = useState({
         username:'',
@@ -79,9 +64,6 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
-   //const { login } = useAuth();
-  
-   //const { login } = useAuth();
 
   const handleLogin2 = async (e) => {
       e.preventDefault();
@@ -109,39 +91,7 @@ const Login = () => {
     } else {
         setErrMsg("Username or password incorrect");
     }
-    /*
-    e.preventDefault();
-    if (validateForm()) {
-        const user = { username, password };
-    try {
-      const userData = await login(user);
-      console.log("from the login page", userData);
-      console.log("from the login page username ", userData?.data?.user?.username);
-    } catch (error) {
-      console.error("Error logging in:", error);
-      setErrMsg("An error occurred while logging in");
-    }
-  } else {
-    setErrMsg("Username or password incorrect");
-  }
-*/
-/*
-    try {
-      const response = await loginUser({ username, password });
-      const token = response?.data?.token;
-      console.log("The token the ui : " + token)
-      if (token) {
-        // Store token in localStorage or wherever you manage authentication state
-        localStorage.setItem('token', token);
-        // Redirect to dashboard or any other authorized page
-        navigate('/dashboard');
-      } else {
-        setErrMsg('Username or password incorrect');
-      }
-    } catch (error) {
-      console.error('Error logging in:', error);
-      setErrMsg('An error occurred while logging in');
-    }*/
+  
   };
 
   function validateForm(){
@@ -188,7 +138,6 @@ const Login = () => {
                 value={username}
                 className="form-control"
                 onChange={handleUsernameChange}
-                 //onChange={handleInputChange}
                 required
               />
             </div>
@@ -202,7 +151,6 @@ const Login = () => {
                 value={password}
                 className="form-control"
                   onChange={handlePasswordChange}
-                  //onChange={ handleInputChange}
                 required
               />
               </div>

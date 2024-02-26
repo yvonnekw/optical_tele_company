@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 //import { Link } from 'react-router-dom';
+import moment from 'moment';
 import Select from 'react-select';
 import { makeCall,  getCallReceiversForUser, checkPhoneNumberExists} from '../../services/CallService';
-import { loginUser, getUsername } from '../../services/UserService'; // Import loginUser and isLoggedIn from UserService
+import { loginUser, loginUser2, getUsername } from '../../services/UserService'; // Import loginUser and isLoggedIn from UserService
 import CallReceiverSelector from '../common/CallReceiverSelector';
-import { useAuth } from '../../hooks/useAuth'
-import CallsTable from './CallsTable';
 import AuthProvider, { AuthContext } from '../auth/AuthProvider';
+import { getCallsByUsername } from '../../services/CallService';
 
 const MakeCall = () => {
 
@@ -29,8 +29,11 @@ const [selectedTelephoneNumber, setSelectedTelephoneNumber] = useState('');
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
 const [errorMessage, setErrorMessage]= useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-    const [calls, setCalls] = useState([]);
+const [successMessage, setSuccessMessage] = useState('');
+  const [calls, setCalls] = useState([]);
+  
+   const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
   
 
   const [newCall, setNewCall] = useState({
@@ -88,57 +91,6 @@ const [errorMessage, setErrorMessage]= useState('');
     setNewCall({ ...newCall, [name]: value })
   }
   
-/*
-  // Fetch call receivers for a user
-  useEffect(() => {
-
-     if (isLoggedIn()) {
-      const fetchCallReceivers = async () => {
-        try {
-          const response = await getCallReceiversForUser(username);
-          setSelectedCallReceiver(response.data); // Update to select appropriate receiver data
-        } catch (error) {
-          console.error('Error fetching call receivers:', error);
-        }
-      };
-    
-  
-        fetchCallReceivers();
-      }
-    },
-    []);
-  
-  */
-  
-/*
- // Fetch phone numbers based on selected call receiver
-  useEffect(() => {
-      if (isLoggedIn() && selectedCallReceiver) {
-        const fetchPhoneNumbers = async () => {
-          try {
-            if (selectedCallReceiver) {
-              const response = await getDistinctPhoneNumbersForUser(selectedCallReceiver.username);
-              setPhoneNumbers(response.data);
-            }
-          } catch (error) {
-            console.error('Error fetching phone numbers:', error);
-          }
-        };
-  
-      fetchPhoneNumbers();
-    }
-  }, [selectedCallReceiver]);
-
-* /
-  
-const handleCallReceiverChange = (selectedOption) => {
-    setSelectedCallReceiver(selectedOption);
-  };
-
-
-  */
-
-    
   const handleTelphoneNumberChange = (selectedOption) => {
     setSelectedTelephoneNumber(selectedOption);
      setNewCall({ ...newCall, telephone: selectedOption.value });
@@ -151,9 +103,9 @@ const ratePerSecond = 0.001;
 const taxRate = 0.20;
 
 // Function to handle input change for start time
-//const handleStartTimeChange = (event) => {
-  //setStartTime(event.target.value);
-//};
+const handleStartTimeChange = (event) => {
+  setStartTime(event.target.value);
+};
 
 // Function to handle input change for end time
 const handleEndTimeChange = (event) => {
@@ -161,10 +113,24 @@ const handleEndTimeChange = (event) => {
 };
 
 // Function to handle input change for discount
-const handleDiscountChange = (event) => {
+const handleDiscountInputChange = (event) => {
   setDiscount(event.target.value);
 };
   
+  useEffect(() => {
+    const fetchCalls = async () => {
+      try {
+        const response = await getCallsByUsername(userId, token);
+        setCalls(response);
+        console.log("get calls ", calls)
+      } catch (error) {
+        console.error("Error fetching calls: ", error.message);
+        setErrorMessage(error.message);
+      }
+    };
+
+    fetchCalls();
+  }, [userId, token]);
 
 // Function to calculate total time, call cost, and total cost
 const calculateTotalTime = () => {
@@ -208,103 +174,16 @@ const calculateTotalTime = () => {
     setTotalCost(0);
   }
 };
-
-  //const { getUsernameFromToken } = useAuth();
-  //const { decodeToken } = useAuth();
   
-// Function to handle form submission
-const handleSubmit = async (event) => {
-  event.preventDefault();
-/*
-   if (isLoggedIn()) {
-    // If user is logged in, set the username
-    const loggedInUsername = await getUsername();
-    setUsername(loggedInUsername);
-    console.log("login username a " + loggedInUsername);
-  } else {
-    // Log in the user
-    const user = { username, password };
-    try {
-      const response = await loginUser(user);
-      // Upon successful login, store session information
-      // For example, you can use localStorage:
-      localStorage.setItem('user', JSON.stringify(response.data));
-      // Set the username after successful login
-      const loggedInUsername = await getUsername();
-      setUsername(loggedInUsername);
-      console.log("login username b " + loggedInUsername);
-      // Now, the user is logged in, you can make the call
-    } catch (error) {
-      console.error('Error logging in:', error);
-      // Handle login error
-    }
-   }
-  */
-/*
-  if (isLoggedIn()) {
-    // If user is logged in, set the username
-    setUsername(getUsername());
-    console.log("login username a "+ username)
-  } else {
-    // Log in the user
-    const user = { username, password };
-    try {
-      const response = await loginUser(user);
-      // Upon successful login, store session information
-      // For example, you can use localStorage:
-      localStorage.setItem('user', JSON.stringify(response.data));
-      // Set the username after successful login
-      setUsername(getUsername());
-        console.log("login username b "+ username)
-      // Now, the user is logged in, you can make the call
-    } catch (error) {
-      console.error('Error logging in:', error);
-      // Handle login error
-    }
-  }*/
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  
-
-  if (isLoggedIn()) {
-   // const tok = await  decodeToken(); // Fetch the username after successful login
-      //const usern = await getUsernameFromToken(); // Fetch the username after successful login
-    //console.log('Username after login:', usern);
-    //console.log('token after login:',tok);
-  } else {
+    if (isLoggedIn()) { 
       
-        // Log in the user
-      // const user = { username: 'example', password: 'password' }; // Replace with actual login credentials
-    const user = { username, password };
-    console.log("user " + user)
-      try {
-          const response = await loginUser(user);
-          // Upon successful login, store session information
-          // For example, you can use localStorage:
-        
-        if (response.data.user !== null) {
-          localStorage.setItem('user', JSON.stringify(response.data));
-
-       // const username = await getUsername(); // Fetch the username after successful login
-        console.log('Username after login:', username);
-          //let usern = (response.data.username)
-         // console.log('username returned after login', usern);
-          // Now, the user is logged in, you can make the call
-         // setUsername(response.data.username);
-        } else {
-          console.log("login did not happen ")
-          return;
-        }
-        } catch (error) {
-          console.error('Error logging in:', error);
-          // Handle login error
-          return;
-        }
-    }
-      
-    if(validateForm()){
+    if (validateForm()) {
       calculateTotalTime();
 
-      setUsername('yodalpinky1')
+      // setUsername('yodalpinky1')
       const call = {
         startTime: startTime,
         endTime: endTime,
@@ -319,33 +198,34 @@ const handleSubmit = async (event) => {
         username: currentUser,//'yodalpinky1',//username, //'yodalpinky1',//username,//'yodalpinky1',// await getUsername() ,//'yodalpinky1', // Replace with dynamic username from your app
         telephone: selectedTelephoneNumber // "032456776580"//selectedTelephoneNumber //"032456776580"
       };
-          try {
-            console.log("Request data " + call.startTime);
-            console.log("telephone number for the call " + call.telephone);
-            console.log("username number for the call " + call.username);
-             console.log("telephone number for the call " + selectedTelephoneNumber.toString());
-              //const call = {startTime, endTime}
-            const isValid = await checkPhoneNumberExists(currentUser, selectedTelephoneNumber);//('yodalpinky1', selectedTelephoneNumber);
-            console.log(isValid)
-              const success = await makeCall(call);
-            console.log(success.data);
+      try {
+        console.log("Request data " + call.startTime);
+        console.log("telephone number for the call " + call.telephone);
+        console.log("username number for the call " + call.username);
+        console.log("telephone number for the call " + selectedTelephoneNumber.toString());
+        //const call = {startTime, endTime}
+        const isValid = await checkPhoneNumberExists(currentUser, selectedTelephoneNumber);//('yodalpinky1', selectedTelephoneNumber);
+        console.log(isValid)
+        const success = await makeCall(call);
+        console.log(success.data);
 
-              if (success !== undefined) {
-                setSuccessMessage("A new call has been recored in the database.")
-                setNewCall({ startTime: null, callReceivers: "", endTime: "" })
-                setErrorMessage("")
-              } else {
-                setErrorMessage("Error adding call to the database")
-              }
+        if (success !== undefined) {
+          setSuccessMessage("A new call has been recorded in the database.")
+          setNewCall({ startTime: null, callReceivers: "", endTime: "" })
+          setErrorMessage("")
+        } else {
+          setErrorMessage("Error adding call to the database")
+        }
 
-            } catch (error) {
-               setErrorMessage(error.message)
-          }
+      } catch (error) {
+        setErrorMessage(error.message)
+      }
       setTimeout(() => {
         setSuccessMessage("")
         setErrorMessage("")
       }, 3000)
     };
+  };
   };
   
    function validateForm(){
@@ -396,12 +276,12 @@ const handleSubmit = async (event) => {
               <div className='form-group mb-2'>
                 <label className='form-label'>Start Time</label>
                 <input
-                  type='text'
-                  placeholder='Enter start time (HH:mm:ss)'
-                  name='startTime'
-                  value={startTime}
-                  className={`form-control ${errors.startTime ? 'is-invalid' : ''}`}
-                  onChange={handleCallInputChange}
+                      type='text'
+                      placeholder='Enter start time (HH:mm:ss)'
+                      name='startTime'
+                      value={startTime}
+                      className={`form-control ${errors.startTime ? 'is-invalid' : ''}`}
+                      onChange={handleStartTimeChange}//{handleCallInputChange}
                 />
               </div>
               <div className='form-group mb-2'>
@@ -412,7 +292,7 @@ const handleSubmit = async (event) => {
                   name='endTime'
                   value={endTime}
                   className={`form-control ${errors.endTime ? 'is-invalid' : ''}`}
-                  onChange={handleCallInputChange}
+                  onChange={handleEndTimeChange}
                 />
               </div>
               <div className='form-group mb-2'>
@@ -423,7 +303,7 @@ const handleSubmit = async (event) => {
                   name='discount'
                   value={discount}
                   className='form-control'
-                  onChange={handleCallInputChange}
+                  onChange={handleDiscountInputChange} //{handleCallInputChange}
                 />
               </div>
               <button className='btn btn-success' onClick={handleSubmit}>
@@ -449,7 +329,7 @@ const handleSubmit = async (event) => {
                     {/* Add more table headers if needed */}
                   </tr>
                 </thead>
-                <tbody>
+                 <tbody>
                   {calls.map(call => (
                     <tr key={call.id}>
                       <td>{call.callId}</td>

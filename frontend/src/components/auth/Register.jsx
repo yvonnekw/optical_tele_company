@@ -4,12 +4,6 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
 
-   // const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,,23}$/;
-    //const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-
-   // const userRef = useRef();
-  //  const errRef = useRef();
-
    const [firstName, setFirstName] = useState('')
    const [lastName, setLastName] = useState('')
    const [emailAddress, setEmailAddress] = useState('')
@@ -18,8 +12,6 @@ const Register = () => {
    const [authorities, setAuthorities] = useState([]);
     const [errorMessage, setErrorMessage]= useState('');
     const [successMessage, setSuccessMessage] = useState('');
-  
-   //const [success, setSuccess] = useState(false);
 
    const [errors, setErrors] = useState({
         firstName:'',
@@ -46,10 +38,6 @@ const Register = () => {
                     if (response !== undefined) {
                         setSuccessMessage(successMessage + response)
                         setErrorMessage("")
-                        
-        
-                        //registerUser(user).then((response) => {
-                        //console.log(response.data)
         
                         navigate('/login')
 

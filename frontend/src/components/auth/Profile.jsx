@@ -1,41 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import { getCallsByUsername } from '../../services/CallService';
 import { getUser } from '../../services/UserService';
 import CallsTable from '../calls/CallsTable';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import AuthProvider, { AuthContext } from './AuthProvider';
+import { loginUser2, loginUser, getUsername2 } from '../../services/UserService';
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [calls, setCalls] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
+  const code = localStorage.getItem("code");
 
   const location = useLocation
   const message = location.sate && location.state.message 
   const currentUser = localStorage.getItem("userId")
 
-    const {isLoggedIn} = useContext(AuthContext)
+  const { isLoggedIn } = useContext(AuthContext)
 
   useEffect(() => {
+  
     const fetchUser = async () => {
-         console.log ("user data user id", userId)
-      try {
-        const userData = await getUser(userId, token);
-        console.log ("user data ", userData)
-        setUser(userData);
-      } catch (error) {
-         console.error("Error fetching user details: ", error.message);
-        console.error(error);
+      if (isLoggedIn()) {
+        console.log("user data user id", userId)
+        try {
+          const userData = await getUser(userId, token);
+          console.log("user data ", userData)
+          setUser(userData);
+        } catch (error) {
+          console.error("Error fetching user details: ", error.message);
+          console.error(error);
+        }
       }
-    };
+      
+    }
 
     fetchUser();
   }, [userId, token]);
 
-  
 
   useEffect(() => {
     const fetchCalls = async () => {
@@ -54,7 +61,6 @@ const Profile = () => {
 
   return (
     <div className='container mb-3'>
-      I am the profile page
       {errorMessage && <p className="text-danger">{errorMessage}</p>}
       {currentUser && <h6 className='text-success text-center'>You are logged in as: {currentUser}</h6>}
       {user && (
