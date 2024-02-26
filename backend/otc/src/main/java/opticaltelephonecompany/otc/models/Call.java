@@ -1,10 +1,12 @@
 package opticaltelephonecompany.otc.models;
 
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +29,7 @@ public class Call {
     private String startTime;
     private String endTime;
     private String duration;
-    private String totalTime;
+    //private String totalTime;
     private String costPerMinute;
     private String discountForCalls;
     private String signUpDiscount;
@@ -35,55 +37,36 @@ public class Call {
     private String netCost;
     private String grossCost;
     private String totalCost;
+    private LocalDateTime callDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;
 
+    public String getCostPerMinute() {
+        return costPerMinute;
+    }
+
+
+    public LocalDateTime getCallDate() {
+        return callDate;
+    }
+
+    public void setCallDate(LocalDateTime callDate) {
+        this.callDate = callDate;
+    }
+
     @ManyToOne
     @JoinColumn(name = "receiver_id")
     private CallReceiver receiver;
 
-/* 
-   @ManyToOne
-   @JoinColumn(name = "call_user_id")
-   private CallUser callUser;
-
-   @ManyToOne
-   @JoinColumn(name = "call_receiver_id")
-   private CallReceiver callReceiver;*/
-
-   /* 
-   @ManyToOne
-    @JoinColumn(name = "call_user_id")
-    @JsonManagedReference
-    private CallUser callUser;*/
-
-    /* 
-    @ManyToOne
-    @JoinColumn(name = "call_receiver_id")
-    @JsonManagedReference
-    private CallReceiver callReceiver;*/
-
-
-/* 
-    public CallReceiver getCallReceiver() {
-        return callReceiver;
-    }
-
-    public void setCallReceiver(CallReceiver callReceiver) {
-        this.callReceiver = callReceiver;
-    }
-    */
-
-    public Call(Long callId, String startTime, String endTime, String duration, String totalTime, String costPerMinute,
+    public Call(Long callId, String startTime, String endTime, String duration, String costPerMinute,
             String discountForCalls, String signUpDiscount, String vat, String netCost, String grossCost,
             String totalCost, Users user, CallReceiver receiver) {
         this.callId = callId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.duration = duration;
-        this.totalTime = totalTime;
         this.costPerMinute = costPerMinute;
         this.discountForCalls = discountForCalls;
         this.signUpDiscount = signUpDiscount;
@@ -129,18 +112,6 @@ public class Call {
 
     public void setDuration(String duration) {
         this.duration = duration;
-    }
-
-    public String getTotalTime() {
-        return totalTime;
-    }
-
-    public void setTotalTime(String totalTime) {
-        this.totalTime = totalTime;
-    }
-
-    public String getCostPerMinute() {
-        return costPerMinute;
     }
 
     public void setCostPerMinute(String costPerMinute) {
@@ -203,23 +174,20 @@ public class Call {
         this.user = user;
     }
 
-
-    @Override
-    public String toString() {
-        return "Call [callId=" + callId + ", startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration
-                + ", totalTime=" + totalTime + ", costPerMinute=" + costPerMinute + ", discountForCalls="
-                + discountForCalls + ", signUpDiscount=" + signUpDiscount + ", vat=" + vat + ", netCost=" + netCost
-                + ", grossCost=" + grossCost + ", totalCost=" + totalCost + ", user=" + user + "]";
-    }
-
-
     public CallReceiver getReceiver() {
         return receiver;
     }
 
-
     public void setReceiver(CallReceiver receiver) {
         this.receiver = receiver;
+    }
+
+    @Override
+    public String toString() {
+        return "Call [callId=" + callId + ", startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration
+                + ", costPerMinute=" + costPerMinute + ", discountForCalls=" + discountForCalls + ", signUpDiscount="
+                + signUpDiscount + ", vat=" + vat + ", netCost=" + netCost + ", grossCost=" + grossCost + ", totalCost="
+                + totalCost + ", callDate=" + callDate + ", user=" + user + ", receiver=" + receiver + "]";
     }
 
 }

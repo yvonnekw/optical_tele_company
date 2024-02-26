@@ -84,7 +84,7 @@ public class CallController {
         String startTime = body.get("startTime");
         String endTime = body.get("endTime");
         String duration = body.get("duration");
-        String totalTime = body.get("totalTime");
+       // String totalTime = body.get("totalTime");
         String costPerMinute = body.get("costPerMinute");
         String discountForCalls = body.get("discountForCalls");
         String signUpDiscount = body.get("signUpDiscount");
@@ -101,7 +101,7 @@ public class CallController {
         callsDto.setStartTime(startTime);
         callsDto.setEndTime(endTime);
         callsDto.setDuration(duration);
-        callsDto.setTotalTime(totalTime);
+      //  callsDto.setTotalTime(totalTime);
         callsDto.setCostPerMinute(costPerMinute);
         callsDto.setDiscountForCalls(discountForCalls);
         callsDto.setSignUpDiscount(signUpDiscount);
