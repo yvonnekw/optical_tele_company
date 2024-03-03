@@ -25,15 +25,49 @@ public class Payment {
     @Column(name = "amount")
     private String amount;
     @Column(name = "payment_date")
-    private LocalDateTime paymentDate;
+    private String paymentDate;
     private String fullNameOnPaymentCard;
+    private String cardNumber;
+    private String expiringDate;
+    private String issueNumber;
+    private String securityNumber;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoice;
 
-    // Constructors, Getters, and Setters
-    // Omitted for brevity
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public String getExpiringDate() {
+        return expiringDate;
+    }
+
+    public void setExpiringDate(String expiringDate) {
+        this.expiringDate = expiringDate;
+    }
+
+    public String getIssueNumber() {
+        return issueNumber;
+    }
+
+    public void setIssueNumber(String issueNumber) {
+        this.issueNumber = issueNumber;
+    }
+
+    public String getSecurityNumber() {
+        return securityNumber;
+    }
+
+    public void setSecurityNumber(String securityNumber) {
+        this.securityNumber = securityNumber;
+    }
+
 
     public Long getPaymentId() {
         return paymentId;
@@ -51,11 +85,11 @@ public class Payment {
         this.amount = amount;
     }
 
-    public LocalDateTime getPaymentDate() {
+    public String getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(LocalDateTime paymentDate) {
+    public void setPaymentDate(String paymentDate) {
         this.paymentDate = paymentDate;
     }
 
@@ -67,42 +101,20 @@ public class Payment {
         this.fullNameOnPaymentCard = fullNameOnPaymentCard;
     }
 
-    public Set<Call> getCalls() {
-        return calls;
-    }
-
-    public void setCalls(Set<Call> calls) {
-        this.calls = calls;
-    }
-
-    @ManyToMany(mappedBy = "payments")
-    private Set<Call> calls = new HashSet<>();
-
-    public Payment(Long paymentId, String amount, LocalDateTime paymentDate, String fullNameOnPaymentCard, Users user,
-            Set<Call> calls) {
-        this.paymentId = paymentId;
-        this.amount = amount;
-        this.paymentDate = paymentDate;
-        this.fullNameOnPaymentCard = fullNameOnPaymentCard;
-        this.user = user;
-        this.calls = calls;
-    }
-
-    public Payment() {
-    }
-
-    public Users getUser() {
-        return user;
-    }
-
-    public void setUser(Users user) {
-        this.user = user;
-    }
-
     @Override
     public String toString() {
         return "Payment [paymentId=" + paymentId + ", amount=" + amount + ", paymentDate=" + paymentDate
-                + ", fullNameOnPaymentCard=" + fullNameOnPaymentCard + ", user=" + user + ", calls=" + calls + "]";
+                + ", fullNameOnPaymentCard=" + fullNameOnPaymentCard + ", cardNumber=" + cardNumber + ", expiringDate="
+                + expiringDate + ", issueNumber=" + issueNumber + ", securityNumber=" + securityNumber + ", invoice="
+                + invoice + "]";
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 
     

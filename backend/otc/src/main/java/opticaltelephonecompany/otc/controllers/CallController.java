@@ -87,7 +87,7 @@ public class CallController {
        // String totalTime = body.get("totalTime");
         String costPerMinute = body.get("costPerMinute");
         String discountForCalls = body.get("discountForCalls");
-        String signUpDiscount = body.get("signUpDiscount");
+       // String signUpDiscount = body.get("signUpDiscount");
         String vat = body.get("vat");
         String netCost = body.get("netCost");
         String grossCost = body.get("grossCost");
@@ -104,7 +104,7 @@ public class CallController {
       //  callsDto.setTotalTime(totalTime);
         callsDto.setCostPerMinute(costPerMinute);
         callsDto.setDiscountForCalls(discountForCalls);
-        callsDto.setSignUpDiscount(signUpDiscount);
+        //callsDto.setSignUpDiscount(signUpDiscount);
         callsDto.setVat(vat);
         callsDto.setNetCost(netCost);
         callsDto.setGrossCost(grossCost);

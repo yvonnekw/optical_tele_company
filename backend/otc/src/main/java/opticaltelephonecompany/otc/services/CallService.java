@@ -91,7 +91,7 @@ public class CallService {
             //call.setTotalTime(callsDTO.getTotalTime());
             call.setCostPerMinute(callsDTO.getCostPerMinute());
             call.setDiscountForCalls(callsDTO.getDiscountForCalls());
-            call.setSignUpDiscount(callsDTO.getSignUpDiscount());
+            //call.setSignUpDiscount(callsDTO.getSignUpDiscount());
             call.setVat(callsDTO.getVat());
             call.setNetCost(callsDTO.getNetCost());
             call.setGrossCost(callsDTO.getGrossCost());

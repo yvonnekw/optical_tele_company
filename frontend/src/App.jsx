@@ -17,8 +17,10 @@ import CallHistory from './components/calls/CallHistory';
 import AdminUI from './components/admin/AdminUI.jsx';
 import Footer from './components/layout/Footer';
 import NavBar from './components/layout/NavBar';
+import Payment from './components/payment/Payment';
 import RequireAuth from './components/auth/RequireAuth';
 import AuthProvider from './components/auth/AuthProvider';
+import Invoice from './components/invoice/Invoice';
 
 
 //import Secret from '../Secret';
@@ -42,7 +44,7 @@ const App = () => {
                 <Dashboard />
               </RequireAuth>} />
             <Route
-							path="/make-call/"
+							path="/make-call"
 							element={
 								<RequireAuth>
                   <MakeCall />
@@ -67,6 +69,14 @@ const App = () => {
             <Route path="/admin" element={
               <RequireAuth>
                 <AdminUI />
+              </RequireAuth>} />
+              <Route path="/payment" element={
+              <RequireAuth>
+                <Payment />
+              </RequireAuth>} />
+              <Route path="/invoice" element={
+              <RequireAuth>
+                <Invoice />
               </RequireAuth>} />
               <Route path="/logout" element={<Logout />} />
             </Routes>
