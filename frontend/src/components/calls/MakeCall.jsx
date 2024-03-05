@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import Select from "react-select";
 import {
-  makeCall,
+  enterCall,
   getCallReceiversForUser,
   checkPhoneNumberExists,
 } from "../../services/CallService";
@@ -300,7 +300,7 @@ const MakeCall = () => {
             selectedTelephoneNumber
           ); //('yodalpinky1', selectedTelephoneNumber);
           console.log(isValid);
-          const response = await makeCall(call);
+          const response = await enterCall(call);
           console.log(response.data);
           /*
           if (response !== undefined) {
