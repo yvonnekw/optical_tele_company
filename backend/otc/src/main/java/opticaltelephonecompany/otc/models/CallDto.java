@@ -14,12 +14,12 @@ public class CallDto {
     private String netCost;
     private String grossCost;
     private String totalCost;
-    private LocalDateTime callDate;
+    private String callDate;
     private CallReceiver callReceiver;
     private Set<Users> callUsers;
 
     public CallDto(String startTime, String endTime, String duration, String costPerMinute, String discountForCalls,
-            String vat, String netCost, String grossCost, String totalCost, LocalDateTime callDate,
+            String vat, String netCost, String grossCost, String totalCost, String callDate,
             CallReceiver callReceiver, Set<Users> callUsers) {
         this.startTime = startTime;
         this.endTime = endTime;
@@ -35,11 +35,11 @@ public class CallDto {
         this.callUsers = callUsers;
     }
 
-    public LocalDateTime getCallDate() {
+    public String getCallDate() {
         return callDate;
     }
 
-    public void setCallDate(LocalDateTime callDate) {
+    public void setCallDate(String callDate) {
         this.callDate = callDate;
     }
 

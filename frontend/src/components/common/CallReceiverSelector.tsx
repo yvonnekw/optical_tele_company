@@ -55,8 +55,60 @@ const CallReceiverSelector: React.FC<CallReceiverSelectorProps> = ({ handleTelep
 };
 
 export default CallReceiverSelector;
+/*
+interface CallReceiverSelectorProps {
+    handleTelephoneNumberInputChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    newCall: {
+        telephone: string;
+    };
+}
 
+const CallReceiverSelector: React.FC<CallReceiverSelectorProps> = ({ handleTelephoneNumberInputChange, newCall }) => {
+    const [telephoneNumbers, setTelephoneNumbers] = useState<string[]>([]);
+    const [showNewTelephoneNumberForm, setShowNewTelephoneNumberForm] = useState<boolean>(false);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getTelephoneNumbers('yodalpinky1'); // Assuming 'yodalpinky1' is some identifier
+                setTelephoneNumbers(response);
+            } catch (error) {
+                console.error('Error fetching phone numbers:', error);
+            }
+        };
+        fetchData();
+    }, [showNewTelephoneNumberForm]);
+
+    const handleAddNewTelephoneNumber = async () => {
+        setShowNewTelephoneNumberForm(false); // Hide the form after adding the number
+    };
+
+    return (
+        <div>
+            <select
+                id='telephone'
+                name='telephone'
+                value={newCall.telephone}
+                onChange={handleTelephoneNumberInputChange}>
+                <option value=''>Select a call receiver phone number</option>
+                {telephoneNumbers.map((telephone, index) => (
+                    <option key={index} value={telephone}>
+                        {telephone}
+                    </option>
+                ))}
+            </select>
+            {showNewTelephoneNumberForm ? (
+                <NewTelephoneNumberForm onSuccess={handleAddNewTelephoneNumber} />
+            ) : (
+                <button className='btn btn-success' onClick={() => setShowNewTelephoneNumberForm(true)}>Add New Telephone Number</button>
+            )}
+        </div>
+    );
+};
+
+export default CallReceiverSelector;
+
+*/
 
 /*
 const CallReceiverSelector = ({ handleTelephoneNumberInputChange, newCall }) => {

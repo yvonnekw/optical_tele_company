@@ -9,16 +9,6 @@ const Home = () => {
 
   const navigator = useNavigate();
 
-  /*
-  function login(){
-    navigator('/login');
-  }
-
-  function register(){
-    navigator('/register');
-  }
-  */
-
   return (
     <section>
       {message && <p className='text-warning px-5'>{message}</p>}

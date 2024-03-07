@@ -23,6 +23,7 @@ import RequireAuth from './components/auth/RequireAuth';
 import AuthProvider from './components/auth/AuthProvider';
 import Invoice from './components/invoice/Invoice';
 import React from 'react';
+import MakeCall2 from './components/calls/MakeCall2';
 
 
 //import Secret from '../Secret';
@@ -56,6 +57,10 @@ const App: React.FC = () => {
             <Route path="/calls" element={
               <RequireAuth>
                 <ListAllCalls />
+              </RequireAuth>} />
+            <Route path="/calls2" element={
+              <RequireAuth>
+                <MakeCall2 />
               </RequireAuth>} />
             <Route path="/user-calls" element={
               <RequireAuth>

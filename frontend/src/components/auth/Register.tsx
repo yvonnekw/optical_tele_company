@@ -1,8 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { registerUser, registerUser2 } from '../../services/UserService';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 
 const Register: React.FC = () => {
+    const location = useLocation();
+    const message = location.state && location.state.message;
+
+    const currentUser = localStorage.getItem("userId");
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [emailAddress, setEmailAddress] = useState('');
@@ -122,6 +126,10 @@ const Register: React.FC = () => {
 
     return (
         <section className='container col-6 mt-5 mb-5'>
+            {message && <p className='text-warning px-5'>{message}</p>}
+            {currentUser && <h6 className='text-success text-center'>You are logged in as: {currentUser}
+                <h6>Not you? <Link to="/login">login here</Link></h6></h6>}
+     
             {errorMessage && <p className='alert alert-danger'>{errorMessage}</p>}
             {successMessage && <p className='alert alert-success'>{successMessage}</p>}
 
@@ -193,7 +201,7 @@ const Register: React.FC = () => {
                             </div>
                             <div>
                                 <button type='submit' className='btn btn-success'>Submit</button>
-                                <span style={{ marginLeft: "10px" }}>Not registered yet? <Link to="/login">login here</Link></span>
+                                <span style={{ marginLeft: "10px" }}>Already registered? <Link to="/login">login here</Link></span>
                             </div>
                         </form>
                     </div>

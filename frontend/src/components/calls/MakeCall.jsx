@@ -233,11 +233,7 @@ const MakeCall = () => {
   };*/
 
   const createInvoice = async () => {
-   // if (selectedCallIds.length === 0) {
-    //  console.error("No calls selected for the invoice.");
-      // Optionally display a message to the user
-     // return; // Exit the function early if no calls are selected
-   // }
+
     const invoiceBody = {
       invoiceDate: moment().format("DD/MM/YYYY"),
       amount: totalBill,
@@ -494,6 +490,7 @@ const MakeCall = () => {
       </div>
       <br></br>
     </div>
+    
   );
 };
 

@@ -93,6 +93,7 @@ public class CallController {
         String grossCost = body.get("grossCost");
         String totalCost = body.get("totalCost");
         String telephone = body.get("telephone");
+        String callDate= body.get("callDate");
 
         //CallUser callUser = userService.getUserByUsername(userName);
 
@@ -109,6 +110,7 @@ public class CallController {
         callsDto.setNetCost(netCost);
         callsDto.setGrossCost(grossCost);
         callsDto.setTotalCost(totalCost);
+        callsDto.setCallDate(callDate);
 
         Call call = callService.makeCall(userName, telephone, callsDto);
 

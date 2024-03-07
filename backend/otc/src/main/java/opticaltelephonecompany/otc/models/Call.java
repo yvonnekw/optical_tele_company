@@ -41,23 +41,6 @@ public class Call {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    public String getCostPerMinute() {
-        return costPerMinute;
-    }
-
-
-    public String getCallDate() {
-        return callDate;
-    }
-
-    public void setCallDate(String callDate) {
-        this.callDate = callDate;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "receiver_id")
-    private CallReceiver receiver;
-
     public Call(Long callId, String startTime, String endTime, String duration, String costPerMinute,
             String discountForCalls, String vat, String netCost, String grossCost, String totalCost, String callDate,
             Users user, CallReceiver receiver) {
@@ -75,6 +58,23 @@ public class Call {
         this.user = user;
         this.receiver = receiver;
     }
+
+    public String getCostPerMinute() {
+        return costPerMinute;
+    }
+
+
+    public String getCallDate() {
+        return callDate;
+    }
+
+    public void setCallDate(String callDate) {
+        this.callDate = callDate;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_id")
+    private CallReceiver receiver;
 
     public Long getCallId() {
         return callId;
