@@ -3,10 +3,13 @@ package opticaltelephonecompany.otc.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import jakarta.persistence.EntityNotFoundException;
 import opticaltelephonecompany.otc.models.Payment;
 import opticaltelephonecompany.otc.repository.PaymentRepository;
 
+@Service
 public class PaymentServiceImpl implements PaymentService {
     
       private final PaymentRepository paymentRepository;

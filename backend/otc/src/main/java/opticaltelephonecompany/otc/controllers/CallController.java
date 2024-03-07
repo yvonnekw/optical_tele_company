@@ -87,12 +87,13 @@ public class CallController {
        // String totalTime = body.get("totalTime");
         String costPerMinute = body.get("costPerMinute");
         String discountForCalls = body.get("discountForCalls");
-        String signUpDiscount = body.get("signUpDiscount");
+       // String signUpDiscount = body.get("signUpDiscount");
         String vat = body.get("vat");
         String netCost = body.get("netCost");
         String grossCost = body.get("grossCost");
         String totalCost = body.get("totalCost");
         String telephone = body.get("telephone");
+        String callDate= body.get("callDate");
 
         //CallUser callUser = userService.getUserByUsername(userName);
 
@@ -104,11 +105,12 @@ public class CallController {
       //  callsDto.setTotalTime(totalTime);
         callsDto.setCostPerMinute(costPerMinute);
         callsDto.setDiscountForCalls(discountForCalls);
-        callsDto.setSignUpDiscount(signUpDiscount);
+        //callsDto.setSignUpDiscount(signUpDiscount);
         callsDto.setVat(vat);
         callsDto.setNetCost(netCost);
         callsDto.setGrossCost(grossCost);
         callsDto.setTotalCost(totalCost);
+        callsDto.setCallDate(callDate);
 
         Call call = callService.makeCall(userName, telephone, callsDto);
 

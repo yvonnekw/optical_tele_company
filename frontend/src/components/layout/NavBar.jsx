@@ -36,28 +36,16 @@ function NavBar() {
         </button>
         <div className='collapse navbar-collapse' id='navbarScroll'>
           <ul className='navbar-nav me-auto my-2 my-lg-0 navbar-scroll'>
-            <li className='nav-item'>
-              <NavLink className='nav-link' aria-current='page' to={'/calls'}>
-                View all calls
-              </NavLink>
-            </li>
-            {isLoggedIn && userRole === "ADMIN" && (
+            {isLoggedIn() && userRole === "ADMIN" && (
               <li className='nav-item'>
                 <NavLink className='nav-link' aria-current='page' to={'/admin'}>
                 Admin
                 </NavLink>
-                </li>
+              </li>
               )}
           </ul>
           <ul className='d-flex navbar-nav'>
-            <li className='nav-item'>
-              <NavLink className='nav-link' to={'/calls'}>
-              find a call
-              </NavLink>
-            </li>
-       
-        
-              <li className='nav-item dropdown'>
+            <li className='nav-item dropdown'>
               <a
                 className={`nav-link dropdown-toggle ${showAccount ? "show" : ""}`}
                 href='#'
@@ -68,12 +56,20 @@ function NavBar() {
                 {" "}
                 Account
               </a>
-     
-          
-            <ul
+              <ul
                 className={`dropdown-menu ${showAccount ? "show" : ""}`}
                 aria-labelledby="navbarDropdown">
-              {isLoggedIn ? (
+               <li>
+                   <Link className='dropdown-item' to={'/user-calls'} >
+                    Call history
+                  </Link>
+                </li>
+                <li>
+                   <Link className='dropdown-item' to={'/make-call'} >
+                    Make A Call
+                  </Link>
+                </li>
+              {isLoggedIn() ? (
                   <Logout />
               ) : (
                 <li>
@@ -82,7 +78,8 @@ function NavBar() {
                   </Link>
                 </li>
              
-              )}
+                )}
+               
             </ul>
             </li>
             </ul>

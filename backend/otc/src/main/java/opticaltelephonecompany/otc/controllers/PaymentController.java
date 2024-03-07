@@ -27,7 +27,6 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    @Autowired
     public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
     }
@@ -44,7 +43,7 @@ public class PaymentController {
         return ResponseEntity.ok(payment);
     }
 
-    @PostMapping
+    @PostMapping("/payment")
     public Payment createPayment(@RequestBody Payment payment) {
         Payment createdPayment = paymentService.createPayment(payment);
         return createdPayment;

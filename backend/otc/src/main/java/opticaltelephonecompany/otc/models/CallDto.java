@@ -10,25 +10,22 @@ public class CallDto {
     private String duration;
     private String costPerMinute;
     private String discountForCalls;
-    private String signUpDiscount;
     private String vat;
     private String netCost;
     private String grossCost;
     private String totalCost;
-    private LocalDateTime callDate;
+    private String callDate;
     private CallReceiver callReceiver;
     private Set<Users> callUsers;
 
-
     public CallDto(String startTime, String endTime, String duration, String costPerMinute, String discountForCalls,
-            String signUpDiscount, String vat, String netCost, String grossCost, String totalCost,
-            LocalDateTime callDate, CallReceiver callReceiver, Set<Users> callUsers) {
+            String vat, String netCost, String grossCost, String totalCost, String callDate,
+            CallReceiver callReceiver, Set<Users> callUsers) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.duration = duration;
         this.costPerMinute = costPerMinute;
         this.discountForCalls = discountForCalls;
-        this.signUpDiscount = signUpDiscount;
         this.vat = vat;
         this.netCost = netCost;
         this.grossCost = grossCost;
@@ -38,11 +35,11 @@ public class CallDto {
         this.callUsers = callUsers;
     }
 
-    public LocalDateTime getCallDate() {
+    public String getCallDate() {
         return callDate;
     }
 
-    public void setCallDate(LocalDateTime callDate) {
+    public void setCallDate(String callDate) {
         this.callDate = callDate;
     }
 
@@ -68,14 +65,6 @@ public class CallDto {
 
     public void setDiscountForCalls(String discountForCalls) {
         this.discountForCalls = discountForCalls;
-    }
-
-    public String getSignUpDiscount() {
-        return signUpDiscount;
-    }
-
-    public void setSignUpDiscount(String signUpDiscount) {
-        this.signUpDiscount = signUpDiscount;
     }
 
     public String getVat() {
@@ -145,12 +134,9 @@ public class CallDto {
     @Override
     public String toString() {
         return "CallDto [startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration
-                + ", costPerMinute=" + costPerMinute + ", discountForCalls=" + discountForCalls + ", signUpDiscount="
-                + signUpDiscount + ", vat=" + vat + ", netCost=" + netCost + ", grossCost=" + grossCost + ", totalCost="
-                + totalCost + ", callDate=" + callDate + ", callReceiver=" + callReceiver + ", callUsers=" + callUsers
-                + "]";
+                + ", costPerMinute=" + costPerMinute + ", discountForCalls=" + discountForCalls + ", vat=" + vat
+                + ", netCost=" + netCost + ", grossCost=" + grossCost + ", totalCost=" + totalCost + ", callDate="
+                + callDate + ", callReceiver=" + callReceiver + ", callUsers=" + callUsers + "]";
     }
 
- 
-   
 }

@@ -2,7 +2,10 @@ package opticaltelephonecompany.otc.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import opticaltelephonecompany.otc.models.Payment;
+
 
 public interface PaymentService {
 
