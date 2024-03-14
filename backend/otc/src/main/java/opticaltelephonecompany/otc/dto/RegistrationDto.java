@@ -1,8 +1,10 @@
-package opticaltelephonecompany.otc.models;
+package opticaltelephonecompany.otc.dto;
 
 import java.util.Set;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
+import opticaltelephonecompany.otc.models.Role;
 
 @Document(indexName ="user")
 public class RegistrationDto {

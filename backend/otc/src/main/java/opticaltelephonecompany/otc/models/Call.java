@@ -36,14 +36,23 @@ public class Call {
     private String grossCost;
     private String totalCost;
     private String callDate;
+    private boolean isPaid;
+    private boolean isInvoiced;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;
 
+    @ManyToOne
+    @JoinColumn(name = "current_call_id")
+    private CurrentCall currentCall;
+
+    public Call() {
+    }
+
     public Call(Long callId, String startTime, String endTime, String duration, String costPerMinute,
             String discountForCalls, String vat, String netCost, String grossCost, String totalCost, String callDate,
-            Users user, CallReceiver receiver) {
+            boolean isPaid, boolean isInvoiced, Users user, CurrentCall currentCall, CallReceiver receiver) {
         this.callId = callId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -55,10 +64,30 @@ public class Call {
         this.grossCost = grossCost;
         this.totalCost = totalCost;
         this.callDate = callDate;
+        this.isPaid = isPaid;
+        this.isInvoiced = isInvoiced;
         this.user = user;
+        this.currentCall = currentCall;
         this.receiver = receiver;
     }
 
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean isPaid) {
+        this.isPaid = isPaid;
+    }
+
+    public boolean isInvoiced() {
+        return isInvoiced;
+    }
+
+    public void setInvoiced(boolean isInvoiced) {
+        this.isInvoiced = isInvoiced;
+    }
+
+ 
     public String getCostPerMinute() {
         return costPerMinute;
     }
@@ -88,9 +117,6 @@ public class Call {
         return startTime;
     }
 
-    public Call() {
-    }
-
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
@@ -99,9 +125,6 @@ public class Call {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
 
     public String getDuration() {
         return duration;
@@ -171,13 +194,28 @@ public class Call {
         this.receiver = receiver;
     }
 
+    public CurrentCall getCurrentCall() {
+        return currentCall;
+    }
+
+    public void setCurrentCall(CurrentCall currentCall) {
+        this.currentCall = currentCall;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
     @Override
     public String toString() {
         return "Call [callId=" + callId + ", startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration
                 + ", costPerMinute=" + costPerMinute + ", discountForCalls=" + discountForCalls + ", vat=" + vat
                 + ", netCost=" + netCost + ", grossCost=" + grossCost + ", totalCost=" + totalCost + ", callDate="
-                + callDate + ", user=" + user + ", receiver=" + receiver + "]";
+                + callDate + ", isPaid=" + isPaid + ", isInvoiced=" + isInvoiced + ", user=" + user + ", currentCall="
+                + currentCall + ", receiver=" + receiver + "]";
     }
+
+    
 
   
 

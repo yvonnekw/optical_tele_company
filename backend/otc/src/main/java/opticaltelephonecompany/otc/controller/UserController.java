@@ -1,4 +1,4 @@
-package opticaltelephonecompany.otc.controllers;
+package opticaltelephonecompany.otc.controller;
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import opticaltelephonecompany.otc.dto.RegistrationDto;
 import opticaltelephonecompany.otc.exception.UserDoesNotExistException;
 import opticaltelephonecompany.otc.exception.UsernameNotFoundException;
 import opticaltelephonecompany.otc.models.Call;
@@ -25,7 +26,6 @@ import opticaltelephonecompany.otc.models.CallReceiver;
 import opticaltelephonecompany.otc.models.Users;
 import opticaltelephonecompany.otc.publisher.RabbitMQJsonProducer;
 import opticaltelephonecompany.otc.publisher.RabbitMQProducer;
-import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.services.AuthenticationService;
 import opticaltelephonecompany.otc.services.CallReceiverService;
 import opticaltelephonecompany.otc.services.CallService;
@@ -139,7 +139,7 @@ public class UserController {
     return ResponseEntity.ok(phoneNumbers);
     }*/
     
-    @GetMapping("all")
+    @GetMapping("/all-users")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Users>> getUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.FOUND);
@@ -160,7 +160,7 @@ public class UserController {
 
     }
     
-    
+
 
     
 }

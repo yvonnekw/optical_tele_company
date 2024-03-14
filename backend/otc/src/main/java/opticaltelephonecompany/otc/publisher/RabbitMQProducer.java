@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.log.LogDelegateFactory;
 import org.springframework.stereotype.Service;
 
+import opticaltelephonecompany.otc.event.InvoiceGenerationEvent;
+
 
 
 
@@ -45,5 +47,6 @@ public class RabbitMQProducer {
        rabbitTemplate.convertAndSend(exchange, routingkey, message);
     
    }
+
     
 }

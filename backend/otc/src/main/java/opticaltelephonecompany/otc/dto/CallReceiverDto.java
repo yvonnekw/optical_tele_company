@@ -1,4 +1,4 @@
-package opticaltelephonecompany.otc.models;
+package opticaltelephonecompany.otc.dto;
 
 public class CallReceiverDto {
 

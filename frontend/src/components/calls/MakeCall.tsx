@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment"; // Assuming moment library is installed
-import { getCallsByUsername, checkPhoneNumberExists, enterCall } from "../../services/CallService"; 
+import { getCallsByUsername, checkPhoneNumberExists, enterCall, getUnpaidCallsByUsername } from "../../services/CallService"; 
 import { invoice } from "../../services/InvoiceService";
 import createInvoice from "../invoice/CreateInvoice";
 import CallReceiverSelector from "../common/CallReceiverSelector";
 import { AuthContext } from "../auth/AuthProvider";
 import CallCard from "./CallCard";
 
-const MakeCall2: React.FC = () => {
+const MakeCall: React.FC = () => {
     const currentUser = localStorage.getItem("userId");
     // State for start and end times
     const [startTime, setStartTime] = useState<string>("");
@@ -203,6 +203,9 @@ const MakeCall2: React.FC = () => {
     };
 
 
+
+
+/*
     useEffect(() => {
         const fetchCalls = async () => {
             try {
@@ -216,7 +219,70 @@ const MakeCall2: React.FC = () => {
         };
 
         fetchCalls();
-    }, [userId, token]);
+    }, [currentUser]);
+
+    useEffect(() => {
+        const fetchCalls = async () => {
+            try {
+                const response = await getUnpaidCallsByUsername(currentUser?? ''); // Fetch only unpaid calls
+                setCalls(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchCalls();
+    }, [userId]);
+
+    */
+    /*
+    useEffect(() => {
+        const fetchCalls = async () => {
+            try {
+                // Fetch calls for the current user
+                const userCallsResponse = await getCallsByUsername(currentUser ?? '');
+                setCalls(userCallsResponse);
+
+                // Fetch unpaid calls for the current user
+                const unpaidCallsResponse = await getUnpaidCallsByUsername(currentUser ?? '');
+                // Combine existing calls with the new unpaid calls
+                setCalls(existingCalls => [...existingCalls, ...unpaidCallsResponse.data]);
+            } catch (error) {
+                console.error("Error fetching calls: ", error.message);
+                setErrorMessage(error.message);
+            }
+        };
+
+        fetchCalls();
+    }, [currentUser]);
+
+    */
+    
+    useEffect(() => {
+        const fetchCalls = async () => {
+            try {
+                // Fetch calls for the current user
+                const userCallsResponse = await getCallsByUsername(currentUser ?? '');
+                setCalls(userCallsResponse);
+
+                // Fetch unpaid calls for the current user
+                const unpaidCallsResponse = await getUnpaidCallsByUsername(currentUser ?? '');
+
+                // Ensure unpaidCallsResponse.data is iterable
+                if (Array.isArray(unpaidCallsResponse.data)) {
+                    // Combine existing calls with the new unpaid calls
+                    setCalls(existingCalls => [...existingCalls, ...unpaidCallsResponse.data]);
+                } else {
+                    console.error("Unpaid calls data is not an array:", unpaidCallsResponse.data);
+                    // Handle the scenario where unpaidCallsResponse.data is not iterable
+                }
+            } catch (error) {
+                console.error("Error fetching calls: ", error.message);
+                setErrorMessage(error.message);
+            }
+        };
+
+        fetchCalls();
+    }, [currentUser]);
 
     // Function to calculate total time, call cost, and total cost
     const calculateTotalTime = () => {
@@ -432,9 +498,7 @@ const MakeCall2: React.FC = () => {
                     <div className="card col-md-6 offset-md-3 offset-md-3">
                         <h2 className="text-center">Current Calls</h2>
                         <div className="card-body">
-                            {calls.length === 0 ? (
-                                <p>No calls to display.</p>
-                            ) : (
+                            {calls && calls.length > 0 ? (
                                 <table className="table table-striped table-bordered">
                                     <thead>
                                         <tr>
@@ -452,7 +516,7 @@ const MakeCall2: React.FC = () => {
                                     </thead>
                                     <tbody>
                                         {calls.map((call) => (
-                                            <tr key={call.id}>
+                                            <tr key={call.callId}>
                                                 <td>{call.callId}</td>
                                                 <td>{call.callDate}</td>
                                                 <td>{call.startTime}</td>
@@ -467,6 +531,8 @@ const MakeCall2: React.FC = () => {
                                         ))}
                                     </tbody>
                                 </table>
+                            ) : (
+                                <p>No calls to display.</p>
                             )}
                             <div>Total Bill Amount: £{totalBill}</div>
                             <button className="btn btn-success" onClick={calculateBill}>
@@ -487,5 +553,5 @@ const MakeCall2: React.FC = () => {
     );
 };
 
-export default MakeCall2;
+export default MakeCall;
 

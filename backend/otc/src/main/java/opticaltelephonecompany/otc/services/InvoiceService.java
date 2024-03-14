@@ -3,8 +3,9 @@ package opticaltelephonecompany.otc.services;
 
 import java.util.List;
 
+import opticaltelephonecompany.otc.dto.InvoiceWithCallIdsDTO;
+import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.Invoice;
-import opticaltelephonecompany.otc.models.InvoiceWithCallIdsDTO;
 
 public interface InvoiceService {
 
@@ -21,5 +22,20 @@ public interface InvoiceService {
     Invoice createInvoice(Invoice invoice);
 
     List<InvoiceWithCallIdsDTO> getAllInvoicesWithCallIds();
+
+    List<Call> getAllPaidCalls();
+
+    List<Call> getAllUnpaidCalls();
+
+   void generateInvoiceForCalls(List<Call> calls);
+
+   // void triggerInvoiceCreation(String username, InvoiceWithCallIdsDTO invoiceWithCallIdsDTO);
+    //List<Invoice> getAllInvoices();
+
+    //List<Invoice> findAllInvoicesWithCallsAndUser();
+
+    //List<Invoice> findAllInvoiceCallsUser();
+
+    ///List<Invoice> findAllInvoicesWithCallsAndUsers();
     
 }

@@ -1,4 +1,4 @@
-package opticaltelephonecompany.otc.models;
+package opticaltelephonecompany.otc.dto;
 
 import java.util.List;
 
@@ -8,17 +8,29 @@ public class InvoiceWithCallIdsDTO {
     private String invoiceDate;
     private String amount;
     private List<Long> callIds;
+    private boolean isPaid;
 
     
-    public InvoiceWithCallIdsDTO() {
-    }
-    
-    public InvoiceWithCallIdsDTO(Long invoiceId, String invoiceDate, String amount, List<Long> callIds) {
+    public InvoiceWithCallIdsDTO(Long invoiceId, String invoiceDate, String amount, List<Long> callIds,
+            boolean isPaid) {
         this.invoiceId = invoiceId;
         this.invoiceDate = invoiceDate;
         this.amount = amount;
         this.callIds = callIds;
+        this.isPaid = isPaid;
     }
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean isPaid) {
+        this.isPaid = isPaid;
+    }
+
+    public InvoiceWithCallIdsDTO() {
+    }
+    
 
     public Long getInvoiceId() {
         return invoiceId;
@@ -49,7 +61,7 @@ public class InvoiceWithCallIdsDTO {
     @Override
     public String toString() {
         return "InvoiceWithCallIdsDTO [invoiceId=" + invoiceId + ", invoiceDate=" + invoiceDate + ", amount=" + amount
-                + ", callIds=" + callIds + "]";
+                + ", callIds=" + callIds + ", isPaid=" + isPaid + "]";
     }
     
     

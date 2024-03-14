@@ -69,7 +69,7 @@ const Profile: React.FC = () => {
 
   return (
     <div className='container mb-3'>
-      {errorMessage && <p className="text-danger">{errorMessage}</p>}
+      {/* {errorMessage && <p className="text-danger">{errorMessage}</p>} */}
       {currentUser && <h6 className='text-success text-center'>You are logged in as: {currentUser}</h6>}
       {user && (
         <div className='card p-5 mt-5' style={{ backgroundColor: "whitesmoke" }}>

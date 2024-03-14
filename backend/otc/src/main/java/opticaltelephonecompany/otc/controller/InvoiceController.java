@@ -1,10 +1,11 @@
-package opticaltelephonecompany.otc.controllers;
+package opticaltelephonecompany.otc.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import opticaltelephonecompany.otc.dto.InvoiceWithCallIdsDTO;
 import opticaltelephonecompany.otc.models.Invoice;
-import opticaltelephonecompany.otc.models.InvoiceWithCallIdsDTO;
+import opticaltelephonecompany.otc.repository.InvoiceRepository;
 import opticaltelephonecompany.otc.services.InvoiceService;
 
 @RestController
@@ -25,6 +27,8 @@ import opticaltelephonecompany.otc.services.InvoiceService;
 public class InvoiceController {
 
     private final InvoiceService invoiceService;
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
     @Autowired
     public InvoiceController(InvoiceService invoiceService) {
@@ -41,18 +45,24 @@ return ResponseEntity.ok(invoices);
   @GetMapping("/get-all-invoice")
   public ResponseEntity<?> getAllInvoices() {
   try {
-      List<Invoice> invoices = invoiceService.getAllInvoices();
-      return ResponseEntity.ok(invoices);
+    List<Invoice> invoices = invoiceService.getAllInvoices();
+    return ResponseEntity.ok(invoices);
   } catch (Exception e) {
-      // Log the exception for debugging purposes
-      e.printStackTrace();
-      // Return an error response entity
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-              .body("An error occurred while fetching invoices.");
+    // Log the exception for debugging purposes
+    e.printStackTrace();
+    // Return an error response entity
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("An error occurred while fetching invoices.");
   }
   }*/
+  
+  @GetMapping("/all")
+  public List<Invoice> getAllInvoices() {
+      return invoiceRepository.findAll();
+  }
 
     @GetMapping("/get-all-invoice")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAllInvoicesWithCallIds() {
         try {
             List<InvoiceWithCallIdsDTO> invoicesWithCallIds = invoiceService.getAllInvoicesWithCallIds();

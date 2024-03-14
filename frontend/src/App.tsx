@@ -9,12 +9,10 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Logout from './components/auth/Logout';
 import Dashboard from './components/Dasboard';
-import MakeCall from './components/calls/MakeCall';
+//import MakeCall from './components/calls/MakeCall2';
 import ListAllCalls from './components/calls/ListAllCalls';
 import CallsTable from './components/calls/CallsTable';
 import Profile from './components/auth/Profile';
-import CallHistory from './components/calls/CallHistory';
-import Call from './components/calls/Call';
 import AdminUI from './components/admin/AdminUI.jsx';
 import Footer from './components/layout/Footer';
 import NavBar from './components/layout/NavBar';
@@ -23,7 +21,9 @@ import RequireAuth from './components/auth/RequireAuth';
 import AuthProvider from './components/auth/AuthProvider';
 import Invoice from './components/invoice/Invoice';
 import React from 'react';
-import MakeCall2 from './components/calls/MakeCall2';
+import MakeCall from './components/calls/MakeCall';
+import UserList from './components/users/UserList';
+import PaymentList from './components/payment/PaymentList';
 
 
 //import Secret from '../Secret';
@@ -48,19 +48,19 @@ const App: React.FC = () => {
                 <Dashboard />
               </RequireAuth>} />
             <Route
-              path="/make-call"
+              path="/get-all-payments"
               element={
                 <RequireAuth>
-                  <MakeCall />
+                  <PaymentList />
                 </RequireAuth>
               } />
-            <Route path="/calls" element={
+            <Route path="/get-all-calls" element={
               <RequireAuth>
                 <ListAllCalls />
               </RequireAuth>} />
-            <Route path="/calls2" element={
+            <Route path="/make-call" element={
               <RequireAuth>
-                <MakeCall2 />
+                <MakeCall />
               </RequireAuth>} />
             <Route path="/user-calls" element={
               <RequireAuth>
@@ -70,13 +70,9 @@ const App: React.FC = () => {
               <RequireAuth>
                 <Profile />
               </RequireAuth>} />
-            <Route path="/call-history" element={
+            <Route path="/get-all-users" element={
               <RequireAuth>
-                <CallHistory />
-              </RequireAuth>} />
-            <Route path="/enter-call" element={
-              <RequireAuth>
-                <Call />
+                <UserList />
               </RequireAuth>} />
             <Route path="/admin" element={
               <RequireAuth>
@@ -86,7 +82,7 @@ const App: React.FC = () => {
               <RequireAuth>
                 <Payment />
               </RequireAuth>} />
-            <Route path="/invoice" element={
+            <Route path="/get-all-invoices" element={
               <RequireAuth>
                 <Invoice />
               </RequireAuth>} />

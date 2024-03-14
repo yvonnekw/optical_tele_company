@@ -1,3 +1,5 @@
+/*
+
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -14,9 +16,11 @@ import { getCallsByUsername } from "../../services/CallService";
 import { invoice } from "../../services/InvoiceService";
 import Payment from "../payment/Payment";
 
+*/
 
+/*
 
-const MakeCall = () => {
+const MakeCall2= () => {
   const currentUser = localStorage.getItem("userId");
   // State for start and end times
   const [startTime, setStartTime] = useState("");
@@ -231,7 +235,7 @@ const MakeCall = () => {
       `/payment`
     );
   };*/
-
+/*
   const createInvoice = async () => {
 
     const invoiceBody = {
@@ -304,6 +308,7 @@ const MakeCall = () => {
               ...selectedCallIds,
               response.data.callId,
             ];*/
+            /*
           console.log("call id  ", response.data.callId);
           if (response && response.data && response.data.callId) {
             // Add the new call ID to the selectedCallIds array
@@ -437,7 +442,8 @@ const MakeCall = () => {
                       <th>VAT</th>
                       <th>Net Cost</th>
 
-                      {/* Add more table headers if needed */}
+                      {/* Add more table headers if needed */
+                      /*
                     </tr>
                   </thead>
                   <tbody>
@@ -452,7 +458,8 @@ const MakeCall = () => {
                         <td>{call.grossCost}</td>
                         <td>{call.vat}</td>
                         <td>{call.netCost}</td>
-                        {/* Add more table cells based on call properties */}
+                        {/* Add more table cells based on call properties */
+                        /*
                       </tr>
                     ))}
                   </tbody>
@@ -476,7 +483,8 @@ const MakeCall = () => {
                 Proceed To Payment
               </Link>
               <div>
-                {/* Your component content */}
+                {/* Your component content */
+                /*
                 <button
                   className="btn btn-success"
                   onClick={handleProceedToPayment}
@@ -494,4 +502,6 @@ const MakeCall = () => {
   );
 };
 
-export default MakeCall;
+export default MakeCall2;
+
+*/

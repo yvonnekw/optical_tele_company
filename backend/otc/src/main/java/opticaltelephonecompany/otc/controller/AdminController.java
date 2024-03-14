@@ -1,4 +1,4 @@
-package opticaltelephonecompany.otc.controllers;
+package opticaltelephonecompany.otc.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

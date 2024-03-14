@@ -22,33 +22,95 @@ import opticaltelephonecompany.otc.repository.CallReceiverRepository;
 import opticaltelephonecompany.otc.repository.CallRepository;
 import opticaltelephonecompany.otc.repository.UserRepository;
 
+@Service
+@Transactional
+public class CallReceiverServiceImpl implements CallReceiverService {
 
-public interface CallReceiverService {
+    private final CallRepository callRepository;
+    private final UserRepository userRepository;
+    private final CallReceiverRepository callReceiverRepository;
 
-    public CallReceiver addCallReceiver(String username, CallReceiverDto callReceiverDTO);
+
+
+    public CallReceiverServiceImpl(CallRepository callRepository, UserRepository userRepository,
+            CallReceiverRepository callReceiverRepository) {
+        this.callRepository = callRepository;
+        this.userRepository = userRepository;
+        this.callReceiverRepository = callReceiverRepository;
+    }
+
+
+
+    public CallReceiver addCallReceiver(String username, CallReceiverDto callReceiverDTO) {
+        CallReceiver callReceiver = new CallReceiver();
+        try {
+             Users user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UserDoesNotExistException());
+            // callReceiver.setFirstName(callReceiverDTO.getFirstName());
+            //  callReceiver.setLastName(callReceiverDTO.getLastName());
+            callReceiver.setTelephone(callReceiverDTO.getTelephone());
+            //callReceiver.setDestinationCountry(callReceiverDTO.getDestinationCountry());
+            // callReceiver.setDestinationCountry(callReceiverDTO.getDestinationCountry());
+            callReceiver.setUser(user);
+            // call.setCostPerMinute(callsDTO.getCostPerMinute());
+
+            System.out.println("call details " + callReceiver);
+
+            return callReceiverRepository.save(callReceiver);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return null;
+
+    }
     
-    
-    //public List<String> getDistinctPhoneNumbersForUser(String username);
+
+    @Override
+    public boolean isPhoneNumberRegisteredForUser(String username, String telephone) {
+        return callReceiverRepository.existsByUserUsernameAndTelephone(username, telephone);
+    }
 
 
-    public List<String> findDistinctTelephoneByUserUsername(String username);
 
-   // public boolean checkPhoneNumberExistsForUser(String username, String telephone);
+    @Override
+    public boolean checkPhoneNumberExistsForUser(String username, String telephone) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'checkPhoneNumberExistsForUser'");
+    }
 
+    @Override
+    public List<CallReceiver> getCallReceiversByUsername(String username) {
+        return callReceiverRepository.findByUserUsername(username);
+    }
 
-    public boolean isPhoneNumberRegisteredForUser(String username, String telephone);
+    public List<String> getDistinctPhoneNumbersForUser(String username) {
+        return callReceiverRepository.findDistinctTelephoneByUser_Username(username);
+    }
 
+    public List<String> findDistinctTelephoneByUserUsername(String username) {
+        return callReceiverRepository.findDistinctTelephoneByUserUsername(username);
+    }
 
-    public boolean checkPhoneNumberExistsForUser(String username, String telephone);
-
-
-    public List<CallReceiver> getCallReceiversByUsername(String username);
-
-     //List<CallReceiver> getCallReceiversByUsername(String username);
-
-
+    /* 
 
  
+
+
+  
+
+    public boolean checkPhoneNumberExistsForUser(String username, String telephone) {
+        return callReceiverRepository.existsByUserUsernameAndTelephone(username, telephone);
+    }
+
+
+
+ public List<CallReceiver> getCallReceiversByUsername(String username) {
+        return callReceiverRepository.findByUserUsername(username);
+    }
+*/
+
+ //getDistinctPhoneNumbersByUsername
     
     /* 
     public List<String> getDistinctPhoneNumbersForUser(String username) {

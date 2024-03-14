@@ -28,21 +28,21 @@ import jakarta.persistence.Table;
 
 //@Document(indexName ="user1")
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class Users implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long userId;
-	@Column(unique=true)
-    private String username;
-    private String password;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long userId;
+	@Column(unique = true)
+	private String username;
+	private String password;
 	private String firstName;
-    private String lastName;
+	private String lastName;
 	private String emailAddress;
 	private String telephone;
 
-    public String getTelephone() {
+	public String getTelephone() {
 		return telephone;
 	}
 
@@ -66,15 +66,12 @@ public class Users implements UserDetails {
 		this.lastName = lastName;
 	}
 
-	/*Security related */
-	@ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(                                                                                                                     
-        name="user_role_junction",
-        joinColumns = {@JoinColumn(name="user_id")},
-        inverseJoinColumns = {@JoinColumn(name="role_id")}
-    )
+	/* Security related */
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_role_junction", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "role_id") })
 	private Set<Role> authorities;
-	
+
 	// mention
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_address_junction", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
@@ -85,40 +82,41 @@ public class Users implements UserDetails {
 	private Boolean enabled;
 
 	@Column(nullable = true)
-	//hide user verification code in the json response
+	// hide user verification code in the json response
 	@JsonIgnore
 	private Long verification;
 
-	/* 
-	// new
-	public void assignAuthoritesToUser(Users user) {
-		// user.getAuthorities().add(null);//this may causse errror - we can remove user
-		// but not authorities
-		this.getUsers().add(user);
-	}
-
-	public void removeAuthoritesToUser(Users user) {
-		// user.getAuthorities().remove(user);// this may causse errror
-		this.getUsers().remove(user);
-	}
-
-	public void removeAllUsersFromRole() {
-		if (this.getUsers() != null) {
-			List<Users> rolesUsers = this.getUsers().stream().toList();
-			rolesUsers.forEach(this::removeAuthoritesToUser);
-		}
-	}
-
-	*/
+	/*
+	 * // new
+	 * public void assignAuthoritesToUser(Users user) {
+	 * // user.getAuthorities().add(null);//this may causse errror - we can remove
+	 * user
+	 * // but not authorities
+	 * this.getUsers().add(user);
+	 * }
+	 * 
+	 * public void removeAuthoritesToUser(Users user) {
+	 * // user.getAuthorities().remove(user);// this may causse errror
+	 * this.getUsers().remove(user);
+	 * }
+	 * 
+	 * public void removeAllUsersFromRole() {
+	 * if (this.getUsers() != null) {
+	 * List<Users> rolesUsers = this.getUsers().stream().toList();
+	 * rolesUsers.forEach(this::removeAuthoritesToUser);
+	 * }
+	 * }
+	 * 
+	 */
 
 	public Users() {
-		//super();
+		// super();
 		this.authorities = new HashSet<>();
-		//when we first create account user should not be able to use it
-		//till user is verified
+		// when we first create account user should not be able to use it
+		// till user is verified
 		this.enabled = true;
 	}
-	
+
 	public Boolean getEnabled() {
 		return enabled;
 	}
@@ -147,13 +145,22 @@ public class Users implements UserDetails {
 		this.emailAddress = emailAddress;
 	}
 
-
-	public Users(String username, String password, Set<Role> authorities, String emailAddress, String telephone) {
-		this.username = username;
+	public Users(String password, String firstName, String lastName, String emailAddress, String telephone,
+		 Set<Role> authorities ) {
 		this.password = password;
-		this.authorities = authorities;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.emailAddress = emailAddress;
 		this.telephone = telephone;
+		this.authorities = authorities;
+	}
+
+	public Users(String username, String password, String emailAddress, String telephone, Set<Role> authorities) {
+		this.username = username;
+		this.password = password;
+		this.emailAddress = emailAddress;
+		this.telephone = telephone;
+		this.authorities = authorities;
 	}
 
 	public Users(Long userId, String username, String password, String firstName, String lastName, String emailAddress,
@@ -170,22 +177,22 @@ public class Users implements UserDetails {
 		this.enabled = enabled;
 		this.verification = verification;
 	}
-	
+
 	public Long getUserId() {
 		return this.userId;
 	}
-	
+
 	public void setId(Long userId) {
 		this.userId = userId;
 	}
-	
+
 	public void setAuthorities(Set<Role> authorities) {
 		this.authorities = authorities;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-	
+
 		return this.authorities;
 	}
 
@@ -194,12 +201,15 @@ public class Users implements UserDetails {
 
 		return this.password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	/* If you want account locking capabilities create variables and ways to set them for the methods below */
+	/*
+	 * If you want account locking capabilities create variables and ways to set
+	 * them for the methods below
+	 */
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
@@ -236,7 +246,6 @@ public class Users implements UserDetails {
 		this.username = username;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Users [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
@@ -245,6 +254,4 @@ public class Users implements UserDetails {
 				+ verification + "]";
 	}
 
-
-   
 }

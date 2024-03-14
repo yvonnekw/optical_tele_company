@@ -20,7 +20,7 @@ interface Call {
 
 export async function getCallsByUsername(username: string): Promise<any> {
   try {
-    const response = await axios.get(
+    const response = await api.get(
       REST_API_BASE_URL + `/calls?username=${username}`,
       {
         headers: basicHeader,
@@ -31,6 +31,37 @@ export async function getCallsByUsername(username: string): Promise<any> {
     throw error;
   }
 }
+
+export async function getPaidCallsByUsername(username: string): Promise<any> {
+  try {
+    const response = await api.get(
+      REST_API_BASE_URL + `/calls/paid?username=${username}`,
+      {
+        headers: basicHeader,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+//update this
+//create the postman test first
+export async function getUnpaidCallsByUsername(username: string): Promise<any> {
+  try {
+    const response = await api.get(
+      REST_API_BASE_URL + `/calls/unpaid?username=${username}`,
+      {
+        headers: basicHeader,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 export const enterCall = async (call: any): Promise<any> => {
   try {
@@ -80,7 +111,7 @@ export const checkPhoneNumberExists = async (
   }
 };
 
-export const listCalls = (): Promise<AxiosResponse<Call[]>> => axios.get(REST_API_BASE_URL + '/calls', {
+export const listCalls = (): Promise<AxiosResponse<Call[]>> => api.get(REST_API_BASE_URL + '/calls', {
   headers: basicHeader
 });
 

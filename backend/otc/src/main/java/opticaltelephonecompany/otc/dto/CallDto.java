@@ -1,7 +1,10 @@
-package opticaltelephonecompany.otc.models;
+package opticaltelephonecompany.otc.dto;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+
+import opticaltelephonecompany.otc.models.CallReceiver;
+import opticaltelephonecompany.otc.models.Users;
 
 public class CallDto {
 
@@ -15,6 +18,28 @@ public class CallDto {
     private String grossCost;
     private String totalCost;
     private String callDate;
+
+
+    private boolean isPaid;
+
+    private boolean isInvoiced;
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean isPaid) {
+        this.isPaid = isPaid;
+    }
+
+    public boolean isInvoiced() {
+        return isInvoiced;
+    }
+
+    public void setInvoiced(boolean isInvoiced) {
+        this.isInvoiced = isInvoiced;
+    }
+
     private CallReceiver callReceiver;
     private Set<Users> callUsers;
 

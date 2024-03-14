@@ -1,4 +1,6 @@
-package opticaltelephonecompany.otc.models;
+package opticaltelephonecompany.otc.dto;
+
+import opticaltelephonecompany.otc.models.Users;
 
 public class LoginResponseDto {
     private Users user;

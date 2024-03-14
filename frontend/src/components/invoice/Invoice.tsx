@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { getAllInvoices, InvoiceData} from '../../services/InvoiceService';
+import React, { useState, useEffect, useContext } from 'react';
+import { getAllInvoices, InvoiceData } from '../../services/InvoiceService';
+import { AuthContext } from '../auth/AuthProvider';
 
 interface InvoiceProps {}
 
 const Invoice: React.FC<InvoiceProps> = () => {
   const [invoices, setInvoices] = useState<InvoiceData[]>([]);
+
+  const { role } = useContext(AuthContext);
+
+  // Render the page only if the user has the admin role
+  if (role !== "ADMIN") {
+    return <div>You don't have permission to access this page.</div>;
+  }
 
   useEffect(() => {
     const fetchInvoices = async () => {

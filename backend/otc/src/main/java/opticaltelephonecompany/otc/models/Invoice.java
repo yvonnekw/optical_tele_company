@@ -1,6 +1,8 @@
 package opticaltelephonecompany.otc.models;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -22,6 +24,19 @@ public class Invoice {
     private Long invoiceId;
     private String invoiceDate;
     private String amount;
+    private boolean isPaid;
+   
+    @ManyToMany
+    @JoinTable(name = "invoice_call", joinColumns = @JoinColumn(name = "invoice_id"), inverseJoinColumns = @JoinColumn(name = "call_id"))
+    private Set<Call> calls = new HashSet<>();
+
+    public Invoice(Long invoiceId, String invoiceDate, String amount, boolean isPaid, Set<Call> calls) {
+        this.invoiceId = invoiceId;
+        this.invoiceDate = invoiceDate;
+        this.amount = amount;
+        this.isPaid = isPaid;
+        this.calls = calls;
+    }
 
     public String getInvoiceDate() {
         return invoiceDate;
@@ -31,21 +46,7 @@ public class Invoice {
         this.invoiceDate = invoiceDate;
     }
 
-    @ManyToMany
-    @JoinTable(
-        name = "invoice_call",
-        joinColumns = @JoinColumn(name = "invoice_id"),
-        inverseJoinColumns = @JoinColumn(name = "call_id"))
-    private Set<Call> calls = new HashSet<>();
-
     public Invoice() {
-    }
-
-    public Invoice(Long invoiceId, String invoiceDate, String amount, Set<Call> calls) {
-        this.invoiceId = invoiceId;
-        this.invoiceDate = invoiceDate;
-        this.amount = amount;
-        this.calls = calls;
     }
 
     public Long getInvoiceId() {
@@ -73,11 +74,21 @@ public class Invoice {
         this.calls = calls;
     }
 
-    @Override
-    public String toString() {
-        return "Invoice [invoiceId=" + invoiceId + ", invoiceDate=" + invoiceDate + ", amount=" + amount + ", calls="
-                + calls + "]";
+    public boolean isPaid() {
+        return isPaid;
     }
 
+    public void setPaid(boolean isPaid) {
+        this.isPaid = isPaid;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice [invoiceId=" + invoiceId + ", invoiceDate=" + invoiceDate + ", amount=" + amount + ", isPaid="
+                + isPaid + ", calls=" + calls + "]";
+    }
+
+  
+    
     
 }

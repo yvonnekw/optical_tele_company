@@ -1,4 +1,4 @@
-package opticaltelephonecompany.otc.controllers;
+package opticaltelephonecompany.otc.controller;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import opticaltelephonecompany.otc.dto.LoginResponseDto;
+import opticaltelephonecompany.otc.dto.RegistrationDto;
 import opticaltelephonecompany.otc.exception.EmailAlreadyTakenException;
 import opticaltelephonecompany.otc.exception.UserDoesNotExistException;
 import opticaltelephonecompany.otc.models.Users;
 import opticaltelephonecompany.otc.publisher.RabbitMQJsonProducer;
-import opticaltelephonecompany.otc.models.LoginResponseDto;
-import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.services.AuthenticationService;
 import opticaltelephonecompany.otc.services.TokenService;
 import opticaltelephonecompany.otc.services.UserService;

@@ -1,4 +1,4 @@
-package opticaltelephonecompany.otc.controllers;
+package opticaltelephonecompany.otc.controller;
 
 
 
@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import opticaltelephonecompany.otc.dto.CallDto;
+import opticaltelephonecompany.otc.dto.CallReceiverDto;
 import opticaltelephonecompany.otc.models.Call;
-import opticaltelephonecompany.otc.models.CallDto;
 import opticaltelephonecompany.otc.models.CallReceiver;
-import opticaltelephonecompany.otc.models.CallReceiverDto;
 import opticaltelephonecompany.otc.models.Users;
 import opticaltelephonecompany.otc.publisher.RabbitMQJsonProducer;
 import opticaltelephonecompany.otc.services.CallReceiverService;
@@ -51,26 +51,31 @@ public class CallReceiverController {
     }
 
     @PostMapping("/add/reciever")
-    public CallReceiver callReceiver(@RequestBody LinkedHashMap<String, String> body) throws Exception {
-        //  String firstName = body.get("firstName");
-        // String lastName = body.get("lastName");
+    public ResponseEntity<String> callReceiver(@RequestBody LinkedHashMap<String, String> body) throws Exception {
+
         String telephone = body.get("telephone");
-        // String destinationCountry = body.get("destinationCountry");
         String username = body.get("username");
 
-        //CallUser callUser = userService.getUserByUsername(userName);
+        // Check if the phone number is already registered for the given user
+        if (callReceiverService.isPhoneNumberRegisteredForUser(username, telephone)) {
+            return ResponseEntity.badRequest()
+                    .body("Phone number is already registered for the user. Please register another phone number.");
+        }
 
+        // If the phone number is not registered, proceed with the new registration
         CallReceiverDto callReceiverDTO = new CallReceiverDto();
-
-        // callReceiverDTO.setFirstName(firstName);
-        // callReceiverDTO.setLastName(lastName);
         callReceiverDTO.setTelephone(telephone);
-        // callReceiverDTO.setDestinationCountry(destinationCountry);
 
         CallReceiver callReceiver = callReceiverService.addCallReceiver(username, callReceiverDTO);
         rabbitMQJsonProducer.sendJsonMessage(callReceiver);
 
-        return callReceiver;
+        return ResponseEntity.ok("Phone number registered successfully.");
+    }
+    
+    @GetMapping("/phone-numbers/username/{username}")
+    public ResponseEntity<List<CallReceiver>> getDistinctPhoneNumbersForUser(@PathVariable String username) {
+        List<CallReceiver> callReceivers = callReceiverService.getCallReceiversByUsername(username);
+        return new ResponseEntity<>(callReceivers, HttpStatus.OK);
     }
 
     @GetMapping("/phone-numbers")
@@ -86,6 +91,36 @@ public class CallReceiverController {
         return ResponseEntity.ok(phoneNumbers);
     }
 
+    /* 
+    @GetMapping("/phone-numbers/{username}")
+    public ResponseEntity<List<CallReceiver>> getDistinctPhoneNumbersForUser(@PathVariable String username) {
+        List<CallReceiver> phoneNumbers = callReceiverService.getCallReceiversByUsername(username);
+        return new ResponseEntity<>(phoneNumbers, HttpStatus.OK);
+    }
+*/
+    /* 
+    @GetMapping("/phone-numbers/{username}")
+    public ResponseEntity<List<String>> findDistinctTelephoneByUserUsername(@PathVariable String username) {
+        List<String> phoneNumbers = callReceiverService.getCallReceiversByUsername(username);
+        return new ResponseEntity<>(phoneNumbers, HttpStatus.OK);
+    }
+       
+
+    @GetMapping("/phone-numbers")
+    public ResponseEntity<List<String>> findDistinctTelephoneByUserUsername(@RequestParam String username) {
+        System.out.println("username " + username);
+        if (username == null || username.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<String> phoneNumbers = callReceiverService.findDistinctTelephoneByUserUsername(username);
+
+        System.out.println("phone numbers " + phoneNumbers);
+        return ResponseEntity.ok(phoneNumbers);
+
+        */
+    
+/* 
     @GetMapping("/phone-exists")
     public ResponseEntity<Boolean> checkPhoneNumberExists(
             @RequestParam String username,
@@ -101,6 +136,8 @@ public class CallReceiverController {
         System.out.println("yes or no  " + exists);
         return ResponseEntity.ok(exists);
     }
+
+    */
     
     /* 
     @GetMapping("/tele")

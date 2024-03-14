@@ -1,4 +1,4 @@
-package opticaltelephonecompany.otc.controllers;
+package opticaltelephonecompany.otc.controller;
 
 import java.net.URI;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.Payment;
 import opticaltelephonecompany.otc.services.PaymentService;
 
@@ -31,7 +33,8 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @GetMapping
+    @GetMapping("/get-all-payents")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Payment>> getAllPayments() {
         List<Payment> payments = paymentService.getAllPayments();
         return ResponseEntity.ok(payments);
@@ -62,5 +65,12 @@ public class PaymentController {
 
         // return ResponseEntity.ok("User deleted successfully.");
     }
+
+    /* 
+    @GetMapping("/paid-calls/{username}")
+    public ResponseEntity<List<Call>> getPaidCallsByUsername(@PathVariable String username) {
+        List<Call> paidCalls = paymentService.getPaidCallsByUsername(username);
+        return ResponseEntity.ok(paidCalls);
+    }*/
     
 }
