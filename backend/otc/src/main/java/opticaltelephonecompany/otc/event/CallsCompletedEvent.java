@@ -3,17 +3,17 @@ package opticaltelephonecompany.otc.event;
 import java.util.List;
 
 import opticaltelephonecompany.otc.models.Call;
-import opticaltelephonecompany.otc.models.CurrentCall;
+//import opticaltelephonecompany.otc.models.CurrentCall;
 
 public class CallsCompletedEvent {
     
    private String username;
-    private List<CurrentCall> completedCalls;
+    private List<Call> completedCalls;
 
     public CallsCompletedEvent() {
     }
 
-    public CallsCompletedEvent(String username, List<CurrentCall> completedCalls) {
+    public CallsCompletedEvent(String username, List<Call> completedCalls) {
         this.username = username;
         this.completedCalls = completedCalls;
     }
@@ -26,11 +26,11 @@ public class CallsCompletedEvent {
         this.username = username;
     }
 
-    public List<CurrentCall> getCompletedCalls() {
+    public List<Call> getCompletedCalls() {
         return completedCalls;
     }
 
-    public void setCompletedCalls(List<CurrentCall> completedCalls) {
+    public void setCompletedCalls(List<Call> completedCalls) {
         this.completedCalls = completedCalls;
     }
 

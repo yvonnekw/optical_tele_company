@@ -1,5 +1,6 @@
 package opticaltelephonecompany.otc.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -8,53 +9,35 @@ import opticaltelephonecompany.otc.models.Users;
 
 public class CallDto {
 
+    private static final BigDecimal RATE_PER_SECOND = new BigDecimal("0.01");
+
     private String startTime;
     private String endTime;
     private String duration;
-    private String costPerMinute;
+    private String costPerSecond;
     private String discountForCalls;
     private String vat;
     private String netCost;
     private String grossCost;
-    private String totalCost;
+    // private String totalCost;
     private String callDate;
-
-
-    private boolean isPaid;
-
-    private boolean isInvoiced;
-
-    public boolean isPaid() {
-        return isPaid;
-    }
-
-    public void setPaid(boolean isPaid) {
-        this.isPaid = isPaid;
-    }
-
-    public boolean isInvoiced() {
-        return isInvoiced;
-    }
-
-    public void setInvoiced(boolean isInvoiced) {
-        this.isInvoiced = isInvoiced;
-    }
+    private String status;
 
     private CallReceiver callReceiver;
     private Set<Users> callUsers;
 
-    public CallDto(String startTime, String endTime, String duration, String costPerMinute, String discountForCalls,
+    public CallDto(String startTime, String endTime, String duration, String costPerSecond, String discountForCalls,
             String vat, String netCost, String grossCost, String totalCost, String callDate,
             CallReceiver callReceiver, Set<Users> callUsers) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.duration = duration;
-        this.costPerMinute = costPerMinute;
+        this.costPerSecond = costPerSecond;
         this.discountForCalls = discountForCalls;
         this.vat = vat;
         this.netCost = netCost;
         this.grossCost = grossCost;
-        this.totalCost = totalCost;
+      //  this.totalCost = totalCost;
         this.callDate = callDate;
         this.callReceiver = callReceiver;
         this.callUsers = callUsers;
@@ -76,12 +59,12 @@ public class CallDto {
         this.callUsers = callUsers;
     }
 
-    public String getCostPerMinute() {
-        return costPerMinute;
+    public String getCostPerSecond() {
+        return costPerSecond;
     }
 
-    public void setCostPerMinute(String costPerMinute) {
-        this.costPerMinute = costPerMinute;
+    public void setCostPerSecond(String costPerSecond) {
+        this.costPerSecond = RATE_PER_SECOND.toString();
     }
 
     public String getDiscountForCalls() {
@@ -114,14 +97,6 @@ public class CallDto {
 
     public void setGrossCost(String grossCost) {
         this.grossCost = grossCost;
-    }
-
-    public String getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(String totalCost) {
-        this.totalCost = totalCost;
     }
 
     public CallDto() {
@@ -159,9 +134,11 @@ public class CallDto {
     @Override
     public String toString() {
         return "CallDto [startTime=" + startTime + ", endTime=" + endTime + ", duration=" + duration
-                + ", costPerMinute=" + costPerMinute + ", discountForCalls=" + discountForCalls + ", vat=" + vat
-                + ", netCost=" + netCost + ", grossCost=" + grossCost + ", totalCost=" + totalCost + ", callDate="
-                + callDate + ", callReceiver=" + callReceiver + ", callUsers=" + callUsers + "]";
+                + ", costPerSecond=" + costPerSecond + ", discountForCalls=" + discountForCalls + ", vat=" + vat
+                + ", netCost=" + netCost + ", grossCost=" + grossCost + ", callDate=" + callDate + ", status=" + status
+                + ", callReceiver=" + callReceiver + ", callUsers=" + callUsers + "]";
     }
+
+  
 
 }

@@ -82,6 +82,6 @@ public interface CallRepository extends JpaRepository<Call, Long> {
   // @Query("SELECT c FROM Call c JOIN c.user u WHERE u.username = :username AND c.paid = false")
   //List<Call> findUnpaidCallsByUsername(@Param("username") String username);
    
-  @Query("SELECT c FROM Call c JOIN c.user u WHERE u.username = :username AND c.isPaid = false")
-  List<Call> findUnpaidCallsByUsername(@Param("username") String username);
+  //@Query("SELECT c FROM Call c JOIN c.user u WHERE u.username = :username AND c.isPaid = false")
+ // List<Call> findUnpaidCallsByUsername(@Param("username") String username);
 }

@@ -2,6 +2,7 @@ package opticaltelephonecompany.otc.controller;
 
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,7 +27,7 @@ import opticaltelephonecompany.otc.dto.CompletedCallDto;
 import opticaltelephonecompany.otc.event.CallsCompletedEvent;
 import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallReceiver;
-import opticaltelephonecompany.otc.models.CurrentCall;
+//import opticaltelephonecompany.otc.models.CurrentCall;
 import opticaltelephonecompany.otc.models.Invoice;
 import opticaltelephonecompany.otc.models.Users;
 import opticaltelephonecompany.otc.publisher.RabbitMQJsonProducer;
@@ -39,18 +40,17 @@ import opticaltelephonecompany.otc.services.UserService;
 @CrossOrigin("*")
 public class CallController {
 
-    private final UserService userService;
+    //private final UserService userService;
     private final CallService callService;
 
-    private final InvoiceService invoiceService;
-    private RabbitMQJsonProducer rabbitMQJsonProducer;
+    //private final InvoiceService invoiceService;
+    private final RabbitMQJsonProducer rabbitMQJsonProducer;
 
-    public CallController(CallService callService, UserService userService, RabbitMQJsonProducer rabbitMQJsonProducer,
-            InvoiceService invoiceService) {
+    public CallController(CallService callService,  RabbitMQJsonProducer rabbitMQJsonProducer) {
         this.callService = callService;
-        this.userService = userService;
+        //this.userService = userService;
         this.rabbitMQJsonProducer = rabbitMQJsonProducer;
-        this.invoiceService = invoiceService;
+       // this.invoiceService = invoiceService;
     }
 
     /* 
@@ -87,27 +87,27 @@ public class CallController {
         return ResponseEntity.ok("Call deleted successfully.");
     }
 
-    @GetMapping("mycalls")
+    @GetMapping("/mycalls")
     public String calls() {
         return "my callls";
     }
 
-    @PostMapping("/make/call")
+    @PostMapping("/make-call")
     public Call callsController(@RequestBody LinkedHashMap<String, String> body) throws Exception {
         String userName = body.get("username");
         String startTime = body.get("startTime");
         String endTime = body.get("endTime");
-        String duration = body.get("duration");
+        //String duration = body.get("duration");
         // String totalTime = body.get("totalTime");
-        String costPerMinute = body.get("costPerMinute");
+      //  String costPerMinute = body.get("costPerMinute");
         String discountForCalls = body.get("discountForCalls");
         // String signUpDiscount = body.get("signUpDiscount");
-        String vat = body.get("vat");
-        String netCost = body.get("netCost");
-        String grossCost = body.get("grossCost");
-        String totalCost = body.get("totalCost");
+       // String vat = body.get("vat");
+        //String netCost = body.get("netCost");
+      //  String grossCost = body.get("grossCost");
+       // String totalCost = body.get("totalCost");
         String telephone = body.get("telephone");
-        String callDate = body.get("callDate");
+       // String callDate = LocalDateTime.now().toString();//= body.get("callDate");
 
         //CallUser callUser = userService.getUserByUsername(userName);
 
@@ -115,18 +115,18 @@ public class CallController {
 
         callsDto.setStartTime(startTime);
         callsDto.setEndTime(endTime);
-        callsDto.setDuration(duration);
+        //callsDto.setDuration(duration);
         //  callsDto.setTotalTime(totalTime);
-        callsDto.setCostPerMinute(costPerMinute);
+       // callsDto.setCostPerMinute(costPerMinute);
         callsDto.setDiscountForCalls(discountForCalls);
         //callsDto.setSignUpDiscount(signUpDiscount);
-        callsDto.setVat(vat);
-        callsDto.setNetCost(netCost);
-        callsDto.setGrossCost(grossCost);
-        callsDto.setTotalCost(totalCost);
-        callsDto.setCallDate(callDate);
-        callsDto.setInvoiced(false);
-        callsDto.setPaid(false);
+       // callsDto.setVat(vat);
+       // callsDto.setNetCost(netCost);
+       // callsDto.setGrossCost(grossCost);
+       // callsDto.setTotalCost(totalCost);
+       // callsDto.setCallDate(LocalDateTime.now().toString());
+        //callsDto.setInvoiced(false);
+      //  callsDto.setPaid(false);
 
         Call call = callService.makeCall(userName, telephone, callsDto);
 
@@ -152,12 +152,14 @@ public class CallController {
         return ResponseEntity.ok(calls);
     }
 
+    /* 
     @GetMapping("/paid")
     public ResponseEntity<List<Call>> getPaidCalls() {
         List<Call> paidCalls = invoiceService.getAllPaidCalls();
         return ResponseEntity.ok(paidCalls);
     }
 
+    
     @GetMapping("/unpaid")
     public ResponseEntity<List<Call>> getUnpaidCalls() {
         List<Call> unpaidCalls = invoiceService.getAllUnpaidCalls();
@@ -169,7 +171,9 @@ public class CallController {
         List<Call> unpaidCalls = callService.getUnpaidCallsByUsername(username);
         return ResponseEntity.ok(unpaidCalls);
     }
+    */
 
+    /* 
     //come back to this
     @PostMapping("/end-calls")
     public ResponseEntity<String> endCalls(@RequestBody List<Call> calls) {
@@ -178,6 +182,9 @@ public class CallController {
 
         return ResponseEntity.ok("Calls ended successfully");
     }
+
+    */
+    /* 
 
     @PostMapping("/completed")
     public ResponseEntity<String> triggerCallsCompletedEvent(@RequestBody CallsCompletedEvent callsCompletedEvent) {
@@ -205,9 +212,9 @@ public class CallController {
                         // Convert the current call to a CompletedCallDto
                         CompletedCallDto completedCallDto = callService.convertToCompletedCallDto(currentCall);
                         completedCallDtos.add(completedCallDto);
-                        
-                         // Create an invoice for the completed call
-                        Invoice invoice = createInvoiceForCall(currentCall);
+
+                        // Create an invoice for the completed call
+                        //Invoice invoice = createInvoiceForCall(currentCall);
 
                     } else {
                         // Log that user is null for the current call
@@ -227,6 +234,8 @@ public class CallController {
 
         return ResponseEntity.ok("Calls completed event triggered successfully");
     }
+    
+    */
     /* 
     @PostMapping("/completed")
     public ResponseEntity<String> triggerCallsCompletedEvent(@RequestBody CallsCompletedEvent callsCompletedEvent) {

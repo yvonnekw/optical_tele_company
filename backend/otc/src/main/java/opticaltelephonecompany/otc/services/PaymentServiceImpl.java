@@ -1,5 +1,6 @@
 package opticaltelephonecompany.otc.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.Invoice;
 import opticaltelephonecompany.otc.models.Payment;
@@ -43,14 +45,57 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentOptional.orElse(null); // Return null if payment is not found
     }
 
+    @Transactional
     @Override
     public Payment createPayment(Payment payment) {
+        try {
+            Invoice invoice = payment.getInvoice();
+            Set<Call> calls = invoice.getCalls();
+
+            // Set invoice status to "Paid"
+            invoice.setStatus("Paid");
+
+            // Update the status of each call to "Paid" and save them
+            for (Call call : calls) {
+                call.setStatus("Paid");
+                callRepository.save(call);
+                logger.info("Call status updated: {}", call);
+            }
+            payment.setAmount(invoice.getTotalAmount());
+
+            logger.info("Total amount from invoice: {}", payment.getAmount());
+
+            // Save the updated invoice
+            invoiceRepository.save(invoice);
+            logger.info("Updated Invoice: {}", invoice);
+
+            // Save the payment
+            return paymentRepository.save(payment);
+        } catch (Exception e) {
+            // Log and handle any exceptions
+            logger.error("Error creating payment: {}", e.getMessage(), e);
+            throw e; // Re-throw the exception to propagate it to the caller
+        }
+    }
+
+    /* 
+    @Override
+    public Payment createPayment(Payment payment) {
+      
         Invoice invoice = payment.getInvoice();
-        invoice.setPaid(true); // Set invoice as paid
+        Set<Call> calls = invoice.getCalls();
+         invoice.setStatus("Paid"); // Set invoice as paid
 
         // Iterate through the calls and update their isPaid status
-        for (Call call : invoice.getCalls()) {
-            call.setPaid(true); // Set call as paid
+        ///for (Call call : invoice.getCalls()) {
+            //call.setStatus("Paid"); // Set call as paid
+       // }
+         
+        // Update the status of each call to indicate that it has been invoiced
+        for (Call call : calls) {
+            call.setStatus("Paid");
+            callRepository.save(call);
+            logger.info("Call status updated: {}", call);
         }
 
         // Save the invoice and associated calls
@@ -58,10 +103,12 @@ public class PaymentServiceImpl implements PaymentService {
 
         // Log the updated invoice and associated calls for debugging
         logger.info("Updated Invoice: {}", invoice);
-        logger.info("Updated Calls: {}", invoice.getCalls());
+        // logger.info("Updated Calls: {}", invoice.getCalls());
 
         return paymentRepository.save(payment);
     }
+    */
+
 /* 
     @Override
     public Payment createPayment(Payment payment) {

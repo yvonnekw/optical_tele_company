@@ -1,16 +1,16 @@
 package opticaltelephonecompany.otc.event;
 
-import opticaltelephonecompany.otc.dto.InvoiceWithCallIdsDTO;
+import opticaltelephonecompany.otc.dto.InvoiceDTO;
 
 public class InvoiceGenerationEvent {
 
     private String username;
-    private InvoiceWithCallIdsDTO invoiceWithCallIdsDTO;
+    private InvoiceDTO invoiceWithCallIdsDTO;
 
     public InvoiceGenerationEvent() {
     }
 
-    public InvoiceGenerationEvent(String username, InvoiceWithCallIdsDTO invoiceWithCallIdsDTO) {
+    public InvoiceGenerationEvent(String username, InvoiceDTO invoiceWithCallIdsDTO) {
         this.username = username;
         this.invoiceWithCallIdsDTO = invoiceWithCallIdsDTO;
     }
@@ -24,11 +24,11 @@ public class InvoiceGenerationEvent {
         this.username = username;
     }
 
-    public InvoiceWithCallIdsDTO getInvoiceWithCallIdsDTO() {
+    public InvoiceDTO getInvoiceWithCallIdsDTO() {
         return invoiceWithCallIdsDTO;
     }
 
-    public void setInvoiceWithCallIdsDTO(InvoiceWithCallIdsDTO invoiceWithCallIdsDTO) {
+    public void setInvoiceWithCallIdsDTO(InvoiceDTO invoiceWithCallIdsDTO) {
         this.invoiceWithCallIdsDTO = invoiceWithCallIdsDTO;
     }
     

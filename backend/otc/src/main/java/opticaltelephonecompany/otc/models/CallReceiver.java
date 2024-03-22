@@ -25,7 +25,7 @@ import jakarta.persistence.Table;
 public class CallReceiver {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long callReceiverId;
     private String telephone;
     
@@ -48,6 +48,8 @@ public class CallReceiver {
         this.callReceiverId = callReceiverId;
         this.telephone = telephone;
     }
+
+
 
     public Long getCallReceiverId() {
         return callReceiverId;

@@ -2,6 +2,7 @@ package opticaltelephonecompany.otc.services;
 
 
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -14,14 +15,14 @@ import opticaltelephonecompany.otc.controller.CallReceiverController;
 import opticaltelephonecompany.otc.dto.CallDto;
 import opticaltelephonecompany.otc.dto.CallReceiverDto;
 import opticaltelephonecompany.otc.dto.CompletedCallDto;
-import opticaltelephonecompany.otc.dto.InvoiceWithCallIdsDTO;
+import opticaltelephonecompany.otc.dto.InvoiceDTO;
 import opticaltelephonecompany.otc.dto.RegistrationDto;
 import opticaltelephonecompany.otc.exception.CallCreationException;
 import opticaltelephonecompany.otc.exception.CallReceiverNotFoundException;
 import opticaltelephonecompany.otc.exception.UserDoesNotExistException;
 import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallReceiver;
-import opticaltelephonecompany.otc.models.CurrentCall;
+//import opticaltelephonecompany.otc.models.CurrentCall;
 import opticaltelephonecompany.otc.models.Users;
 import opticaltelephonecompany.otc.models.Role;
 import opticaltelephonecompany.otc.repository.CallReceiverRepository;
@@ -45,11 +46,18 @@ public interface CallService {
 
     public List<Call> getCallsByUsername(String username);
 
-    public List<Call> getUnpaidCallsByUsername(String username);
+    //public List<Call> getUnpaidCallsByUsername(String username);
 
-    void endCallsAndGenerateInvoice(List<Call> calls);
+   // void endCallsAndGenerateInvoice(List<Call> calls);
 
-    CompletedCallDto convertToCompletedCallDto(CurrentCall currentCall);
+   //CompletedCallDto convertToCompletedCallDto(CurrentCall currentCall);
+    
+   //BigDecimal calculateNetCost(Set<Call> calls);
+
+   BigDecimal calculateTotalAmount(Set<Call> calls);
+
+    //double calculateTotalCost(List<Call> calls);
+
    // public void endCallsAndGenerateInvoice(List<Call> calls);
   // void endCallsAndGenerateInvoice(List<Call> calls, String username, InvoiceWithCallIdsDTO invoiceWithCallIdsDTO);
 

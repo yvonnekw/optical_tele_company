@@ -32,7 +32,7 @@ import jakarta.persistence.Table;
 public class Users implements UserDetails {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 	@Column(unique = true)
 	private String username;

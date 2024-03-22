@@ -48,19 +48,19 @@ public class UserController {
     private final RabbitMQProducer rabbitMQProducer;
     private final UserService userService;
     private final TokenService tokenService;
-    private final CallService callService;
-    private final CallReceiverService callReceiverService;
+    //private final CallService callService;
+   // private final CallReceiverService callReceiverService;
 
     private RabbitMQJsonProducer rabbitMQJsonProducer;
 
     @Autowired
-    public UserController(UserService userService, TokenService tokenService, CallService callService, 
-            CallReceiverService callReceiverService, RabbitMQProducer rabbitMQProducer, 
+    public UserController(UserService userService, TokenService tokenService,
+            RabbitMQProducer rabbitMQProducer, 
             RabbitMQJsonProducer rabbitMQJsonProducer) {
         this.userService = userService;
         this.tokenService = tokenService;
-        this.callService = callService;
-        this.callReceiverService = callReceiverService;
+        //this.callService = callService;
+       // this.callReceiverService = callReceiverService;
         this.rabbitMQProducer = rabbitMQProducer;
         this.rabbitMQJsonProducer = rabbitMQJsonProducer;
     }
@@ -116,7 +116,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Users> updateUser(@PathVariable("id") Long userId, @RequestBody Users updatedUser){
        Users userDto = userService.updateUser(userId, updatedUser);
        return ResponseEntity.ok(userDto);
@@ -128,7 +128,7 @@ public class UserController {
        return ResponseEntity.ok("User deleted successfully.");
     }
 
-    @GetMapping("users")
+    @GetMapping("/users")
     public String users() {
         return "my users";
     }

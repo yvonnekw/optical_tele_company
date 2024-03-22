@@ -13,9 +13,9 @@ import opticaltelephonecompany.otc.models.Invoice;
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     
-    List<Invoice> findByIsPaidTrue();
+    //List<Invoice> findByIsPaidTrue();
     
-    List<Invoice> findByIsPaidFalse();
+    //List<Invoice> findByIsPaidFalse();
 
     //@Query("SELECT DISTINCT i FROM Invoice i JOIN FETCH i.calls c JOIN FETCH c.user")
     //List<Invoice> findAllInvoiceCallsUser();
