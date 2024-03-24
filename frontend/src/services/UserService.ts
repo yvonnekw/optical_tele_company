@@ -85,6 +85,18 @@ export async function getUser(userId: string, token: string): Promise<any> {
   }
 }
 
+
+export async function getAllUsers(): Promise<any> {
+  try {
+    const response = await api.get(REST_API_BASE_URL + `/user/all-users`, {
+      headers: getLoginHeader(),
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getUsername2(): Promise<void> {
   const token = localStorage.getItem("token"); // Retrieve the token from local storage
   console.log("The user token " + token);

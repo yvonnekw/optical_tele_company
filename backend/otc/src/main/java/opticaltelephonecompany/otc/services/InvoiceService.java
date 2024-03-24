@@ -1,10 +1,13 @@
 package opticaltelephonecompany.otc.services;
 
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
+import opticaltelephonecompany.otc.dto.InvoiceDTO;
+import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.Invoice;
-import opticaltelephonecompany.otc.models.InvoiceWithCallIdsDTO;
 
 public interface InvoiceService {
 
@@ -20,6 +23,27 @@ public interface InvoiceService {
 
     Invoice createInvoice(Invoice invoice);
 
-    List<InvoiceWithCallIdsDTO> getAllInvoicesWithCallIds();
+    List<InvoiceDTO> getAllInvoicesWithCallIds();
+
+    //Invoice createInvoiceForCalls(Set<Call> calls);
+    //Invoice createInvoiceForCalls(Invoice invoice);
+    InvoiceDTO createInvoiceForCalls(InvoiceDTO invoiceDTO);
+
+   // BigDecimal createInvoiceForCalls(Set<Call> calls);
+
+   // List<Call> getAllPaidCalls();
+
+   // List<Call> getAllUnpaidCalls();
+
+   //void generateInvoiceForCalls(List<Call> calls);
+
+   // void triggerInvoiceCreation(String username, InvoiceWithCallIdsDTO invoiceWithCallIdsDTO);
+    //List<Invoice> getAllInvoices();
+
+    //List<Invoice> findAllInvoicesWithCallsAndUser();
+
+    //List<Invoice> findAllInvoiceCallsUser();
+
+    ///List<Invoice> findAllInvoicesWithCallsAndUsers();
     
 }

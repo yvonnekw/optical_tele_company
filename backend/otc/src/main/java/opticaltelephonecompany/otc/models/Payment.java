@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 @Table(name = "payment")
 public class Payment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id")
     private Long paymentId;
     @Column(name = "amount")
@@ -31,10 +31,28 @@ public class Payment {
     private String expiringDate;
     private String issueNumber;
     private String securityNumber;
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
+
+    public Payment() {
+    }
+
+    public Payment(Long paymentId, String amount, String paymentDate, String fullNameOnPaymentCard, String cardNumber,
+            String expiringDate, String issueNumber, String securityNumber, String status, Invoice invoice) {
+        this.paymentId = paymentId;
+        this.amount = amount;
+        this.paymentDate = paymentDate;
+        this.fullNameOnPaymentCard = fullNameOnPaymentCard;
+        this.cardNumber = cardNumber;
+        this.expiringDate = expiringDate;
+        this.issueNumber = issueNumber;
+        this.securityNumber = securityNumber;
+        this.status = status;
+        this.invoice = invoice;
+    }
 
     public String getCardNumber() {
         return cardNumber;
@@ -101,20 +119,28 @@ public class Payment {
         this.fullNameOnPaymentCard = fullNameOnPaymentCard;
     }
 
-    @Override
-    public String toString() {
-        return "Payment [paymentId=" + paymentId + ", amount=" + amount + ", paymentDate=" + paymentDate
-                + ", fullNameOnPaymentCard=" + fullNameOnPaymentCard + ", cardNumber=" + cardNumber + ", expiringDate="
-                + expiringDate + ", issueNumber=" + issueNumber + ", securityNumber=" + securityNumber + ", invoice="
-                + invoice + "]";
-    }
-
     public Invoice getInvoice() {
         return invoice;
     }
 
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Payment [paymentId=" + paymentId + ", amount=" + amount + ", paymentDate=" + paymentDate
+                + ", fullNameOnPaymentCard=" + fullNameOnPaymentCard + ", cardNumber=" + cardNumber + ", expiringDate="
+                + expiringDate + ", issueNumber=" + issueNumber + ", securityNumber=" + securityNumber + ", status="
+                + status + ", invoice=" + invoice + "]";
     }
 
     

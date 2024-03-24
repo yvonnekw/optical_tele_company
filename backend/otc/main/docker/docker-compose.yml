@@ -1,0 +1,37 @@
+#
+version: '2'
+
+services:
+  app:
+    image: 'otc-backend-spring-boot-postgres-docker-img:latest'
+    build:
+      context: .
+    container_name: otc-backend
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/otcDb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Mypassword1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+    ports:
+      - "8000:8080"
+
+  db:
+    image: 'postgres:16.1'
+    container_name: otc-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Mypassword1234
+      - POSTGRES_DB=otcDb
+    ports:
+      - "5434:5432"
+    restart: unless-stopped
+
+  frontend:
+    image: 'otc-frontend-vite-react-docker-img:latest'
+    build:
+      context: ./dist/*
+    container_name: otc-frontend
+    ports:
+        - "2000:3000"  # Assuming your Vite React frontend runs on port 3000

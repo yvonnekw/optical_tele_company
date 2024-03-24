@@ -18,10 +18,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import opticaltelephonecompany.otc.dto.RegistrationDto;
 import opticaltelephonecompany.otc.exception.EmailAlreadyTakenException;
 import opticaltelephonecompany.otc.exception.UserDoesNotExistException;
 import opticaltelephonecompany.otc.models.Users;
-import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.models.Role;
 import opticaltelephonecompany.otc.repository.RoleRepository;
 import opticaltelephonecompany.otc.repository.UserRepository;

@@ -38,6 +38,8 @@ public interface CallReceiverRepository extends JpaRepository<CallReceiver, Long
 	
 	 boolean existsByUserUsernameAndTelephone(String username, String telephone);
 
+	  List<CallReceiver> findByUserUsername(String username);
+
 }
 
   

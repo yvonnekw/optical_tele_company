@@ -5,10 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
-
+import opticaltelephonecompany.otc.dto.CallReceiverDto;
+import opticaltelephonecompany.otc.dto.RegistrationDto;
 import opticaltelephonecompany.otc.models.Call;
-import opticaltelephonecompany.otc.models.CallReceiverDto;
-import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.models.Users;
 
 

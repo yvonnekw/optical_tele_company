@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import { listCalls } from '../../services/CallService'
 import AuthProvider, { AuthContext } from '../auth/AuthProvider';
+import { useLocation } from 'react-router-dom';
 
 interface Call {
     id: number;
@@ -20,11 +21,25 @@ interface Call {
 
 const ListAllCalls: React.FC = () => {
     const [calls, setCalls] = useState<Call[]>([]);
+    const location = useLocation();
+    const message = location.state && location.state.message;
+    const currentUser = localStorage.getItem("userId");
+    const { role } = useContext(AuthContext);
+   
+    const { user, isLoggedIn } = useContext(AuthContext);
+    //const userRole = user ? user.scope : null;
+    const userId = localStorage.getItem("userId") ?? '';
+    const userRole = localStorage.getItem("userRole")
 
-    const { isLoggedIn } = useContext(AuthContext);
+    console.log("list calls user role ", userRole)
+
+    if (role !== "ADMIN") {
+        return <div>You don't have permission to access this page.</div>;
+    }
+
 
     useEffect(() => {
-        if (isLoggedIn()) {
+        if (isLoggedIn() && role === "ADMIN") {
             listCalls()
                 .then((response) => {
                     setCalls(response.data);
@@ -39,6 +54,8 @@ const ListAllCalls: React.FC = () => {
 
     return (
         <div className='container'>
+            {message && <p className='text-warning px-5'>{message}</p>}
+            {currentUser && <h6 className='text-success text-center'>You are logged in as: {currentUser}</h6>}
             <br /> <br />
             <div className='row'></div>
             <div className='card col-md-6 offset-md-3 offset-md-3'>

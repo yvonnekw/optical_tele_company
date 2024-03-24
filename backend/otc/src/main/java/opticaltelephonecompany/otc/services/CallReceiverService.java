@@ -10,73 +10,41 @@ import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import opticaltelephonecompany.otc.controllers.CallReceiverController;
+import opticaltelephonecompany.otc.controller.CallReceiverController;
+import opticaltelephonecompany.otc.dto.CallDto;
+import opticaltelephonecompany.otc.dto.CallReceiverDto;
+import opticaltelephonecompany.otc.dto.RegistrationDto;
 import opticaltelephonecompany.otc.exception.UserDoesNotExistException;
 import opticaltelephonecompany.otc.models.Call;
-import opticaltelephonecompany.otc.models.CallDto;
 import opticaltelephonecompany.otc.models.CallReceiver;
-import opticaltelephonecompany.otc.models.CallReceiverDto;
 import opticaltelephonecompany.otc.models.Users;
-import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.repository.CallReceiverRepository;
 import opticaltelephonecompany.otc.repository.CallRepository;
 import opticaltelephonecompany.otc.repository.UserRepository;
 
-@Service
-@Transactional
-public class CallReceiverService {
 
-    private final CallRepository callRepository;
-    private final UserRepository userRepository;
-    private final CallReceiverRepository callReceiverRepository;
+public interface CallReceiverService {
 
-
-
-    public CallReceiverService(CallRepository callRepository, UserRepository userRepository,
-            CallReceiverRepository callReceiverRepository) {
-        this.callRepository = callRepository;
-        this.userRepository = userRepository;
-        this.callReceiverRepository = callReceiverRepository;
-    }
-
-
-
-    public CallReceiver addCallReceiver(String username, CallReceiverDto callReceiverDTO) {
-        CallReceiver callReceiver = new CallReceiver();
-        try {
-             Users user = userRepository.findByUsername(username)
-            .orElseThrow(() -> new UserDoesNotExistException());
-            // callReceiver.setFirstName(callReceiverDTO.getFirstName());
-            //  callReceiver.setLastName(callReceiverDTO.getLastName());
-            callReceiver.setTelephone(callReceiverDTO.getTelephone());
-            //callReceiver.setDestinationCountry(callReceiverDTO.getDestinationCountry());
-            // callReceiver.setDestinationCountry(callReceiverDTO.getDestinationCountry());
-            callReceiver.setUser(user);
-            // call.setCostPerMinute(callsDTO.getCostPerMinute());
-
-            System.out.println("call details " + callReceiver);
-
-            return callReceiverRepository.save(callReceiver);
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-
-        return null;
-
-    }
+    public CallReceiver addCallReceiver(String username, CallReceiverDto callReceiverDTO);
     
-    public List<String> getDistinctPhoneNumbersForUser(String username) {
-        return callReceiverRepository.findDistinctTelephoneByUser_Username(username);
-    }
+    
+    //public List<String> getDistinctPhoneNumbersForUser(String username);
 
 
-    public List<String> findDistinctTelephoneByUserUsername(String username) {
-        return callReceiverRepository.findDistinctTelephoneByUserUsername(username);
-    }
+    public List<String> findDistinctTelephoneByUserUsername(String username);
 
-    public boolean checkPhoneNumberExistsForUser(String username, String telephone) {
-        return callReceiverRepository.existsByUserUsernameAndTelephone(username, telephone);
-    }
+   // public boolean checkPhoneNumberExistsForUser(String username, String telephone);
+
+
+    public boolean isPhoneNumberRegisteredForUser(String username, String telephone);
+
+
+    public boolean checkPhoneNumberExistsForUser(String username, String telephone);
+
+
+    public List<CallReceiver> getCallReceiversByUsername(String username);
+
+     //List<CallReceiver> getCallReceiversByUsername(String username);
 
 
 

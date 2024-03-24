@@ -1,9 +1,9 @@
 import axios from "axios";
-import { basicHeader, REST_API_BASE_URL } from './ApiUtils'
+import { basicHeader, REST_API_BASE_URL, api, getLoginHeader } from './ApiUtils'
 
 export const makePayment = async (paymentBody: any) => {
   try {
-    const response = await axios.post(
+    const response = await api.post(
       `${REST_API_BASE_URL}/payments/payment`,
       paymentBody,
       {
@@ -16,9 +16,11 @@ export const makePayment = async (paymentBody: any) => {
   }
 };
 
-/*
-export const makePayment = (paymentBody) =>
-  axios.post(REST_API_BASE_URL + "/payments/payment", paymentBody, {
-    headers: basicHeader,
+
+export const getPayments = () =>
+  api.get(REST_API_BASE_URL + "/payments/get-all-payents", {
+    headers: getLoginHeader(),
   });
-*/
+
+
+

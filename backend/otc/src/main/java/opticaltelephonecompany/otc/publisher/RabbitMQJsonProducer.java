@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import opticaltelephonecompany.otc.consumer.RabbitMQConsumer;
+import opticaltelephonecompany.otc.dto.RegistrationDto;
+import opticaltelephonecompany.otc.event.InvoiceGenerationEvent;
 import opticaltelephonecompany.otc.models.Call;
 import opticaltelephonecompany.otc.models.CallReceiver;
-import opticaltelephonecompany.otc.models.RegistrationDto;
 import opticaltelephonecompany.otc.models.Users;
 
 @Service
@@ -49,5 +50,12 @@ public class RabbitMQJsonProducer {
         rabbitTemplate.convertAndSend(exchange, routingJsonKey, body);
         // rabbitTemplate.convertAndSend(exchange, routingJsonKey, body);
     }
+
+      // Method to send InvoiceGenerationEvent as JSON message
+    public void sendJsonMessage(InvoiceGenerationEvent event) {
+        LOGGER.info(String.format("Json message sent -> %s", event.toString()));
+        rabbitTemplate.convertAndSend(exchange, routingJsonKey, event);
+    }
+
 
 }
