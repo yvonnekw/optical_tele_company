@@ -77,17 +77,23 @@ jobs:
 
       # Use Docker Compose to deploy the application
       - name: Deploy application with Docker Compose
-        uses: docker/compose-action@v2
-        with:
-          compose-file: docker-compose.yml
-          compose-file-v2: |
-            services:
-              app:
-                ports:
-                  - "8000:8080"
-              frontend:
-                ports:
-                  - "2000:3000"
-            version: '2.4'
-          run: up
+        run: |
+            # Pull the latest images
+            docker-compose pull
+
+            # Start the services
+            docker-compose up -d
+       # uses: docker/compose-action@v2
+        #with:
+          #compose-file: docker-compose.yml
+          #compose-file-v2: |
+            #services:
+             # app:
+                #ports:
+                  #- "8000:8080"
+              #frontend:
+                #ports:
+                 # - "2000:3000"
+            #version: '2.4'
+          #run: up
           # You may need to specify additional environment variables here for your application

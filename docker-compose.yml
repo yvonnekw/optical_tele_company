@@ -11,8 +11,8 @@ services:
       - db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/otcDb
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=Mypassword1234
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
     ports:
       - "8000:8080"
@@ -21,8 +21,8 @@ services:
     image: 'postgres:16.1'
     container_name: otc-db
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Mypassword1234
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=otcDb
     ports:
       - "5434:5432"
@@ -31,7 +31,24 @@ services:
   frontend:
     image: 'otc-frontend-vite-react-docker-img:latest'
     build:
-      context: ../../frontend
+      context: frontend
     container_name: otc-frontend
     ports:
         - "2000:3000"  # Assuming your Vite React frontend runs on port 3000
+
+  rabbitmq:
+    image: rabbitmq:latest
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - "5672:5672"
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      discovery.type: single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
