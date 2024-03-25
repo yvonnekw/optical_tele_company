@@ -34,7 +34,7 @@ services:
       context: frontend
     container_name: otc-frontend
     ports:
-        - "2000:3000"  # Assuming your Vite React frontend runs on port 3000
+        - "2002:2000"  # Assuming your Vite React frontend runs on port 3000
 
   rabbitmq:
     image: rabbitmq:latest
