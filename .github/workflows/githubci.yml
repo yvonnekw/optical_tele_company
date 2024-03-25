@@ -54,7 +54,7 @@ jobs:
       # Build the backend
       - name: Build backend
         run: |
-          cd backend
+          cd backend/otc
           mvn clean install
 
       # Log in to Docker Hub (or your Docker registry)
