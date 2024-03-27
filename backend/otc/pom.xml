@@ -11,7 +11,7 @@
 	<groupId>opticaltelephonecompany</groupId>
 	<artifactId>otc</artifactId>
 	<version>0.1.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>otc</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
