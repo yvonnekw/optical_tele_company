@@ -40,7 +40,7 @@ class UserControllerTest {
     @Test
     void shouldFindUserByUsername() {
        ResponseEntity<Users> response = restTemplate.exchange("/user/yodalpinky1", HttpMethod.GET,  null, Users.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+       assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
     }
 
